@@ -1,0 +1,7 @@
+# python -m pip install --user --upgrade pip
+beautifulsoup4
+requests
+selenium==3.14.1
+pymsteams
+pycryptodome
+webdriver-manager
