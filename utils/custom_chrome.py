@@ -423,26 +423,25 @@ if __name__ == '__main__':
                     input_username="saicx016",
                     input_password="a12345678",
                     headless_mode=True)
-    """
+    
     read_login_auto(input_url="http://bioid.tw/login.php",
                     input_username="phe23967@boofx.com",
                     input_password="a12345678",
                     headless_mode=False)
-    """
+    
     # manual login ithome
     test_json_list = [{'type': 'write', 'xpath': '//*[@id="account"]', 'text': 'saicx016'},
                       {'type': 'write', 'xpath': '//*[@id="password"]', 'text': 'a12345678'},
                       {'type': 'click', 'xpath': '/html/body/div/div/div/form/button', 'text': ''}]
     x_dict = read_login_header(input_url="https://member.ithome.com.tw/login",
                                input_action_list=test_json_list)
-
-    main_result = read_get_page(input_url="https://117.56.220.20")
+    """
+    main_result = read_get_page(input_url="https://www.example.com")
     if "Example Domain" in main_result:
         print("unit test (custom_chrome) : pass")
         sys.exit(0)
     else:
         print("unit test (custom_chrome) : fail")
         sys.exit(1)
-    """
 
 
