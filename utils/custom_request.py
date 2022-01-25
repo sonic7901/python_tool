@@ -110,8 +110,48 @@ def read_linkedin_bing(temp_company):
     return result_list
 
 
+def read_log4j_software():
+    # 0. init
+    result_dict_list = []
+    # 1. read page
+    try:
+        temp_response = read_get("https://github.com/cisagov/log4j-affected-db/blob/develop/SOFTWARE-LIST.md")
+        temp_soup = BeautifulSoup(temp_response['text'], 'html.parser')
+        result_title_list = []
+        if temp_response['code'] == 200:
+            temp_soup = BeautifulSoup(temp_response['text'], 'html.parser')
+
+            table_list = temp_soup.find_all('table')
+            software_table = table_list[1]
+            software_list = software_table.find_all('tr')
+            title_list = software_table.find_all('th')
+
+            for title in title_list:
+                result_title_list.append(title.text)
+                print(title.text)
+
+            for software in software_list:
+                single_dict = {}
+                single_count = 0
+                temp_td_list = software.find_all('td')
+                for single in temp_td_list:
+                    single_dict[result_title_list[single_count]] = single.text
+                    single_count += 1
+                print(single_dict)
+                result_dict_list.append(single_dict)
+
+            # print(result_dict_list)
+        else:
+            print(str(temp_response['code']))
+    except Exception as ex:
+        print('Exception:' + str(ex))
+    return result_dict_list
+
+
 # testcase
 if __name__ == '__main__':
+    read_log4j_software()
+    """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:
         print("unit test (custom_request) : pass")
@@ -119,3 +159,4 @@ if __name__ == '__main__':
     else:
         print("unit test (custom_request) : fail")
         sys.exit(1)
+    """

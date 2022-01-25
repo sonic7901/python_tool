@@ -133,6 +133,21 @@ def read_sqlite_select(input_id):
     return result_temp
 
 
+def clear_csv():
+    import csv
+    with open('cym_host_scan_yha5eg.csv', newline='', encoding="utf-8") as in_csvfile,\
+            open('output.csv', 'w', newline='', encoding="utf-8") as out_csvfile:
+        # 讀取 CSV 檔案內容
+        rows = csv.reader(in_csvfile)
+        writer = csv.writer(out_csvfile)
+        # 以迴圈輸出每一列
+        for row in rows:
+            if row[3] == 'Critical':
+                writer.writerow(row)
+                print(row)
+
+
 if __name__ == '__main__':
-    write_en_report("nessus_host_scan_samepl.csv", "sample_en.json")
+    clear_csv()
+    # write_en_report("nessus_host_scan_samepl.csv", "sample_en.json")
     # write_cn_report("nessus_host_scan_samepl.csv", "sample_cn.json")
