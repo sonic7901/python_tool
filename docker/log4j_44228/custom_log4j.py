@@ -131,33 +131,22 @@ def check_app_2(input_name, check_vendor_name, check_product_name):
     if (diff_vendor > 75 and diff_product > 45) or (diff_vendor > 75 and check_product_name == 'All Products'):
         temp_result = 2
         print('Medium')
-        print("input :" + input_name)
-        print("input_vendor_name:" + input_vendor_name)
-        print("input_product_name:" + input_product_name)
-        print("check_vendor_name:" + check_vendor_name)
-        print("check_product_name:" + check_product_name)
-        print("diff_vendor:" + str(int(diff_vendor)) + "%")
-        print("diff_product:" + str(int(diff_product)) + "%")
     elif diff_vendor > 75 and len(input_vendor_name) > 3:
         temp_result = 1
-        print('Low:vendor')
-        print("input :" + input_name)
-        print("input_vendor_name:" + input_vendor_name)
-        print("input_product_name:" + input_product_name)
-        print("check_vendor_name:" + check_vendor_name)
-        print("check_product_name:" + check_product_name)
-        print("diff_vendor:" + str(int(diff_vendor)) + "%")
-        print("diff_product:" + str(int(diff_product)) + "%")
+        print('risk: Low(vendor)')
     elif diff_product > 85 and len(input_product_name) > 5:
         temp_result = 1
-        print('Low:product')
-        print("input :" + input_name)
-        print("input_vendor_name:" + input_vendor_name)
-        print("input_product_name:" + input_product_name)
-        print("check_vendor_name:" + check_vendor_name)
-        print("check_product_name:" + check_product_name)
-        print("diff_vendor:" + str(int(diff_vendor)) + "%")
-        print("diff_product:" + str(int(diff_product)) + "%")
+        print('risk: Low(product)')
+    # debug
+    if temp_result > 0:
+        print("input: " + input_name)
+        print("input_vendor_name: " + input_vendor_name)
+        print("input_product_name: " + input_product_name)
+        print("check_vendor_name: " + check_vendor_name)
+        print("check_product_name: " + check_product_name)
+        print("diff_vendor: " + str(int(diff_vendor)) + "%")
+        print("diff_product: " + str(int(diff_product)) + "%")
+        print("============================================")
 
     return temp_result
 
@@ -181,7 +170,7 @@ def read_wappalyzer_list():
     count = 0
     from urllib.request import urlopen
     import json
-    for x in range(ord('a'), ord('z')+1):
+    for x in range(ord('a'), ord('z') + 1):
         url = "https://raw.githubusercontent.com/AliasIO/wappalyzer/master/src/technologies/" + chr(x) + ".json"
         response = urlopen(url)
         data_json = json.loads(response.read())
@@ -218,12 +207,56 @@ def test_main():
         print(str(i) + ' : ' + str(result_dict[i]))
 
 
-def docker_scan():
-    pass
+def docker_scan(input_url):
+    software_list = read_wappalyzer(input_url)
+    log4j_list = read_app_list()
+    result_dict = {}
+    for software in software_list:
+        for log4j in log4j_list:
+            log4j_vendor = log4j[0]
+            log4j_product = log4j[1]
+            risk_level = check_app_2(software['name'], log4j_vendor, log4j_product)
+            if risk_level > 0:
+                if software['name'] in result_dict:
+                    if risk_level > result_dict[software['name']]:
+                        result_dict[software['name']] = risk_level
+                else:
+                    result_dict[software['name']] = risk_level
+    return result_dict
+
+
+def write_report(input_dict):
+    # 1. transport data
+    temp_result_str = ""
+    for temp_dict in input_dict:
+        if input_dict[temp_dict] == 1:
+            temp_result_str = temp_result_str + str(temp_dict) + '(Low Risk),'
+        elif input_dict[temp_dict] == 2:
+            temp_result_str = temp_result_str + str(temp_dict) + '(Medium Risk),'
+        elif input_dict[temp_dict] == 3:
+            temp_result_str = temp_result_str + str(temp_dict) + '(High Risk),'
+    temp_result_str = temp_result_str[:-1]
+    # 2. report format
+    temp_dict = {
+        "additionalInfo": {
+            "eas_log4j": {
+                "proof": temp_result_str
+            }
+        },
+        "checkedIssues": [
+            "eas_log4j"
+        ]
+    }
+    # 3. create report
+    file_name = 'data.json'
+    print(json.dumps(temp_dict))
+    with open(file_name, 'w') as outfile:
+        json.dump(temp_dict, outfile)
 
 
 if __name__ == '__main__':
-    test_main()
+    x = docker_scan("https://www.evergreen-marine.com/")
+    write_report(x)
     # read_wappalyzer_list()
     """
     try:

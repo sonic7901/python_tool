@@ -34,21 +34,17 @@ RUN yarn install
 
 RUN yarn run link
 
-# COPY util_log.py /wappalyzer
+COPY custom_log4j.py /wappalyzer
 
-# COPY util_request.py /wappalyzer
+COPY custom_request.py /wappalyzer
 
-# COPY app_cvedetail.py /wappalyzer
+COPY custom_log.py /wappalyzer
 
-# COPY app_nvd.py /wappalyzer
-
-# COPY app_wappalyzer.py /wappalyzer
-
-# COPY main_web_cve.py /wappalyzer
+COPY main.py /wappalyzer
 
 COPY requirements.txt /wappalyzer
 
-# COPY entrypoint.sh /opt/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
