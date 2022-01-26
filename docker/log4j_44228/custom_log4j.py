@@ -6,14 +6,13 @@ from bs4 import BeautifulSoup
 
 import custom_request
 import custom_log
-
+import utils.custom_csv
 bypass_split_list = ['New Relic']
 bypass_issue_list = ['Microsoft 365',
                      'Microsoft PowerPoint',
                      'Microsoft SharePoint',
                      'Microsoft Excel',
-                     'Microsoft Word',
-                     ]
+                     'Microsoft Word']
 pass_issue_list = ['Azure', 'Azure AD B2C', 'Azure CDN']
 high_name_list = ['Apache Tomcat']
 high_dict = {'Apache Tomcat': {'max': 90099, 'min': 90000}}
@@ -111,7 +110,57 @@ def check_app(input_name, input_app_list):
     return False
 
 
-def check_app_2(input_name, check_vendor_name, check_product_name):
+def check_high_risk(input_name, input_version):
+    black_list = utils.custom_csv.read_file_to_dict("blacklist.csv")
+    white_list = utils.custom_csv.read_file_to_dict("whitelist.csv")
+    for temp_date in black_list:
+        if temp_date['name'] == input_name and temp_date['risk'] == 'high':
+            if not temp_date['max'] == '':
+                max_version_list = temp_date['max'].split('.')
+                if len(max_version_list) == 3:
+                    max_version_int = max_version_list[0] * 10000 + max_version_list[1] * 100 + max_version_list[2]
+                elif len(max_version_list) == 2:
+                    max_version_int = max_version_list[0] * 100 + max_version_list[1]
+                elif len(max_version_list) == 1:
+                    max_version_int = max_version_list[0]
+                else:
+                    print('format error')
+                    break
+            else:
+                max_version_int = 999999
+            if not temp_date['min'] == '':
+                min_version_list = temp_date['min'].split('.')
+                if len(min_version_list) == 3:
+                    min_version_int = min_version_list[0] * 10000 + min_version_list[1] * 100 + min_version_list[2]
+                elif len(min_version_list) == 2:
+                    min_version_int = min_version_list[0] * 100 + min_version_list[1]
+                elif len(min_version_list) == 1:
+                    min_version_int = min_version_list[0]
+                else:
+                    print('format error')
+                    break
+            else:
+                min_version_int = 0
+            if not input_version == '':
+                input_version_list = input_version.split('.')
+                if len(input_version_list) == 3:
+                    input_version_int = input_version_list[0] * 10000 + input_version_list[1] * 100 + input_version_list[2]
+                elif len(input_version_list) == 2:
+                    input_version_int = input_version_list[0] * 100 + input_version_list[1]
+                elif len(input_version_list) == 1:
+                    input_version_int = input_version_list[0]
+                else:
+                    print('format error')
+                    break
+            else:
+                print('format error')
+                break
+            if max_version_int >= input_version_int >= min_version_int:
+                return True
+    return False
+
+
+def check_low_risk(input_name, check_vendor_name, check_product_name):
     input_product_name = ""
     input_vendor_name = ""
     diff_product = 0
@@ -192,7 +241,7 @@ def test_main():
         if temp_software[0] in pass_issue_list:
             result_dict[temp_software[0]] = 2
         for log4j in log4j_list:
-            issue_level = check_app_2(temp_software[0], log4j[0], log4j[1])
+            issue_level = check_low_risk(temp_software[0], log4j[0], log4j[1])
             if issue_level > 0:
                 main_count += 1
                 print(temp_software[1])
@@ -215,7 +264,10 @@ def docker_scan(input_url):
         for log4j in log4j_list:
             log4j_vendor = log4j[0]
             log4j_product = log4j[1]
-            risk_level = check_app_2(software['name'], log4j_vendor, log4j_product)
+            if check_high_risk(software['name'], software['version']):
+                result_dict[software['name']] = 3
+                break
+            risk_level = check_low_risk(software['name'], log4j_vendor, log4j_product)
             if risk_level > 0:
                 if software['name'] in result_dict:
                     if risk_level > result_dict[software['name']]:
@@ -258,6 +310,7 @@ if __name__ == '__main__':
     x = docker_scan("https://www.evergreen-marine.com/")
     write_report(x)
     # read_wappalyzer_list()
+    # print(check_high_risk("Apache Tomcat", "9.0.5"))
     """
     try:
         scan("https://www.evergreen-marine.com/")

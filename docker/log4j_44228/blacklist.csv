@@ -1,0 +1,5 @@
+name,risk,max,min
+Azure,low,,
+Azure AD B2C,low,,
+Azure CDN,low,,
+Apache Tomcat,high,9.0.99,9.0.0
