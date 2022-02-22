@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/shell" onsubmit="windows.location.reload()">
+    input：<input type="text" name="html_input">
+    <input type="submit" value="送出" onclick="windows.location.reload()">
+</form>
+<div class="box">
+    {% for result in result_list %}
+    <label><b>{{result}}</b><br></label>
+    {% endfor %}
+</div>
+</body>
+</html>
