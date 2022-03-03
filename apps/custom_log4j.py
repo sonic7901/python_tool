@@ -1,7 +1,6 @@
 import utils.custom_markdown
 import utils.custom_request as temp_request
 from bs4 import BeautifulSoup
-import pandas as pd
 from collections import OrderedDict
 from pprint import pprint
 import json

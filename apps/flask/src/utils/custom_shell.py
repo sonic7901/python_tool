@@ -2,7 +2,7 @@ import subprocess
 import locale
 
 # setting
-console_length = 100
+console_length = 200
 
 
 def run_shell(input_str):
