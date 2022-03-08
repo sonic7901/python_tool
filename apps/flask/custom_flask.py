@@ -18,6 +18,7 @@ import configparser
 import os
 import src.api_shell
 import src.utils.custom_shell
+from werkzeug.utils import secure_filename
 
 # config init
 config = configparser.ConfigParser()
@@ -112,6 +113,9 @@ def favicon():
 @app.errorhandler(404)
 def page_not_found(e):
     return redirect("/index")
+
+
+
 
 
 if __name__ == "__main__":
