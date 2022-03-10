@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="template.css">
+    <title>Cyber Dashboard</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/template.css')}}">
+</head>
+<body>
+<br>
+<br>
+<div align="center">
+    <form method="get" action="/shell">
+        <button class="submit" id="btn_1" style="margin:10px;">Debug</button>
+    </form>
+</div>
+<br>
+<div align="center">
+    <form method="get" action="/demo">
+        <button class="submit" id="btn_2" style="margin:10px;">Demo</button>
+    </form>
+</div>
+<br>
+</body>
+</html>

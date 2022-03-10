@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/template.css')}}">
+    <title>Cyber Dashboard</title>
+</head>
+<body>
+<br>
+<div id="main">
+    <div id="content">
+        <form method="post" action="/login">
+            <label><font color="white">USERNAME :</font></label><br>
+            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="username"><br>
+            <label><font color="white">PASSWORD :</font></label><br>
+            <input type="password" class="form-control" id="password" name="password" placeholder="password">
+            <br>
+            <br>
+            <button type="submit" style="width:170px;">Login</button>
+            <br>
+        </form>
+    </div>
+</div>
+<div id="sub">
+    <img src="{{url_for('static', filename='images/0d211ecad6b431caa852560b0c8bb830.svg')}}" width="50%" height="50%">
+</div>
+<br>
+</body>
+</html>

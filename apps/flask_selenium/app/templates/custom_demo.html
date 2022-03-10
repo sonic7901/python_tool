@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/template.css')}}">
+</head>
+<body>
+<p>This is an example of a simple HTML page with one paragraph.</p>
+<br>
+<div align="center">
+    <form method="get" action="/shell">
+        <button class="submit" id="btn_1" style="margin:10px;">Debug</button>
+    </form>
+</div>
+<form method="post" enctype="multipart/form-data" action="/upload">
+    <input type=file name=file>
+    <input type=submit value=Upload>
+</form>
+<br>
+</body>
+</html>
