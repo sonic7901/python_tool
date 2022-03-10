@@ -2,7 +2,10 @@ import sqlite3
 import os
 
 
-def init(db_file):
+DB_FILE = 'test.db'
+
+
+def init(db_file=DB_FILE):
     try:
         if os.path.isfile(db_file):
             print('database ' + str(db_file) + ' already exist')
@@ -14,6 +17,24 @@ def init(db_file):
             NAME           TEXT    NOT NULL,
             PASS           TEXT    NOT NULL);''')
             print('database ' + str(db_file) + ' already created')
+            temp_conn.commit()
+            temp_conn.close()
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+
+def create_table_test_case():
+    try:
+        if os.path.isfile(DB_FILE):
+            temp_conn = sqlite3.connect(DB_FILE)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute('''CREATE TABLE TESTCASE(
+                        ID             INT PRIMARY KEY NOT NULL,
+                        NAME           TEXT NOT NULL,
+                        DESCRIPTION    TEXT,
+                        USER_ID        INT NOT NULL,
+                        FILE_NAME      TEXT NOT NULL);''')
+            print('database ' + str(DB_FILE) + ' already created')
             temp_conn.commit()
             temp_conn.close()
     except Exception as ex:
@@ -37,7 +58,8 @@ def add_user(db_file, input_name, input_pass):
     except Exception as ex:
         print('Exception:' + str(ex))
 
-def test():
+"""
+def test999():
     conn = sqlite3.connect('test.db')
 
     c = conn.cursor()
@@ -70,7 +92,8 @@ def test():
     print("数据插入成功")
 
     conn.close()
-
+"""
 
 if __name__ == "__main__":
-    init('test.db')
+    init()
+    create_table_test_case()

@@ -3,7 +3,8 @@ from flask import (
     send_from_directory,
     redirect,
     render_template,
-    request
+    request,
+    url_for
 )
 
 from flask_login import (
@@ -18,6 +19,8 @@ import configparser
 import os
 import app.models.api_shell as api_shell
 import app.models.custom_shell
+from werkzeug.utils import secure_filename
+
 
 # config init
 config = configparser.ConfigParser()
@@ -38,6 +41,9 @@ login_manager.init_app(app)
 login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message = "not work"
+
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
+ALLOWED_MIME_TYPES = {'image/jpeg'}
 
 
 class User(UserMixin):
@@ -123,8 +129,18 @@ def page_not_found(e):
     return redirect("/index")
 
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
+def is_allowed_file(file):
+    return True
+
+
+@app.route('/upload', methods=["POST"])
+def uploaded_file():
+    file = request.files['file']
+    if file and is_allowed_file(file):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('upload', filename))
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
