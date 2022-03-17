@@ -4,7 +4,6 @@ from flask import (
     redirect,
     render_template,
     request,
-    url_for
 )
 
 from flask_login import (
@@ -20,30 +19,29 @@ import os
 import app.models.api_shell as api_shell
 import app.models.custom_shell
 from werkzeug.utils import secure_filename
-
+import time
+import app.db.custom_sqlite as sql_db
+import app.models.custom_auto_test as auto_test
 
 # config init
 config = configparser.ConfigParser()
 config.read("config.ini")
 
 # flask init
-app = Flask(__name__)
-app.secret_key = config.get("flask", "secret_key")
-app.config['UPLOAD_FOLDER'] = './src/upload'
-allow_extension = {'py'}
+flask_app = Flask(__name__)
+flask_app.secret_key = config.get("flask", "secret_key")
+flask_app.config['UPLOAD_FOLDER'] = config.get("flask", "upload_folder")
+allow_extension = {'py', 'jpg'}
 
 # users list
 users = {"onedegree": {"password": "onedegree9527"}}
 
 # Flask-Login init
 login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager.init_app(flask_app)
 login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message = "not work"
-
-ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
-ALLOWED_MIME_TYPES = {'image/jpeg'}
 
 
 class User(UserMixin):
@@ -60,10 +58,10 @@ def user_loader(user_id):
     return user
 
 
-@app.route("/login", methods=["GET", "POST"])
+@flask_app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return render_template("custom_main.html")
+        redirect("/")
 
     if request.method == "GET":
         return render_template("custom_login.html")
@@ -76,23 +74,31 @@ def login():
         user = User()
         user.id = user_id
         login_user(user)
-        return render_template("custom_main.html")
+        return render_template("custom_demo.html")
     return redirect("/login")
 
 
-@app.route("/index", methods=["GET"])
-@login_required
+@flask_app.route("/index", methods=["GET"])
 def index():
-    return render_template("custom_main.html")
+    temp_fields = ['NAME', 'DESCRIPTION', 'FILE', 'KEYWORD', 'STATUS', 'ACTION']
+    temp_column = sql_db.read_data('app/db/test.db', 'TESTCASE')
+    return render_template("custom_index.html",
+                           labels=temp_fields,
+                           column_testcase=temp_column)
 
 
-@app.route("/demo", methods=["GET", "POST"])
+@flask_app.route("/demo", methods=["GET", "POST"])
 @login_required
 def demo():
-    return render_template("custom_demo.html")
+    print(current_user.id)
+    temp_fields = ['NAME', 'DESCRIPTION', 'FILE', 'KEYWORD', 'STATUS', 'ACTION']
+    temp_column = sql_db.read_data('app/db/test.db', 'TESTCASE')
+    return render_template("custom_demo.html",
+                           labels=temp_fields,
+                           column_testcase=temp_column)
 
 
-@app.route("/shell", methods=["GET"])
+@flask_app.route("/shell", methods=["GET"])
 @login_required
 def shell():
     with open('temp/test.txt', 'a') as temp_file:
@@ -105,7 +111,7 @@ def shell():
     return render_template("custom_shell.html", result_list=temp_lines)
 
 
-@app.route("/shell", methods=["POST"])
+@flask_app.route("/shell", methods=["POST"])
 @login_required
 def shell_post():
     print(request.form['html_input'])
@@ -117,43 +123,92 @@ def shell_post():
     return render_template("custom_shell.html", result_list=temp_lines)
 
 
-@app.route("/favicon.ico")
+@flask_app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, "static"),
+    return send_from_directory(os.path.join(flask_app.root_path, "static"),
                                "favicon.ico",
                                mimetype="image/vnd.microsoft.icon")
 
 
-@app.errorhandler(404)
+@flask_app.errorhandler(404)
 def page_not_found(e):
     return redirect("/index")
 
 
-def is_allowed_file(file):
-    return True
+def create_new_testcase(input_id, file_name):
+    real_name_list = file_name.split('_')
+    class_name = real_name_list[0].capitalize() + real_name_list[1].capitalize()
+    temp_list = [f"        if input_id == '{input_id}':\n",
+                 f"            import app.upload.{file_name}\n",
+                 f"            test = app.upload.{file_name}.{class_name}()\n",
+                 f"            test.driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())\n",
+                 f"            test.{file_name}()\n",
+                 f"            temp_result = test.driver.page_source\n",
+                 f"            test.teardown_method('test')\n",
+                 f"            print(\"testcase:\" + \"{input_id}\")\n"]
+    return temp_list
 
 
-@app.route('/upload', methods=["POST"])
+@login_required
+@flask_app.route('/upload', methods=['POST'])
 def uploaded_file():
+    import app.utils.custom_file
     file = request.files['file']
-    if file and is_allowed_file(file):
+    name = request.form['name_title']
+    desc = request.form['name_desc']
+    verify = request.form['name_verify']
+    if file:
         filename = secure_filename(file.filename)
-        file.save(os.path.join('upload', filename))
-        return redirect(url_for('index'))
-    return redirect(url_for('index'))
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+        print(flask_app.config['UPLOAD_FOLDER'])
+        if os.path.isdir(flask_app.config['UPLOAD_FOLDER']):
+            file.save(os.path.join(flask_app.config['UPLOAD_FOLDER'], filename))
+            print("upload success")
+            print(current_user.id)
+            filename_only = app.utils.custom_file.read_name(filename)
+            sql_db.add_testcase('app/db/test.db', name, desc, filename_only, verify, current_user.id)
+            time.sleep(3)
+            sql_id = app.db.custom_sqlite.read_testcase_id('app/db/test.db', name)
+            print('sql_id:' + str(sql_id))
+            temp_list = create_new_testcase(sql_id, filename_only)
+            app.utils.custom_file.add_lines('app/models/custom_auto_test.py', temp_list, '# auto testcase end')
+        else:
+            print("folder not exist, please check config")
+    else:
+        print("upload file is null")
+    return redirect("/demo")
+
+
+@flask_app.route("/run/<button_temp>", methods=["POST"])
+def run_testcase(button_temp):
+    button = str(button_temp)
+    count_list = button.split('_')
+    result = auto_test.select_test(count_list[-1])
+    verify = app.db.custom_sqlite.read_verify_by_id('app/db/test.db', count_list[-1])
+    status = check_response(result, verify)
+    app.db.custom_sqlite.update_status_by_id('app/db/test.db', count_list[-1], str(status))
+    print(result)
+    print("run:" + button)
+    print('status:' + str(status))
+    return redirect("/demo")
+
+
+def check_response(temp_html, temp_str):
+    check_status = False
+    if temp_str == '':
+        check_status = True
+    if temp_str in temp_html:
+        check_status = True
+    return check_status
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in allow_extension
+    if filename.rsplit('.', 1)[1].lower() in allow_extension:
+        print('t2')
+    if '.' in filename:
+        print('t3')
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allow_extension
 
 
 def create_app():
-    app.debug = True
-    app.run(host="0.0.0.0", port=8123)
-
-
-if __name__ == "__main__":
-    app.debug = True
-    app.run(host="0.0.0.0", port=8123)
+    flask_app.debug = True
+    flask_app.run(host="0.0.0.0", port=8123, debug=False)

@@ -1,28 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/template.css')}}">
-    <title>Cyber Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+    <!--
+
+    Template 2097 Pop
+
+    https://www.tooplate.com/view/2097-pop
+
+    -->
+    <!-- load CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
+    <!-- Google web font "Open Sans" -->
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <!--<link rel="stylesheet" href="fontawesome/css/fontawesome-all.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='fontawesome/css/fontawesome-all.min.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick-theme.css')}}">
+    <!--<link rel="stylesheet" href="css/tooplate-style.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tooplate-style.css')}}">
+
+    <script>
+        document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+    </script>
+
 </head>
+
 <body>
-<br>
-<div id="main">
-    <div id="content">
-        <form method="post" action="/login">
-            <label><font color="white">USERNAME :</font></label><br>
-            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="username"><br>
-            <label><font color="white">PASSWORD :</font></label><br>
-            <input type="password" class="form-control" id="password" name="password" placeholder="password">
-            <br>
-            <br>
-            <button type="submit" style="width:170px;">Login</button>
-            <br>
-        </form>
-    </div>
+<div id="tm-bg"></div>
+<div id="tm-wrap">
+    <div class="tm-main-content">
+        <div class="container tm-site-header-container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-md-col-xl-6 mb-md-0 mb-sm-4 mb-4 tm-site-header-col">
+                    <div class="tm-site-header">
+                        <h1 class="mb-4">Login</h1>
+                        <img src="{{url_for('static', filename='images/underline.png')}}" class="img-fluid mb-4">
+                        <p>請輸入帳號密碼</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="content">
+                        <div class="grid">
+                            <form method="post" action="/login">
+                                <label><font color="white">USERNAME :</font></label><br>
+                                <input type="text" class="form-control" id="user_id" name="user_id"
+                                       placeholder="username"><br>
+                                <label><font color="white">PASSWORD :</font></label><br>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="password">
+                                <br>
+                                <br>
+                                <button type="submit" style="width:170px;">Login</button>
+                                <br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p class="small tm-copyright-text">Copyright &copy; <span class="tm-current-year">2020</span> Your Company.
+
+                Design: <a rel="nofollow" href="https://www.tooplate.com" class="tm-text-highlight">Tooplate</a></p>
+        </footer>
+    </div> <!-- .tm-main-content -->
 </div>
-<div id="sub">
-    <img src="{{url_for('static', filename='images/0d211ecad6b431caa852560b0c8bb830.svg')}}" width="50%" height="50%">
-</div>
-<br>
+<!-- load JS -->
+<script src="js/jquery-3.2.1.slim.min.js"></script>         <!-- https://jquery.com/ -->
+<script src="slick/slick.min.js"></script>                  <!-- http://kenwheeler.github.io/slick/ -->
+<script src="js/anime.min.js"></script>                     <!-- http://animejs.com/ -->
+<script src="js/main.js"></script>
+<script>
+
+        function setupFooter() {
+            var pageHeight = $('.tm-site-header-container').height() + $('footer').height() + 100;
+
+            var main = $('.tm-main-content');
+
+            if($(window).height() < pageHeight) {
+                main.addClass('tm-footer-relative');
+            }
+            else {
+                main.removeClass('tm-footer-relative');
+            }
+        }
+
+        /* DOM is ready
+        ------------------------------------------------*/
+        $(function(){
+
+            setupFooter();
+
+            $(window).resize(function(){
+                setupFooter();
+            });
+
+            $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright
+        });
+
+
+</script>
+
 </body>
 </html>
