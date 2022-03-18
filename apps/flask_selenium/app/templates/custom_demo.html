@@ -81,12 +81,12 @@
                                             <div class="row tm-reverse-sm">
                                                 <div>
                                                     <form method="post" enctype="multipart/form-data" action="/upload">
-                                                        <label for="fname">名稱:</label><br>
+                                                        <label>名稱:</label><br>
                                                         <input type="text" id="test_title" name="name_title" value=""><br><br>
-                                                        <label for="lname">功能說明:</label><br>
+                                                        <label>功能說明:</label><br>
                                                         <input type="text" id="test_desc" name="name_desc" value=""><br><br>
-                                                        <label for="fname">預期內容:</label><br>
-                                                        <label for="fname">請輸入成功完成測試後頁面上會出現的關鍵字，當欄位不為空將以關鍵字判斷測試狀態</label><br>
+                                                        <label>預期內容:</label><br>
+                                                        <label>請輸入成功完成測試後頁面上會出現的關鍵字，當欄位不為空將以關鍵字判斷測試狀態</label><br>
                                                         <input type="text" id="test_verify" name="name_verify" value=""><br><br>
                                                         <input type=file name=file>
                                                         <input type=submit value=Upload>
@@ -229,6 +229,9 @@
                     <td>
                         <form action="run/btn_run_{{i[0]}}" method="post">
                             <button type="submit" value="Submit">Run</button>
+                        </form>
+                        <form action="temp/{{i[0]}}" method="post">
+                            <button type="submit" value="Submit">View</button>
                         </form>
                     </td>
                 </tr>

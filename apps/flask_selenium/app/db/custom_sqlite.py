@@ -41,7 +41,6 @@ def create_table_testcase(db_file):
                     FILE           TEXT    NOT NULL,
                     VERIFY         TEXT    NOT NULL,
                     STATUS         TEXT    NOT NULL,
-                    RESULT         TEXT    NOT NULL,
                     USER_ID        INT     NOT NULL);''')
         print('table testcase created')
         temp_conn.commit()
@@ -72,7 +71,7 @@ def add_testcase(db_file, input_name, input_description, input_file, input_verif
                    f"\"{input_description}\"," \
                    f"\"{input_file}\"," \
                    f"\"{input_verify}\"," \
-                   f"\"NA\"," \
+                   f"\"N/A\"," \
                    f"\"{input_user_id}\")"
         temp_cmd.execute(sql_exec)
         print('add_testcase ' + str(input_name))
@@ -150,6 +149,7 @@ def read_verify_by_id(db_file, input_id):
 
 
 def read_data(db_file, input_table):
+    temp_data = ''
     if os.path.isfile(db_file):
         sql = "select * from " + str(input_table)
         temp_conn = sqlite3.connect(db_file)
@@ -159,16 +159,15 @@ def read_data(db_file, input_table):
         print(temp_data)
     else:
         print('database ' + str(db_file) + ' not found')
-
     return temp_data
 
 
 if __name__ == "__main__":
-    # init('test.db')
+    init('test.db')
     # add_user('test.db', 'u1', 'passwd')
     # add_testcase('test.db', 't1', 'test', 'test2.py', '1')
     # read_fields('test.db', 'TESTCASE')
     # read_testcase_id('test.db', 't1')
-    update_status_by_id('test.db', '1', 'test2')
-    read_data('test.db', 'TESTCASE')
+    # update_status_by_id('test.db', '1', 'test2')
+    # read_data('test.db', 'TESTCASE')
     sys.exit(0)
