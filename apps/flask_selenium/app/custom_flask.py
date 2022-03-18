@@ -147,6 +147,7 @@ def create_new_testcase(input_id, file_name):
                  f"            import app.upload.{file_name}\n",
                  f"            test = app.upload.{file_name}.{class_name}()\n",
                  f"            test.driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())\n",
+                 f"            time.sleep(1)\n",
                  f"            test.{file_name}()\n",
                  f"            temp_result = test.driver.page_source\n",
                  f"            test.driver.save_screenshot(input_id + '.png')\n",
@@ -194,8 +195,9 @@ def run_testcase(button_temp):
     app.db.custom_sqlite.update_status_by_id('app/db/test.db', count_list[-1], str(status))
     if os.path.isfile(count_list[-1] + '.png'):
         os.rename(count_list[-1] + '.png', './temp/' + count_list[-1] + '.png')
-    print(result)
     print("run:" + button)
+    print("verify:" + verify)
+    print('result:' + result)
     print('status:' + str(status))
     return redirect("/demo")
 
@@ -217,33 +219,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allow_extension
 
 
-def init():
-    if not os.path.isfile('app/db/test.db'):
-        app.db.custom_sqlite.init('app/db/test.db')
-        with open('app/models/custom_auto_test.py') as old_file:
-            with open('app/models/custom_auto_test.py', 'w') as new_file:
-                lines = old_file.readlines()
-                remove_status = False
-                for line in lines:
-                    if '# auto testcase start' in line:
-                        remove_status = True
-                        new_file.write(line)
-                        continue
-                    elif '# auto testcase end' in line:
-                        remove_status = False
-                        new_file.write(line)
-                    else:
-                        if not remove_status:
-                            new_file.write(line)
-        os.remove('app/models/custom_auto_test.py')
-        os.rename('app/models/custom_auto_test.py', 'app/model/custom_auto_test.py')
-        temp_folder = os.listdir('temp/')
-        for item in temp_folder:
-            if item.endswith(".png"):
-                os.remove(os.path.join('temp/', item))
-
-
 def create_app():
-    init()
     flask_app.debug = True
     flask_app.run(host="0.0.0.0", port=8123, debug=False)
