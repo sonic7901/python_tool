@@ -148,6 +148,6 @@ def clear_csv():
 
 
 if __name__ == '__main__':
-    clear_csv()
+    # clear_csv()
     # write_en_report("nessus_host_scan_samepl.csv", "sample_en.json")
-    # write_cn_report("nessus_host_scan_samepl.csv", "sample_cn.json")
+    write_cn_report("nessus_host_scan_samepl.csv", "sample_cn.json")

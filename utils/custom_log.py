@@ -13,7 +13,7 @@ custom_name = 'custom'
 # default log setting
 date_time = datetime.datetime.now().strftime("%Y_%m_%d")
 log_name = 'logging_' + date_time + '.log'
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
 # import lib logging level
 loggers = [logging.getLogger(name) for name in logging.root.manager.loggerDict]

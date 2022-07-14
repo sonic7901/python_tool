@@ -6,3 +6,10 @@ pymsteams
 pycryptodome
 webdriver-manager
 python-whois
+
+# custom_doc
+docxtpl
+python-docx
+
+# custom_chart
+matplotlib
