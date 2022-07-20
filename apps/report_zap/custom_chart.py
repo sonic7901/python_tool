@@ -69,13 +69,16 @@ def plt_score(input_score, input_filename):
         plt.axis('equal')
         plt.savefig(input_filename, dpi=400, bbox_inches='tight', pad_inches=0.01)
         plt.close()
-        custom_image.write_score(input_score)
+        if input_score == 100:
+            custom_image.write_score_100()
+        else:
+            custom_image.write_score(input_score)
     except Exception as ex:
         print(ex)
 
 
 if __name__ == '__main__':
-    zap_score(3, 2, 9)
-    zap_pie(3, 2, 9)
+    zap_score(0, 0, 0)
+    # zap_pie(3, 2, 9)
 
 

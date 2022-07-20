@@ -14,6 +14,17 @@ def write_score(input_score):
     cv2.imwrite("temp_score.jpg", bk_img)
 
 
+def write_score_100():
+    bk_img = cv2.imread("temp_score.jpg")
+    font_path = "MSJH.ttf"
+    font = ImageFont.truetype(font_path, 530)
+    img_pil = Image.fromarray(bk_img)
+    draw = ImageDraw.Draw(img_pil)
+    draw.text((535, 400), "100", font=font, fill=(255, 255, 255))
+    bk_img = np.array(img_pil)
+    cv2.imwrite("temp_score.jpg", bk_img)
+
+
 def write_result(input_list):
     bk_img = cv2.imread("grid.png")
     font_path = "MSJH.ttf"
@@ -340,6 +351,7 @@ if __name__ == '__main__':
                  {'name': 'test name', 'id': 'VAS51', 'level': '高', 'cost': 'Low'},
                  {'name': 'test name', 'id': 'VAS61', 'level': '高', 'cost': 'Low'}]
     write_result(main_list)
+    write_score_100()
     # write_text(95)
     # zap_score(3, 2, 9)
     # zap_pie(3, 2, 9)

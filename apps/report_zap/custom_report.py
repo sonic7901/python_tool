@@ -2,6 +2,7 @@ import os
 import json
 import pathlib
 import re
+import shutil
 import pandas
 from datetime import datetime, timedelta
 from copy import deepcopy
@@ -12,12 +13,18 @@ import utils.custom_chrome
 import custom_image
 import custom_chart
 
+
 # manual input
 default_company = ''
 default_date_before = ''
 default_date_start = ''
 default_date_end = ''
 default_screenshot_url = ''
+
+
+def set_company(input_company):
+    global default_company
+    default_company = input_company
 
 
 def read_json(report_name):
@@ -197,13 +204,16 @@ def transfer_report(report_data_list):
     else:
         input_url = default_screenshot_url
 
-
     issue_count = 1
     issue_list = []
     count_high = 0
     count_medium = 0
     count_low = 0
+    website_count = 0
+
     for report_data in report_data_list:
+        if str(report_data['site'][0]['@name']) != '':
+            website_count += 1
         try:
             # domain = read_domain(data_url)
             # read issue list
@@ -333,7 +343,6 @@ def transfer_report(report_data_list):
             count_medium += 1
         if temp_issue['level'] == '低':
             count_low += 1
-    pass
     # test
 
     custom_image.write_result(issue_list)
@@ -341,7 +350,27 @@ def transfer_report(report_data_list):
     path = "template_vas_zh.docx"
     doc = DocxTemplate(path)
     custom_chart.zap_score(count_low, count_medium, count_high)
-    custom_chart.zap_pie(count_low, count_medium, count_high)
+    if count_low == 0 and count_medium == 0 and count_high == 0:
+        shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
+    else:
+        custom_chart.zap_pie(count_low, count_medium, count_high)
+
+    temp_test = """
+    依照掃描結果可將問題分為2大類，再針對各類別進行更詳細的說明與建議。
+
+    1. 不安全的設計：
+      ◼ 建立與使用安全開發生命週期並且協同程式安全的專業人士來設計安全控制措施。
+      ◼ 建立與使用安全設計模式的函式庫或是已完成可使用的元件。
+      ◼ 使用威脅建模在關鍵的認證、存取控制、商業邏輯與關鍵缺陷上。
+      ◼ 撰寫單元測試與整合測試來驗證所有的關鍵流程對威脅建模都有抵抗。
+    2. 未進行最佳化安全設定：
+      ◼ 快速且簡單的佈署，而且能在分隔且封鎖的環境下執行。
+      ◼ 開發，品質管理，以及實際營運的環境，都須有一致相同的設定，並且使用不同的認證資訊。
+      ◼ 不會搭配任何不需要的功能，套件，檔案，以及範本。
+    """
+
+    if website_count == 0:
+        temp_test = ' 本次掃描中未發現網站服務，請確認測試目標狀態其網站服務是否有正確運行。'
 
     replacements = {
         'replace_company': input_company,
@@ -349,6 +378,9 @@ def transfer_report(report_data_list):
         'replace_date_2': input_date_2,
         'replace_date_3': input_date_3,
         # 'replace_target': input_target,
+        'replace_target_count': len(report_data_list),
+        'replace_website_count': str(website_count),
+        'replace_summary': temp_test,
         'replace_url': input_url,
         'image_score': InlineImage(doc, 'temp_score.jpg', width=Mm(90)),
         'image_dis': InlineImage(doc, 'temp_distribution.jpg', width=Mm(90)),
@@ -379,17 +411,19 @@ def transfer_report(report_data_list):
     for temp_issue in issue_list:
         add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn)
 
-    target_count = 1
+    target_count = 0
     for report_data in report_data_list:
-        add_target(input_fn,
-                   report_data['target'],
-                   str(report_data['site'][0]['@name']))
-
+        target_count += 1
+        if str(report_data['site'][0]['@name']) == '':
+            add_target(input_fn, report_data['target'], str(report_data['input']))
+            continue
+        else:
+            add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
         if default_screenshot_url == '':
             read_screenshot(str(report_data['site'][0]['@name']), report_data['target'] + '.png')
         else:
             read_screenshot(default_screenshot_url, report_data['target'] + '.png')
         add_screenshot(input_fn, report_data['target'] + '.png',
                        str(target_count) + '.' + report_data['target'] + '網站進入點:')
-        target_count += 1
+
         os.remove(report_data['target'] + '.png')
