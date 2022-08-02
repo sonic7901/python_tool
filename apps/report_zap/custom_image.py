@@ -26,7 +26,7 @@ def write_score_100():
 
 
 def write_result(input_list):
-    bk_img = cv2.imread("grid.png")
+    bk_img = cv2.imread("grid_zh.png")
     font_path = "MSJH.ttf"
     font = ImageFont.truetype(font_path, 20)
     img_pil = Image.fromarray(bk_img)
@@ -176,7 +176,7 @@ def write_result(input_list):
 
 
 def write_result_en(input_list):
-    bk_img = cv2.imread("grid.png")
+    bk_img = cv2.imread("grid_en.png")
     font_path = "MSJH.ttf"
     font = ImageFont.truetype(font_path, 20)
     img_pil = Image.fromarray(bk_img)

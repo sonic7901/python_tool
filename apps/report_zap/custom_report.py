@@ -71,7 +71,7 @@ def remove_punctuation(text):
         return ''
 
 
-def add_summary(input_docx, input_id, input_name, input_risk, input_filename):
+def add_summary(input_docx, input_id, input_name, input_risk, input_filename, input_en):
     input_document = Document(input_docx)
     tables = input_document.tables
     table = tables[1]
@@ -80,8 +80,11 @@ def add_summary(input_docx, input_id, input_name, input_risk, input_filename):
     row_cells[0].paragraphs[0].add_run(input_id)
     row_cells[1].paragraphs[0].paragraph_format.first_line_indent = Cm(0)
     row_cells[1].paragraphs[0].add_run(input_name)
-    row_cells[2].paragraphs[0].paragraph_format.first_line_indent = Cm(0.1)
-    row_cells[2].text = input_risk
+    if input_en:
+        row_cells[2].paragraphs[0].paragraph_format.first_line_indent = Cm(0.45)
+        row_cells[2].paragraphs[0].add_run(input_risk)
+    else:
+        row_cells[2].text = input_risk
     input_document.save(input_filename)
     return
 
@@ -377,7 +380,6 @@ def transfer_report(report_data_list):
         'replace_date_1': input_date_1,
         'replace_date_2': input_date_2,
         'replace_date_3': input_date_3,
-        # 'replace_target': input_target,
         'replace_target_count': len(report_data_list),
         'replace_website_count': str(website_count),
         'replace_summary': temp_test,
@@ -385,7 +387,6 @@ def transfer_report(report_data_list):
         'image_score': InlineImage(doc, 'temp_score.jpg', width=Mm(90)),
         'image_dis': InlineImage(doc, 'temp_distribution.jpg', width=Mm(90)),
         'image_9': InlineImage(doc, 'temp_grid.png', width=Mm(180)),
-        # 'img_screenshot': InlineImage(doc, 'test.png', width=Mm(180))
     }
     doc.render(replacements)  # 渲染替换
     doc.save(input_fn)  # 保存
@@ -409,7 +410,7 @@ def transfer_report(report_data_list):
                   input_fn,
                   False)
     for temp_issue in issue_list:
-        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn)
+        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn, False)
 
     target_count = 0
     for report_data in report_data_list:
@@ -427,3 +428,252 @@ def transfer_report(report_data_list):
                        str(target_count) + '.' + report_data['target'] + '網站進入點:')
 
         os.remove(report_data['target'] + '.png')
+
+
+def transfer_report_en(report_data_list):
+    # read input
+    if default_company == '':
+        input_company = 'Example Company'
+    else:
+        input_company = default_company
+    input_fn = 'VAS_Report_' + input_company + '.docx'
+
+    if default_date_start == '':
+        input_date_1 = read_date_yesterday()
+        input_date_2 = read_date_today()
+    else:
+        input_date_1 = default_date_start
+        input_date_2 = default_date_before
+
+    if default_date_end == '':
+        input_date_3 = read_date_today()
+    else:
+        input_date_3 = default_date_end
+
+    if default_screenshot_url == '':
+        input_url = 'https://www.example.com'
+    else:
+        input_url = default_screenshot_url
+
+    issue_count = 1
+    issue_list = []
+    count_high = 0
+    count_medium = 0
+    count_low = 0
+    website_count = 0
+
+    for report_data in report_data_list:
+        try:
+            if str(report_data['site'][0]['@name']) != '':
+                website_count += 1
+            # read issue list
+            for site in report_data['site']:
+                # temp_alerts = reversed(site['alerts'])
+                for alert in site['alerts']:
+                    # read issue level
+                    temp_level = alert['riskdesc'].split('(')
+                    level = temp_level[0]
+                    if "Informational" in level:
+                        continue
+                    # read issue advice
+                    advice = alert['solution']
+                    advice = advice.replace("<p>", "")
+                    advice = advice.replace("</p>", "")
+                    advice = remove_punctuation(advice)
+                    # read issue detail
+                    detail = alert['desc']
+                    detail = detail.replace("<p>", "")
+                    detail = detail.replace("</p>", "")
+                    detail = remove_punctuation(detail)
+                    # read type (cwe)
+                    try:
+                        cwe_id = alert['cweid']
+                    except Exception as ex:
+                        cwe_id = ''
+                        utils.custom_log.debug(str(ex))
+
+                    temp_instances = alert['instances']
+                    temp_url_list = []
+                    temp_evidence_list = []
+                    for temp_single in temp_instances:
+                        temp_url_list.append(temp_single['uri'])
+                        if not temp_single['evidence'] == '':
+                            temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                    temp_url_list = list(set(temp_url_list))
+
+                    # test backup
+                    report_issue_name = alert['name']
+                    report_issue_detail = detail
+                    report_issue_advice = advice
+                    report_issue_type = 'CWE-' + str(cwe_id)
+                    report_status = True
+                    report_issue_cost = 'Medium'
+                    # test en to zh
+                    try:
+                        df = pandas.read_excel("zap_report.xlsx")
+                        nmp = df.values
+                        for n in nmp:
+                            if str(n[0]) == alert['pluginid']:
+                                if not n[3]:
+                                    report_status = False
+                                    break
+                                if str(n[1]) != "nan":
+                                    if str(n[1]) == 'A1':
+                                        report_issue_type = "OWASP A01:2021-Broken Access Control"
+                                    if str(n[1]) == 'A2':
+                                        report_issue_type = "OWASP A02:2021-Cryptographic Failures "
+                                    if str(n[1]) == 'A3':
+                                        report_issue_type = "OWASP A03:2021-Injection"
+                                    if str(n[1]) == 'A4':
+                                        report_issue_type = "OWASP A04:2021-Insecure Design"
+                                    if str(n[1]) == 'A5':
+                                        report_issue_type = "OWASP A05:2021-Security Misconfiguration"
+                                    if str(n[1]) == 'A6':
+                                        report_issue_type = "OWASP A06:2021-Vulnerable and Outdated Components"
+                                    if str(n[1]) == 'A7':
+                                        report_issue_type = "OWASP A07:2021-Identification and Authentication Failures"
+                                    if str(n[1]) == 'A8':
+                                        report_issue_type = "OWASP A08:2021-Software and Data Integrity Failures"
+                                    if str(n[1]) == 'A9':
+                                        report_issue_type = "OWASP A09:2021-Security Logging and Monitoring Failures"
+                                    if str(n[1]) == 'A10':
+                                        report_issue_type = "OWASP A10:2021-Server-Side Request Forgery"
+
+                                if str(n[5]) != "nan":
+                                    report_issue_cost = str(n[4])
+                                if str(n[7]) != "nan":
+                                    report_issue_name = str(n[6])
+                                if str(n[9]) != "nan":
+                                    report_issue_detail = str(n[8])
+                                if str(n[11]) != "nan":
+                                    report_issue_advice = str(n[10])
+
+                    except Exception as ex:
+                        print(ex)
+                    if report_status:
+                        check_status = True
+                        for check_issue in issue_list:
+                            if check_issue['name'] == report_issue_name:
+                                check_issue['url'] = check_issue['url'] + temp_url_list
+                                check_issue['info'] = check_issue['info'] + temp_evidence_list
+                                if report_data['target'] not in check_issue['target']:
+                                    check_issue['target'] = check_issue['target'] + '\n' + report_data['target']
+                                check_status = False
+                                break
+                            else:
+                                pass
+                        if check_status:
+                            issue_dict = {'id': 'VAS' + str(issue_count).zfill(2),
+                                          'name': report_issue_name,
+                                          'level': level,
+                                          'cost': report_issue_cost,
+                                          'type': report_issue_type,
+                                          'target': report_data['target'],
+                                          'url': temp_url_list,
+                                          'detail': report_issue_detail,
+                                          'advice': report_issue_advice,
+                                          'info': temp_evidence_list}
+                            issue_list.append(issue_dict)
+                            print("id:" + issue_dict['id'])
+                            issue_count += 1
+
+            for temp_issue in issue_list:
+                if temp_issue['level'] == 'High ':
+                    count_high += 1
+                if temp_issue['level'] == 'Medium ':
+                    count_medium += 1
+                if temp_issue['level'] == 'Low ':
+                    count_low += 1
+
+            # screenshot
+        except Exception as ex:
+            print(ex)
+
+    custom_image.write_result_en(issue_list)
+
+    # update image
+    path = "template_vas_en.docx"
+    doc = DocxTemplate(path)
+    custom_chart.zap_score(count_low, count_medium, count_high)
+    if count_low == 0 and count_medium == 0 and count_high == 0:
+        shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
+    else:
+        custom_chart.zap_pie(count_low, count_medium, count_high)
+
+    temp_test = """
+    According to the scan results, the problems can be divided into two categories, and then more detailed 
+    explanations and suggestions are made for each category
+
+    1. Insecure Design：
+    ◼ Establish and use the security development lifecycle and collaborate with application security
+    professionals to evaluate controls related to design security and privacy.	
+    ◼ Establish and use a library of safe design patterns or complete a component that can be used.
+    ◼ Use threat modeling on critical authentication, access control, business logic, and critical flaws.
+    ◼ Write unit tests and integration tests to verify that all critical processes are resistant to threat modeling.
+
+    2. Security Misconfiguration：
+    ◼ A repeatable security hardening process that can be deployed quickly and easily and can be executed in
+    a compartmentalized and blocked environment. Development, quality management, and actual operation 
+    environments must all have the same settings and use different certification information. This step needs to
+    be automated as much as possible, reducing the investment required to set up a secure environment.
+    ◼ A minimal platform that doesn't come with any unwanted features, suites, archives, and templates. 
+    Remove or do not install any features or frameworks that you do not need to use.
+"""
+
+    if website_count == 0:
+        temp_test = """
+        No website service was found in this scan. Please make sure the website is available."""
+
+    replacements = {
+        'replace_company': input_company,
+        'replace_date_1': input_date_1,
+        'replace_date_2': input_date_2,
+        'replace_date_3': input_date_3,
+        'replace_target_count': len(report_data_list),
+        'replace_website_count': str(website_count),
+        'replace_summary': temp_test,
+        'replace_url': input_url,
+        'image_score': InlineImage(doc, 'temp_score.jpg', width=Mm(90)),
+        'image_dis': InlineImage(doc, 'temp_distribution.jpg', width=Mm(90)),
+        'image_9': InlineImage(doc, 'temp_grid.png', width=Mm(180)),
+    }
+
+    doc.render(replacements)  # 渲染替换
+    doc.save(input_fn)  # 保存
+
+    # clear image
+    os.remove('temp_score.jpg')
+    os.remove('temp_distribution.jpg')
+    os.remove('temp_grid.png')
+
+    for temp_issue in reversed(issue_list):
+        add_issue(input_fn,
+                  temp_issue['id'],
+                  temp_issue['name'],
+                  temp_issue['level'],
+                  temp_issue['type'],
+                  temp_issue['target'],
+                  temp_issue['url'],
+                  temp_issue['detail'],
+                  temp_issue['advice'],
+                  temp_issue['info'],
+                  input_fn,
+                  True)
+    for temp_issue in issue_list:
+        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn, True)
+
+    target_count = 1
+    for report_data in report_data_list:
+        if str(report_data['site'][0]['@name']) == '':
+            add_target(input_fn, report_data['target'], str(report_data['input']))
+            continue
+        else:
+            add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
+
+        if default_screenshot_url == '':
+            read_screenshot(str(report_data['site'][0]['@name']), report_data['target'] + '.png')
+        else:
+            read_screenshot(default_screenshot_url, report_data['target'] + '.png')
+        add_screenshot(input_fn, report_data['target'] + '.png',
+                       str(target_count) + '.' + report_data['target'] + ' access url:')
+        target_count += 1

@@ -3,3 +3,4 @@ docx==0.2.4
 docxtpl==0.16.3
 opencv-python==4.6.0.66
 matplotlib==3.5.2
+openpyxl==3.2.0b1
