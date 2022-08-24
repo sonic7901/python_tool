@@ -1,5 +1,6 @@
 import sqlite3
 import os
+
 import sys
 
 
@@ -8,9 +9,12 @@ def init(db_file):
         if os.path.isfile(db_file):
             print('database ' + str(db_file) + ' already exist')
             os.remove(db_file)
-        create_table_user(db_file)
-        create_table_testcase(db_file)
-        add_user(db_file, 'admin', 'passwd')
+        # create_table_user(db_file)
+        create_table_issue(db_file)
+        create_table_mission(db_file)
+        # add_user(db_file, 'admin', 'passwd')
+        # testcase
+
     except Exception as ex:
         print('Exception:' + str(ex))
 
@@ -30,25 +34,83 @@ def create_table_user(db_file):
         print('Exception:' + str(ex))
 
 
-def create_table_testcase(db_file):
+def create_table_mission(db_file):
     try:
         temp_conn = sqlite3.connect(db_file)
         temp_cmd = temp_conn.cursor()
-        temp_cmd.execute('''CREATE TABLE TESTCASE(
+        temp_cmd.execute('''CREATE TABLE MISSION(
                     ID INTEGER PRIMARY KEY,
-                    NAME           TEXT    NOT NULL,
-                    DESCRIPTION    TEXT    ,
-                    FILE           TEXT    NOT NULL,
-                    VERIFY         TEXT    NOT NULL,
-                    STATUS         TEXT    NOT NULL,
-                    USER_ID        INT     NOT NULL);''')
-        print('table testcase created')
+                    URL           TEXT    NOT NULL,
+                    COMPANY       TEXT    NOT NULL,
+                    TARGET        TEXT   ,
+                    STATUS        TEXT    NOT NULL,
+                    LINK          TEXT);''')
+        print('table mission created')
         temp_conn.commit()
         temp_conn.close()
     except Exception as ex:
         print('Exception:' + str(ex))
 
 
+# id, origin, bypass, score, weight, cost, name_en, name_zh, desc_en, desc_zh, advice_en, advice_zh
+def create_table_issue(db_file):
+    try:
+        temp_conn = sqlite3.connect(db_file)
+        temp_cmd = temp_conn.cursor()
+        temp_cmd.execute('''CREATE TABLE ISSUE(
+                    ID INTEGER PRIMARY KEY,
+                    ORIGIN         TEXT    NOT NULL,
+                    BYPASS         TEXT    NOT NULL,
+                    SCORE          INT     NOT NULL,
+                    WEIGHT         INT     NOT NULL,
+                    COST           INT     NOT NULL,
+                    NAME_EN        TEXT    NOT NULL,
+                    NAME_ZH        TEXT    NOT NULL,
+                    DESCRIPTION_EN TEXT    NOT NULL,
+                    DESCRIPTION_ZH TEXT    NOT NULL,
+                    ADVICE_EN      TEXT    NOT NULL,
+                    ADVICE_ZH      TEXT    NOT NULL);''')
+        print('table issue created')
+        temp_conn.commit()
+        temp_conn.close()
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+    try:
+        import app.utils.custom_csv
+        nmp = app.utils.custom_csv.read_file_to_dict("zap_report.csv")
+        # df = pandas.read_excel("zap_report.xlsx")
+        # nmp = df.values
+        for n in nmp:
+            print(n)
+            temp_bypass = ''
+            if not n['enabled']:
+                temp_bypass = 'all'
+
+            temp_score = 0
+            if n['risk'] == 'High':
+                temp_score = 75
+            elif n['risk'] == 'Medium':
+                temp_score = 50
+            elif n['risk'] == 'Low':
+                temp_score = 25
+
+            temp_cost = 0
+            if n['cost'] == 'High':
+                temp_cost = 75
+            elif n['cost'] == 'Medium':
+                temp_cost = 50
+            elif n['cost'] == 'Low':
+                temp_cost = 25
+
+            add_issue(db_file, n['origin'], temp_bypass, temp_score, '100', temp_cost,
+                      n['name_en'], n['name_en'], n['desc_en'], n['desc_en'], n['advice_en'], n['advice_en'])
+
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+
+# id, issue_id, tag
 def add_user(db_file, input_name, input_pass):
     try:
         temp_conn = sqlite3.connect(db_file)
@@ -62,18 +124,56 @@ def add_user(db_file, input_name, input_pass):
         print('Exception:' + str(ex))
 
 
-def add_testcase(db_file, input_name, input_description, input_file, input_verify):
+def add_issue(db_file,
+              origin,
+              bypass,
+              score,
+              weight,
+              cost,
+              name_en,
+              name_zh,
+              desc_en,
+              desc_zh,
+              advice_en,
+              advice_zh):
     try:
         temp_conn = sqlite3.connect(db_file)
         temp_cmd = temp_conn.cursor()
-        sql_exec = f"INSERT INTO TESTCASE (NAME,DESCRIPTION,FILE,VERIFY,STATUS,USER_ID) VALUES (" \
-                   f"\"{input_name}\"," \
-                   f"\"{input_description}\"," \
-                   f"\"{input_file}\"," \
-                   f"\"{input_verify}\"," \
-                   f"\"N/A\")"
+        sql_exec = f"INSERT INTO ISSUE (ORIGIN,BYPASS,SCORE,WEIGHT,COST," \
+                   f"NAME_EN,NAME_ZH,DESCRIPTION_EN,DESCRIPTION_ZH,ADVICE_EN,ADVICE_ZH) VALUES (" \
+                   f"\"{origin}\"," \
+                   f"\"{bypass}\","\
+                   f"\"{score}\"," \
+                   f"\"{weight}\"," \
+                   f"\"{cost}\"," \
+                   f"\"{name_en}\"," \
+                   f"\"{name_zh}\"," \
+                   f"\"{desc_en}\"," \
+                   f"\"{desc_zh}\"," \
+                   f"\"{advice_en}\"," \
+                   f"\"{advice_zh}\")"
         temp_cmd.execute(sql_exec)
-        print('add_testcase ' + str(input_name))
+        print('add_testcase ' + str(origin))
+        temp_conn.commit()
+        temp_conn.close()
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+
+def add_mission(db_file, input_url,  input_company, input_target):
+    try:
+        temp_conn = sqlite3.connect(db_file)
+        temp_cmd = temp_conn.cursor()
+        temp_status = "waiting"
+        temp_link = ""
+        sql_exec = f"INSERT INTO MISSION (URL,COMPANY,TARGET,STATUS,LINK) VALUES (" \
+                   f"\"{input_url}\"," \
+                   f"\"{input_company}\","\
+                   f"\"{input_target}\"," \
+                   f"\"{temp_status}\"," \
+                   f"\"{temp_link}\")"
+        temp_cmd.execute(sql_exec)
+        print('add_mission: ' + str(input_company))
         temp_conn.commit()
         temp_conn.close()
     except Exception as ex:
@@ -161,12 +261,27 @@ def read_data(db_file, input_table):
     return temp_data
 
 
+def read_data_mission(db_file):
+    temp_data = ''
+    if os.path.isfile(db_file):
+        sql = "select COMPANY,URL,STATUS,LINK from MISSION"
+        temp_conn = sqlite3.connect(db_file)
+        temp_cmd = temp_conn.cursor()
+        temp_cmd.execute(sql)
+        temp_data = temp_cmd.fetchall()
+        print(temp_data)
+    else:
+        print('database ' + str(db_file) + ' not found')
+    return temp_data
+
+
 if __name__ == "__main__":
-    init('test.db')
+    # init('test.db')
     # add_user('test.db', 'u1', 'passwd')
     # add_testcase('test.db', 't1', 'test', 'test2.py', '1')
     # read_fields('test.db', 'TESTCASE')
     # read_testcase_id('test.db', 't1')
     # update_status_by_id('test.db', '1', 'test2')
-    # read_data('test.db', 'TESTCASE')
-    sys.exit(0)
+    # read_data('test.db', 'ISSUE')
+    # add_mission('test.db', "http://www.example.com", "Demo 公司 2", "入口網站")
+    read_data_mission('test.db')

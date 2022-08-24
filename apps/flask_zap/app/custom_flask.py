@@ -25,8 +25,8 @@ allow_extension = {'py', 'jpg'}
 
 @flask_app.route("/index", methods=["GET"])
 def index():
-    temp_fields = ['NAME', 'DESCRIPTION', 'FILE', 'KEYWORD', 'STATUS', 'ACTION']
-    temp_column = sql_db.read_data('app/db/test.db', 'TESTCASE')
+    temp_fields = ['COMPANY', 'URL', 'STATUS', 'LINK']
+    temp_column = sql_db.read_data_mission('app/db/test.db')
     return render_template("custom_index.html",
                            labels=temp_fields,
                            column_testcase=temp_column)
@@ -101,9 +101,9 @@ def create_new_testcase(input_id, file_name):
 def uploaded_file():
     import app.utils.custom_file
     file = request.files['file']
-    name = request.form['name_title']
-    desc = request.form['name_desc']
-    verify = request.form['name_verify']
+    temp_name = request.form['mission_company']
+    temp_url = request.form['mission_url']
+    temp_target = request.form['mission_target']
     if file:
         filename = secure_filename(file.filename)
         print(flask_app.config['UPLOAD_FOLDER'])
@@ -111,17 +111,19 @@ def uploaded_file():
             file.save(os.path.join(flask_app.config['UPLOAD_FOLDER'], filename))
             print("upload success")
             filename_only = app.utils.custom_file.read_name(filename)
-            sql_db.add_testcase('app/db/test.db', name, desc, filename_only, verify)
-            time.sleep(3)
-            sql_id = app.db.custom_sqlite.read_testcase_id('app/db/test.db', name)
-            print('sql_id:' + str(sql_id))
-            temp_list = create_new_testcase(sql_id, filename_only)
-            app.utils.custom_file.add_lines('app/models/custom_auto_test.py', temp_list, '# auto testcase end')
+            # sql_db.add_testcase('app/db/test.db', name, desc, filename_only, verify)
+            # time.sleep(3)
+            # sql_id = app.db.custom_sqlite.read_testcase_id('app/db/test.db', name)
+            # print('sql_id:' + str(sql_id))
+            # temp_list = create_new_testcase(sql_id, filename_only)
+            # app.utils.custom_file.add_lines('app/models/custom_auto_test.py', temp_list, '# auto testcase end')
         else:
+            sql_db.add_mission('app/db/test.db', temp_url, temp_name, temp_target)
             print("folder not exist, please check config")
     else:
-        print("upload file is null")
-    return redirect("/demo")
+        sql_db.add_mission('app/db/test.db', temp_url, temp_name, temp_target)
+        print("folder not exist, please check config")
+    return redirect("/index")
 
 
 @flask_app.route("/run/<button_temp>", methods=["POST"])

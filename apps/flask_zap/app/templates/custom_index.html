@@ -66,26 +66,26 @@
                                 <div class="product">
                                     <div class="tm-nav-link">
                                         <i class="fas fa-users fa-3x tm-nav-icon"></i>
-                                        <span class="tm-nav-text">Add New</span>
+                                        <span class="tm-nav-text">New Scan</span>
                                         <div class="product__bg"></div>
                                     </div>
                                     <div class="product__description">
                                         <div class="p-sm-4 p-2">
                                             <div class="row mb-3">
                                                 <div class="col-12">
-                                                    <h2 class="tm-page-title">Add New</h2>
+                                                    <h2 class="tm-page-title">New Scan</h2>
                                                 </div>
                                             </div>
                                             <div class="row tm-reverse-sm">
                                                 <div>
                                                     <form method="post" enctype="multipart/form-data" action="/upload">
-                                                        <label>Name:</label><br>
-                                                        <input type="text" id="test_title" name="name_title" value=""><br><br>
-                                                        <label>Description:</label><br>
-                                                        <input type="text" id="test_desc" name="name_desc" value=""><br><br>
-                                                        <label>Keyword:</label><br>
-                                                        <label>請輸入成功完成測試後頁面上會出現的關鍵字，當欄位不為空將以關鍵字判斷測試狀態</label><br>
-                                                        <input type="text" id="test_verify" name="name_verify" value=""><br><br>
+                                                        <label>公司名稱:</label><br>
+                                                        <input type="text" id="test_title" name="mission_company" value=""><br><br>
+                                                        <label>URL:</label><br>
+                                                        <input type="text" id="test_desc" name="mission_url" value=""><br><br>
+                                                        <label>網站名稱(選填):</label><br>
+                                                        <input type="text" id="test_verify" name="mission_target" value=""><br><br>
+                                                        <label>結果上傳(選填):</label><br>
                                                         <input type=file name=file>
                                                         <input type=submit value=Upload>
                                                     </form>
@@ -219,11 +219,11 @@
                 <tbody>
                 {% for i in column_testcase %}
                 <tr>
+                    <td>{{ i[0] }}</td>
                     <td>{{ i[1] }}</td>
                     <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
-                    <td>{{ i[4] }}</td>
-                    <td>{{ i[5] }}</td>
+                    <!--
                     <td>
                         <form action="run/btn_run_{{i[0]}}" method="post">
                             <button type="submit" value="Submit">Run</button>
@@ -232,6 +232,7 @@
                             <button type="submit" value="Submit">View</button>
                         </form>
                     </td>
+                    -->
                 </tr>
                 {% endfor %}
                 </tbody>
