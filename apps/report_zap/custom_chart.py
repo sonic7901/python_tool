@@ -12,6 +12,15 @@ def zap_pie(input_low, input_medium, input_high):
         print(ex)
 
 
+def zap_pie_en(input_low, input_medium, input_high):
+    try:
+        labels = 'Low : ' + str(input_low), 'Medium : ' + str(input_medium), 'High : ' + str(input_high)
+        sizes = [input_low, input_medium, input_high]
+        plt_pie("temp_distribution.jpg", labels, sizes)
+    except Exception as ex:
+        print(ex)
+
+
 def zap_score(input_low, input_medium, input_high):
     try:
         temp_score = 100 - int(input_low) - int(input_medium)*2 - int(input_high)*3

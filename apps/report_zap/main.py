@@ -11,7 +11,7 @@ if __name__ == '__main__':
     main_json_2 = {'target': 'Device_2', 'site': [{'@name': ''}], 'input': '192.168.1.1'}
     # generator report
     # custom_report.transfer_report([main_json_1, main_json_2])
-    custom_report.transfer_report_en([main_json_2])
+    custom_report.transfer_report_en([main_json_1, main_json_2])
     # example end
     """
     # nar_lab

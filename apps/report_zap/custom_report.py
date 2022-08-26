@@ -598,7 +598,7 @@ def transfer_report_en(report_data_list):
     if count_low == 0 and count_medium == 0 and count_high == 0:
         shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
     else:
-        custom_chart.zap_pie(count_low, count_medium, count_high)
+        custom_chart.zap_pie_en(count_low, count_medium, count_high)
 
     temp_test = """
     According to the scan results, the problems can be divided into two categories, and then more detailed 
