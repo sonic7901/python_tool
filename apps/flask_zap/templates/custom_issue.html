@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
+    <!-- Google web font "Open Sans" -->
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <!--<link rel="stylesheet" href="fontawesome/css/fontawesome-all.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='fontawesome/css/fontawesome-all.min.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick-theme.css')}}">
+    <!--<link rel="stylesheet" href="css/tooplate-style.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tooplate-style.css')}}">
+    <script>
+        document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+
+
+    </script>
+</head>
+<body>
+<div id="tm-bg"></div>
+
+<div>
+    <div class="row">
+        <div style="padding: 50px;"><h2 class="tm-page-title">Issue</h2></div>
+        <div style="padding: 55px;"><a href="{{url_for('index')}}"><button style="border-radius: 40px;">Back</button></a></div>
+    </div>
+
+</div>
+
+<div style="padding: 30px;">
+  <form action="/select" method="post">
+    <select name="issue_id">
+        {% for i in issue_list %}
+        <option value="{{ i[0] }}" {{ i[4] }}>{{ i[0] }} | {{ i[1] }} | {{ i[2] }} </option>
+        {% endfor %}
+    </select>
+    <button id="select_button" type="submit">Select</button>
+</form>
+</div>
+
+<div style="padding: 40px;">
+  <form action="index.html" method="post" class="contact-form">
+    <div class="row">
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Score:</p>
+            <input style="wight:40%"
+                   type="number"
+                   id="issue_score"
+                   name="issue_score"
+                   class="form-control"
+                   value = "{{input_score}}"
+                   required/>
+        </div>
+        <div style="width:10px;"></div>
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Weight:</p>
+            <input style="wight:40%"
+                   type="number"
+                   id="issue_weight"
+                   name="issue_weight"
+                   class="form-control"
+                   value = "{{input_weight}}"
+                   required/>
+        </div>
+    </div>
+    <div class="row">
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Name(ZH):</p>
+            <input style="wight:40%" type="text" id="name_zh" name="name_zh" value = "{{input_name_zh}}" maxlength="64"
+                   class="form-control" required/>
+        </div>
+        <div style="width:10px;"></div>
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Name(EN):</p>
+            <input style="wight:40%" type="text" id="name_en" name="name_en" value = "{{input_name_en}}" maxlength="64"
+                   class="form-control" required/>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Description(ZH):</p>
+            <textarea id="desc_zh" name="desc_zh"
+                class="form-control" rows="9"
+                placeholder="Message" required>{{input_desc_zh}}</textarea>
+        </div>
+        <div style="width:10px;"></div>
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Description(EN):</p>
+            <textarea id="desc_een" name="desc_een"
+                class="form-control" rows="9"
+                placeholder="Message" required>{{input_desc_en}}</textarea>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Solution(ZH):</p>
+            <textarea id="solu_zh" name="solu_zh"
+                class="form-control" rows="9"
+                placeholder="Message" required>{{input_solu_zh}}</textarea>
+        </div>
+        <div style="width:10px;"></div>
+        <div style="max-width: 1020px;width: 49%;">
+          <p>Solution(EN):</p>
+            <textarea id="solu_en" name="solu_en"
+                class="form-control" rows="9"
+                placeholder="Message" required>{{input_solu_en}}</textarea>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary tm-btn-submit">
+        Update
+    </button>
+</form>
+</div>
+
+</body>
+</html>

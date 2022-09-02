@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Automated testing</title>
+    <!--
+
+    Template 2097 Pop
+
+    https://www.tooplate.com/view/2097-pop
+
+    -->
+    <!-- load CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
+    <!-- Google web font "Open Sans" -->
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <!--<link rel="stylesheet" href="fontawesome/css/fontawesome-all.min.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='fontawesome/css/fontawesome-all.min.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>-->
+    <link rel="stylesheet" href="{{url_for('static', filename='slick/slick-theme.css')}}">
+    <!--<link rel="stylesheet" href="css/tooplate-style.css">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tooplate-style.css')}}">
+
+    <script>
+        document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+    </script>
+    <!-- jquery 3.6 -->
+    <script src="{{url_for('static', filename='jquery.js')}}"></script>
+    <script type=text/javascript>
+        var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+    </script>
+    <script type=text/javascript>
+    $(function() {
+        function submit_form(e) {
+            $.getJSON($SCRIPT_ROOT + '/select', {
+                issue_id: $('select[name="issue_id"]').val()
+                },
+            function(data) {
+                $('#result').text(data.result);
+            });
+         };
+        // 綁定click事件
+        $('#calculate').bind('select_button', submit_form);
+    });
+</script>
+
+</head>
+
+<body>
+<div id="tm-bg"></div>
+<div id="tm-wrap">
+    <div class="tm-main-content">
+        <div class="container tm-site-header-container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-md-col-xl-6 mb-md-0 mb-sm-4 mb-4 tm-site-header-col">
+                    <div class="tm-site-header">
+                        <h1 class="mb-4">VAS Scanner</h1>
+                        <img src="{{url_for('static', filename='images/underline.png')}}" class="img-fluid mb-4">
+                        <p>With the latest cyber intelligence, we identify security vulnerabilities.</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="content">
+                        <div class="grid">
+                            <div class="grid__item" id="home-link">
+                                <div class="product">
+                                    <a href="{{url_for('index')}}">
+                                        <div class="tm-nav-link">
+                                            <i class="fas fa-home fa-3x tm-nav-icon"></i>
+                                            <span class="tm-nav-text">Update List</span>
+                                        </div>
+                                    </a>
+                                    <div class="product__description">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid__item" id="team-link">
+                                <div class="product">
+                                    <div class="tm-nav-link">
+                                        <i class="fas fa-users fa-3x tm-nav-icon"></i>
+                                        <span class="tm-nav-text">New Scan</span>
+                                        <div class="product__bg"></div>
+                                    </div>
+                                    <div class="product__description">
+                                        <div class="p-sm-4 p-2">
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <h2 class="tm-page-title">New Scan</h2>
+                                                </div>
+                                            </div>
+                                            <div class="row tm-reverse-sm">
+                                                <div>
+                                                    <form method="post" enctype="multipart/form-data" action="/upload">
+                                                        <label>Company Name:</label><br>
+                                                        <input type="text" id="test_title" name="mission_company" value=""><br><br>
+                                                        <label>URL:</label><br>
+                                                        <input type="text" id="test_desc" name="mission_url" value=""><br><br>
+                                                        <label>Website Name(Option):</label><br>
+                                                        <input type="text" id="test_verify" name="mission_target" value=""><br><br>
+                                                        <label>Upload Result(Option):</label><br>
+                                                        <input type=file name=file><br><br><br>
+                                                        <input type=submit value=Submit>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid__item">
+                                <div class="product">
+                                    <div class="tm-nav-link">
+                                        <i class="fas fa-handshake fa-3x tm-nav-icon"></i>
+                                        <span class="tm-nav-text">User Guide</span>
+                                        <div class="product__bg"></div>
+                                    </div>
+                                    <div class="product__description">
+                                        <div class="p-sm-4 p-2">
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <h2 class="tm-page-title">User Guide</h2>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <p>1. Update List: 如果你覺得掃描已經完成了，請手動點擊更新或重新整理頁面</p>
+                                                    <p>2. New Scan: 建立一個新的掃描任務，完整的網址與公司名稱為必填項目</p>
+                                                    <p>3. User Guide: 簡單說明一下各個功能</p>
+                                                    <p>4. Issue: 檢視與更新問題的敘述、分數、比重，也可以在此增加新的項目</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="p-sm-4 p-2 tm-img-container">
+                                                        <div class="tm-img-slider" id="tmImgSlider">
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-01-tn.jpg')}}"
+                                                                    alt="Image 1" class="img-fluid tm-slider-img"></a>
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-02-tn.jpg')}}"
+                                                                    alt="Image 2" class="img-fluid tm-slider-img"></a>
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-03-tn.jpg')}}"
+                                                                    alt="Image 3" class="img-fluid tm-slider-img"></a>
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-04-tn.jpg')}}"
+                                                                    alt="Image 4" class="img-fluid tm-slider-img"></a>
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-05-tn.jpg')}}"
+                                                                    alt="Image 5" class="img-fluid tm-slider-img"></a>
+                                                            <a href="#" class="tm-slider-img-link"><img
+                                                                    src="{{url_for('static', filename='images/gallery-img-06-tn.jpg')}}"
+                                                                    alt="Image 6" class="img-fluid tm-slider-img"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid__item">
+                                <div class="product">
+                                    <a href="{{url_for('issue_test')}}">
+                                    <div class="tm-nav-link">
+                                        <i class="fas fa-comments fa-3x tm-nav-icon"></i>
+                                        <span class="tm-nav-text">Issue</span>
+                                        <div class="product__bg"></div>
+                                    </div>
+                                    </a>
+                                    <div class="product__description">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container_table" style="display:flex;flex-wrap:nowrap;">
+            <table>
+                <thead>
+                <tr>
+                    {% for i in labels %}
+                    <th>{{ i }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in column_testcase %}
+                <tr>
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>
+                        <form>
+                            <button formaction="{{ i[3] }}" {{ i[4] }}>Download</button>
+                        </form>
+                    </td>
+                    <!--
+                    <td>
+                        <form action="run/btn_run_{{i[0]}}" method="post">
+                            <button type="submit" value="Submit">Run</button>
+                        </form>
+                        <form action="temp/{{i[0]}}" method="post">
+                            <button type="submit" value="Submit">View</button>
+                        </form>
+                    </td>
+                    -->
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <footer>
+            <p class="small tm-copyright-text">Copyright &copy; <span class="tm-current-year">2020</span> OneDegree &
+                Cymetrics.
+
+                Design: <a rel="nofollow" href="https://www.tooplate.com" class="tm-text-highlight">Tooplate</a></p>
+        </footer>
+    </div> <!-- .tm-main-content -->
+</div>
+<!-- load JS -->
+<!-- <script src="js/jquery-3.2.1.slim.min.js"></script>         https://jquery.com/ -->
+<script src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+<!-- <script src="slick/slick.min.js"></script>                  http://kenwheeler.github.io/slick/ -->
+<script src="{{ url_for('static', filename='slick/slick.min.js') }}"></script>
+<!--<script src="js/anime.min.js"></script>                      http://animejs.com/ -->
+<script src="{{ url_for('static', filename='js/anime.min.js') }}"></script>
+<!--<script src="js/main.js"></script>  -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+
+        function setupFooter() {
+            var pageHeight = $('.tm-site-header-container').height() + $('footer').height() + 100;
+
+            var main = $('.tm-main-content');
+
+            if($(window).height() < pageHeight) {
+                main.addClass('tm-footer-relative');
+            }
+            else {
+                main.removeClass('tm-footer-relative');
+            }
+        }
+
+        /* DOM is ready
+        ------------------------------------------------*/
+        $(function(){
+
+            setupFooter();
+
+            $(window).resize(function(){
+                setupFooter();
+            });
+
+            $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright
+        });
+
+
+
+</script>
+
+</body>
+</html>
