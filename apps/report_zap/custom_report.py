@@ -9,7 +9,7 @@ from copy import deepcopy
 from docx import Document
 from docx.shared import Cm, Mm, Inches
 from docxtpl import DocxTemplate, InlineImage
-import utils.custom_chrome
+import custom_chrome
 import custom_image
 import custom_chart
 
@@ -25,6 +25,11 @@ default_screenshot_url = ''
 def set_company(input_company):
     global default_company
     default_company = input_company
+
+
+def set_screenshot_url(input_url):
+    global default_screenshot_url
+    default_screenshot_url = input_url
 
 
 def read_json(report_name):
@@ -52,7 +57,7 @@ def read_date_yesterday():
 
 def read_screenshot(input_url, input_filename):
     main_path = pathlib.Path(__file__).parent.resolve()
-    utils.custom_chrome.read_get_page_screenshot(input_url, str(main_path) + '\\', input_filename)
+    custom_chrome.read_get_page_screenshot(input_url, str(main_path) + '\\', input_filename)
 
 
 def write_variable(temp_document, replace_dict, input_fn):
@@ -414,16 +419,18 @@ def transfer_report(report_data_list):
 
     target_count = 0
     for report_data in report_data_list:
-        target_count += 1
         if str(report_data['site'][0]['@name']) == '':
             add_target(input_fn, report_data['target'], str(report_data['input']))
             continue
         else:
             add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
+
         if default_screenshot_url == '':
             read_screenshot(str(report_data['site'][0]['@name']), report_data['target'] + '.png')
         else:
             read_screenshot(default_screenshot_url, report_data['target'] + '.png')
+
+        target_count += 1
         add_screenshot(input_fn, report_data['target'] + '.png',
                        str(target_count) + '.' + report_data['target'] + '網站進入點:')
 

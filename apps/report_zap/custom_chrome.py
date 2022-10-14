@@ -1,5 +1,4 @@
 import time
-import pathlib
 import sys
 import json
 import pprint
@@ -11,10 +10,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.utils import ChromeType
-
-
-# file path
-template_path = str(pathlib.Path(__file__).parent.absolute()) + "\\"
 
 
 def read_get_page(input_url, input_cookie=None, headless_mode=False):
@@ -431,8 +426,6 @@ def read_get_page_screenshot(input_url, input_path, input_filename, input_cookie
          "AppleWebKit/537.36 (KHTML, like Gecko) " \
          "Chrome/92.0.4515.159 Safari/537.36"
     chrome_options.add_argument('user-agent={}'.format(ua))
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
     driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=chrome_options)
     # 4. set cookie
     if input_cookie:
@@ -442,7 +435,6 @@ def read_get_page_screenshot(input_url, input_path, input_filename, input_cookie
     driver.implicitly_wait(10)
     driver.set_window_size(1200, 600)
     driver.get(input_url)
-    time.sleep(3)
     # 6. close browser
     driver.get_screenshot_as_file(input_path + input_filename)
     driver.quit()
@@ -473,8 +465,6 @@ if __name__ == '__main__':
     x_dict = read_login_header(input_url="https://member.ithome.com.tw/login",
                                input_action_list=test_json_list)
     """
-    read_get_page_screenshot("https://www.example.com", './', 'temp.png')
-    """
     main_result = read_get_page(input_url="https://www.example.com")
     if "Example Domain" in main_result:
         print("unit test (custom_chrome) : pass")
@@ -482,6 +472,5 @@ if __name__ == '__main__':
     else:
         print("unit test (custom_chrome) : fail")
         sys.exit(1)
-    """
 
 
