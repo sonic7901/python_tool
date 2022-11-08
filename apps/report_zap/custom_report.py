@@ -9,7 +9,12 @@ from copy import deepcopy
 from docx import Document
 from docx.shared import Cm, Mm, Inches
 from docxtpl import DocxTemplate, InlineImage
+<<<<<<< HEAD
+from docx.enum.table import WD_TABLE_ALIGNMENT
+import utils.custom_chrome
+=======
 import custom_chrome
+>>>>>>> origin/develop
 import custom_image
 import custom_chart
 
@@ -165,17 +170,22 @@ def add_issue(input_docx,
         if info_count == 0:
             table_issue.rows[8].cells[1].paragraphs[0].paragraph_format.first_line_indent = Cm(0)
             table_issue.rows[8].cells[1].paragraphs[0].add_run(temp_info)
+            table_issue.rows[8].cells[1].paragraphs[0].alignment = WD_TABLE_ALIGNMENT.LEFT
         else:
             table_issue.rows[8].cells[1].add_paragraph('')
             table_issue.rows[8].cells[1].paragraphs[info_count].paragraph_format.first_line_indent = Cm(0)
             table_issue.rows[8].cells[1].paragraphs[info_count].add_run(temp_info)
+            table_issue.rows[8].cells[1].paragraphs[info_count].alignment = WD_TABLE_ALIGNMENT.LEFT
         info_count += 1
         if info_count > 9:
             table_issue.rows[8].cells[1].add_paragraph('')
             table_issue.rows[8].cells[1].paragraphs[info_count].paragraph_format.first_line_indent = Cm(0)
             table_issue.rows[8].cells[1].paragraphs[info_count].add_run('⋮')
+            table_issue.rows[8].cells[1].paragraphs[info_count].alignment = WD_TABLE_ALIGNMENT.LEFT
             break
     # table_issue.rows[8].cells[1].paragraphs[0].add_run(input_info)
+    # cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+    # table_issue.rows[8].cells[1].alignment = WD_TABLE_ALIGNMENT.LEFT
     new_table = deepcopy(table_issue)
     # write table to document
     x = input_document.paragraphs

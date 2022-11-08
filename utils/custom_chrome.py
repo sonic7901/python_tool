@@ -435,6 +435,7 @@ def read_get_page_screenshot(input_url, input_path, input_filename, input_cookie
     driver.implicitly_wait(10)
     driver.set_window_size(1200, 600)
     driver.get(input_url)
+    time.sleep(5)
     # 6. close browser
     driver.get_screenshot_as_file(input_path + input_filename)
     driver.quit()
