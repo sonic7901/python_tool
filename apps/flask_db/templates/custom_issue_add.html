@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>檢測項目 | 新增</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>新增測項</h2>
+    </div>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+<div>
+    <form action="/button_add" method="post" class="contact-form">
+        <div>
+            <button class="button_bar" type="submit">送出</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="div_float">
+            <label class="label_title">問題原始名稱:</label>
+            <br>
+            <br>
+            <input type="text"
+                   class="input_float"
+                   id="origin_name"
+                   name="origin_name"
+                   value="{{input_origin}}"
+                   size="32"
+                   maxlength="64"
+                   required/>
+        </div>
+        <div class="div_float">
+            <label class="label_title">基本分數(0-100):</label>
+            <br>
+            <br>
+            <input type="number"
+                   class="input_float"
+                   id="issue_score"
+                   name="issue_score"
+                   class="form-control"
+                   value="{{input_score}}"
+                   required/>
+            <br>
+            <br>
+            <label>計算方式: CVSS(Base Score Metrics) x 10</label>
+            <br>
+            <label>工具連結:</label>
+            <a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator">CVSS Calculator</a>
+            <br>
+            <br>
+        </div>
+        <div class="div_float">
+            <label class="label_title">權重(0-200)%:</label>
+            <br>
+            <br>
+            <input type="number"
+                   class="input_float"
+                   id="issue_weight"
+                   name="issue_weight"
+                   class="form-control"
+                   value="{{input_weight}}"
+                   required/>
+        </div>
+        <div class="div_float">
+            <label class="label_title">修復成本:</label>
+            <br>
+            <br>
+            <input type="number"
+                   class="input_float"
+                   id="issue_cost"
+                   name="issue_cost"
+                   value="{{input_cost}}"
+                   required/>
+            <br>
+            <br>
+            <label>評估一個人能在幾小時內修復</label>
+        </div>
+        <div class="div_float">
+            <label class="label_title">中文顯示名稱:</label>
+            <br>
+            <br>
+            <input style=type="text"
+                   id="name_zh"
+                   name="name_zh"
+                   value="{{input_name_zh}}"
+                   maxlength="64"
+                   class="form-control"
+                   required/>
+        </div>
+        <div class="div_float">
+            <label class="label_title">英文顯示名稱:</label>
+            <br>
+            <br>
+            <input type="text"
+                   id="name_en"
+                   name="name_en"
+                   value="{{input_name_en}}"
+                   maxlength="64"
+                   class="form-control"
+                   required/>
+        </div>
+        <div class="div_float">
+            <label class="label_title">中文問題敘述:</label>
+            <br>
+            <br>
+            <textarea id="desc_zh"
+                      name="desc_zh"
+                      required>{{input_desc_zh}}</textarea>
+        </div>
+        <div class="div_float">
+            <label class="label_title">英文問題敘述:</label>
+            <br>
+            <br>
+            <textarea id="desc_en"
+                      name="desc_en"
+                      required>{{input_desc_en}}</textarea>
+        </div>
+        <div class="div_float">
+            <label class="label_title">中文修復建議:</label>
+            <br>
+            <br>
+            <textarea id="solu_zh"
+                      name="solu_zh"
+                      required>{{input_solu_zh}}</textarea>
+        </div>
+        <div class="div_float">
+            <label class="label_title">英文修復建議:</label>
+            <br>
+            <br>
+            <textarea id="solu_en"
+                      name="solu_en"
+                      required>{{input_solu_en}}</textarea>
+        </div>
+        <br>
+    </form>
+</div>
+
+</body>
+</html>

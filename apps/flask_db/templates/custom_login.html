@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登入</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+
+<body>
+<div>
+    <div class="div_login">
+        <div>
+            <br>
+            <br>
+            <br>
+            <div style="margin:0px auto; width:165px;">
+                <label style="font-size:40px;">Cymetrics</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div style="margin:0px auto; width:50px;">
+                <label style="font-size:24px;">登入</label>
+            </div>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div style="margin:0px auto; width:300px;">
+            <form method="post" action="/login">
+                <br>
+                <input type="text" class="input_login" id="user_id" name="user_id" placeholder="username">
+                <br>
+                <br>
+                <input type="password" class="input_login" id="password" name="password" placeholder="password">
+                <br>
+                <br>
+                <div style="margin:0px auto; width:55%;">
+                <button type="submit" style="width:170px;">Login</button>
+                </div>
+                <br>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

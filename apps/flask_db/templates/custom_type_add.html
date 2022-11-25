@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>分類方式 | 新增</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>新增分類</h2>
+    </div>
+    <div><br><label>{{temp_label}}</label><br></div>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+<div>
+    <form action="/button_tag_add" method="post">
+        <div>
+            <button class="button_bar" type="submit">送出</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="div_float">
+            <label>分類名稱:</label>
+            <br>
+            <input type="text"
+                   id="tag_name"
+                   name="tag_name"
+                   value=""
+                   maxlength="64"
+                   required/>
+            <br>
+        </div>
+        <div class="div_float" style="width: 65%; height: auto;">
+            <p>現有分類:</p>
+            {% for i in type_list %}
+            <div class="div_tag" style="width: auto;">
+                <label style="font-size:15px;">{{ i[1] }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+        <br>
+
+    </form>
+</div>
+
+</body>
+</html>

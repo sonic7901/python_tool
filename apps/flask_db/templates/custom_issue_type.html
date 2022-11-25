@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>檢測項目 | 類型</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>新增測項類型</h2>
+    </div>
+    <div><label>{{temp_label}}</label><br><br></div>
+    <label>檢測項目:</label><br>
+    <form action="/select_issue_issue_type" method="post">
+        <select name="issue_id">
+            <option selected="selected" disabled="disabled" style='display: none' value=''></option>
+            {% for i in issue_list %}
+            <option value="{{ i[0] }}" {{ i[11] }}>{{ i[0] }} | {{ i[1] }} | {{ i[6] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_button" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <label>分類方式:</label><br>
+    <form action="/select_type_issue_type" method="post">
+        <div><input type="hidden" id="hide_issue" name="hide_issue" value="{{hide_issue}}"></div>
+        <select name="type_id">
+            <option selected="selected" disabled="disabled" style='display: none' value=''></option>
+            {% for i in type_list %}
+            <option value="{{ i[0] }}" {{ i[2] }}>{{ i[0] }} | {{ i[1] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_button_type" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <label>類型項目:</label><br>
+    <form action="/select_item_issue_type" method="post" onsubmit="return confirm('確定要刪除?');">
+        <div><input type="hidden" id="hide_type" name="hide_type" value="{{hide_type}}"></div>
+        <select name="item_id">
+            {% for i in item_list %}
+            <option value="{{ i[0] }}">{{ i[0] }} | {{ i[1] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_button_item" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

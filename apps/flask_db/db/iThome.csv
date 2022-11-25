@@ -1,0 +1,1548 @@
+﻿主類別(L1),次類別(L2),key,細項(L3),細項(L3) EN,細節(L4),細節(L4) EN,風險,修復難易度,Level 2 Score,Level 1 Score,Level 0 Score,OPEN API,ISO,GDPR,PCI DSS,NIST CSF,詳細情況,詳細情況 EN,修復,修復 EN,更多資訊
+external_service,remote_control,public_remote_ssh,公開的 SSH 服務,Public SSH Service,,,H,L,25.00,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+8. Identify and authenticate access to system components.（信用卡金融錢錢）","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 SSH (Secure Shell) 服務，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public SSH service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+1. 限制登入來源
+•設定連線白名單 (ListenAddress)。
+•僅允許 SSHv2 連線。
+2. 防止攻擊者暴力破解
+•強制使用 RSA 公私鑰驗證。
+3. 降低攻擊者消耗伺服器資源
+•禁止 root 登入 (PermitRootLogin : no)。
+•禁止空白密碼 (PermitEmptyPasswords : no)。
+•禁止使用密碼登入 (PasswordAuthentication : no)。","To mitigate this vulnerability, we suggest the following:
+1. Restrict login origins
+• Configure a whitelist of allowed origin Ips (ListenAddress)
+• Only allow SSHv2 connections
+2. Prevent Password Brute-forcing
+• Enforce RSA Public Key Encryption (PKE)
+3. Prevent adversaries from exhausting server resources
+• Deny root login (PermitRootLogin : no)
+• Deny empty passwords (PermitEmptyPasswords : no)
+• Deny password authentication (PasswordAuthentication : no)",
+external_service,remote_control,public_remote_rdp,公開的 RDP 服務,Public RDP Service,,,H,M,25.00,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+9. Identify and authenticate access to system components.(Restrict Physical Access to Cardholder Data)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 RDP (Remote Desktop Protocol) 服務 ，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public  RDP (Remote Desktop Protocol) service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•使用憑證登入取代帳號密碼登入
+
+修改與配置方式請參考：
+•https://docs.microsoft.com/zh-tw/troubleshoot/windows-server/remote/remote-desktop-listener-certificate-configurations","To mitigate this vulnerability, we suggest the following:
+• Configure login methods to use public key  instead of passwords for authentication
+
+For configuration steps, refer to:
+• https://docs.microsoft.com/zh-tw/troubleshoot/windows-server/remote/remote-desktop-listener-certificate-configurations",
+external_service,remote_control,public_remote_vnc,公開的 VNC 服務,Public VNC Service,,,H,M,25.00,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+10. Identify and authenticate access to system components.(Log and Monitor All Access to System Components and Cardholder
+Data.)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 VNC (Virtual Network Computing) 服務，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public VNC (Virtual Network Computing) service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將 VNC 服務公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the VNC service into the internal network 
+• Access the  VNC service via VPN to prevent unauthorized usage",
+external_service,remote_control,public_remote_telnet,公開的 Telnet 服務,Public Telnet Service,,,H,M,25.00,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+11. Identify and authenticate access to system components.(Test Security of Systems and Networks Regularly.)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Telnet 服務，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public Telnet service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將 Telnet 服務公開於外網, 必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the Telnet service into the internal network 
+• Access the  Telnet service via VPN to prevent unauthorized usage",
+external_service,database,public_db_mongodb,公開的 MongoDB 資料庫,Public MongoDB Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+12. Identify and authenticate access to system components.(Support Information Security with Organizational Policies and
+Programs)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 MongoDB 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public MongoDB database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網, 必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move thedatabase into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_elasticsearch,公開的 Elasticsearch 資料庫,Public Elasticsearch Database,,,M,L,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+13. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Elasticsearch 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public Elasticsearch database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•啟用安全性設定 (xpack.security.enabled: true)。
+•使用 keystore 加密 built-in user 的密碼。
+•啟用 SSL 連線加密。","To mitigate this vulnerability, we suggest the following:
+• Enable Security Settings (xpack.security.enabled: true)
+• Enable the keystore functionality to encrypt the built-in user's password
+• Enable SSL connections for data encryption",
+external_service,database,public_db_mysql,公開的 MySQL 資料庫,Public MySQL Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+14. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 MySQL 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public MySQL database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_mssql,公開的 Microsoft SQL 資料庫,Public Microsoft SQL Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+15. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Microsoft SQL  資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public Microsoft SQL database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_postgresql,公開的 PostgreSQL 資料庫,Public PostgreSQL Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+16. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 PostgreSQL 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public PostgreSQL database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_cassandra,公開的 Apache Cassandra 資料庫,Public Apache Cassandra Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+17. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Apache Cassandra 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public Apache Cassandra database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_couchdb,公開的 Apache CouchDB 資料庫,Public Apache CouchDB Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+18. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Apache CouchDB 資料庫，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public Apache CouchDB database instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,database,public_db_redis,公開的 Redis 資料庫,Public Redis Database,,,M,M,12.50,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+19. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 Redis key-value datastore，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取或竄改資料。,We detected that your server exposes a public Redis key-value datastore instance. An adversary can log in to the database and exfiltrate or modify sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將資料庫公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the database into the internal network 
+• Access the  database via VPN to prevent unauthorized usage",
+external_service,remote_service,public_service_smb,公開的 SMB 服務,Public SMB Service,,,H,M,33.33,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+20. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 SMB (Server Message Block) 服務，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public SMB (Server Message Block) service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將 SMB 服務公開於外網, 必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the SMB service into the internal network 
+• Access the  SMB service via VPN to prevent unauthorized usage",
+external_service,remote_service,public_service_ftp,公開的 FTP 服務,Public FTP Service,,,H,L,33.33,8.89,2.73,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+21. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 FTP (File Transfer Protocol) ，如果對外開放卻未做好權限控管，會讓攻擊者有機會藉由 FTP 竊取資料和上傳惡意檔案。,We detected that your server exposes a public FTP (File Transfer Protocol) service. An adversary can log in to the server and exfiltrate sensitive data or upload malicious files if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•改用經過 SSL 加密的 SFTP 或 FTPS。
+•使用憑證登入取代帳密登入。","To mitigate this vulnerability, we suggest the following:
+• Use the SSL-encrypted version of FTP: SFTP or FTPS instead
+• Configure login methods to use client certificates instead of passwords for authentication",
+external_service,remote_service,public_service_rsync,公開的 rsync 服務,Public rsync Service,,,M,M,16.67,4.44,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+22. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 rsync 服務，如果對外開放卻未做好權限控管，會讓攻擊者有機會從遠端竊取資料或藉由執行控制命令來攻擊伺服器。,We detected that your server exposes a public rsync service. An adversary can log in to the server and execute arbitrary commands to exfiltrate sensitive data if access control is misconfigured.,"為避免此風險，建議參照以下準則：
+•請避免將 rsync 服務公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the rsync service into the internal network 
+• Access the  rsync service via VPN to prevent unauthorized usage",
+external_service,remote_service,public_service_unknown,公開的未知服務,Public Unknown Service,,,L,L,8.33,2.22,0.68,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+23. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到未知服務有公開的 Port ，攻擊者可能用列舉的方式來測試服務類型。,"We detected that your server exposes a public unknown service, which allows an adversary a greater attack surface.","為避免此風險，建議參照以下準則：
+•請避免將任何私有服務公開於外網，必要時應透過 VPN 避免未經授權的使用。","To mitigate this vulnerability, we suggest the following:
+• Move the unknown service into the internal network 
+• Access the  unknown service via VPN to prevent unauthorized usage",
+external_service,remote_service,public_service_os,作業系統版本,Leaked Operating System Version,,,L,M,8.33,2.22,0.68,,12.6    Technical vulnerability management,,,,檢測到作業系統版本。若此版本有已知弱點，可能會被攻擊者直接利用。即使當前版本安全，未來若有新漏洞釋出，您將會成為掌握您資訊的駭客優先攻擊的目標。建議減少揭露在外的資訊。,"We detected that your server leaks information on the operating system version, which allows an adversary to further launch targeted attacks if the version contains known weaknesses.","為避免此風險，建議參照以下準則：
+•確保作業系統升級到最新版本。
+•隱藏系統版本資訊。","To mitigate this vulnerability, we suggest the following:
+• Ensure your operating system is using the latest version
+• Hide the operating system version to prevent leaking such information",
+external_service,blacklist,blacklist_ip,被列為惡意 IP,Listed as Malicious IP,,,L,H,10.00,2.22,0.68,,,,,,檢測到惡意 IP 黑名單中有 IP 與掃描對象位於相同的網段，攻擊者可能已經藉由該設備為中繼進行惡意行為，如果您是該網段的所有者請立即處理。,"We detected that your server's IP addresses is listed in CIDR ranges marked as malicious in public IP blacklists. This indicates that adversaries may have control over machines in the IP range listed in the details section. As a result, services that consult public whitelists may block your server. Take immediate action if you own the CIDR range.","為避免此風險，建議參照以下準則：
+•檢視是否有異常的進程和對外服務。
+•檢視是否有異常的日誌記錄。","To mitigate this vulnerability, we suggest the following:
+• Inspect if logged events contain suspicous activity, especially internet connections, system processes, or other hosted applications..",
+web,web_server,server_cve,伺服器使用有已知漏洞的版本,Server version with known CVEs,,,H,H,29.17,16.53,9.57,,12.6    Technical vulnerability management,,"5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications",,"檢測到您的伺服器版本存在 CVE 漏洞，可能因為此造成安全風險。
+攻擊者可比照版本資訊找出未修補的漏洞資訊，進而尋找利用方式進行攻擊。",We detected that your web server is using an outdated version with known CVEs. An adversary can exploit your server if it contains unpatched vulnerabilities.,"為避免此風險，建議參照以下準則：
+•更新至當前最新或無風險之版本。
+•隱藏伺服器版本資訊。","To mitigate this vulnerability, we suggest the following:
+• Please upgrade your server software to the latest version or at least apply all available patches.
+• Hide the technology and version number to prevent leaking such information.",
+web,web_server,server_log4j,伺服器用到與 Log4j 有關的套件,Third-party tools and components may use log4j on server,,,L,M,2.08,1.18,0.68,,,,,,"檢測到您的伺服器用到與 Log4j 有關的套件，可能因為此造成安全風險。
+",We detected that your web server may use pakcages which has log4j vulnerability. Please check the packages you used.,建議重新檢視有使用到的套件，並檢查是否已修復 log4j 相關風險。,"To mitigate this vulnerability, we suggest that review the third-party libraries to see if they has log4j vulnerability.",
+web,web_server,server_old_version,伺服器使用已終止服務的版本,Server version reached End of Life,,,M,H,4.17,2.36,1.37,,12.6    Technical vulnerability management,,"5. Protect all systems against malware and regularly update antivirus software or programs.
+6. Develop and maintain secure systems and applications",,檢測到您的伺服器廠商已終止更新維護服務，即使當前版本安全，未來若此版本有新漏洞釋出，您的網站可能因洩漏此資訊而遭到攻擊，且無更新方式。,"We detected that your web server version has reached End of Life (EoL), which means it will no longer be maintained and supported. Even though there are no known vulnerabilities for the current version, new exploits may be found in the future but no support or updates will be available. We recommend upgrading to an actively maintained version or use another software.","為避免此風險，建議參照以下準則：
+•變更伺服器廠商。
+•隱藏伺服器版本資訊。","To mitigate this vulnerability, we suggest the following:
+• Use another actively maintained software.
+• Hide the technology and version number to prevent leaking such information.",
+web,web_server,server_cors,CORS 安全等級不足,CORS Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站可能有會產生安全疑慮的 CORS 配置錯誤。
+當網頁引用的第三方網頁中包含 XSS 或 CSRF 程式碼，則會導致自身的網頁受到第三方網頁中的惡意程式攻擊，可能會加載異常或惡意的 Web 瀏覽器數據。","We detected that your web server uses misconfigured Cross Origin Resource Sharing (CORS) Headers, which may allow an adversary to inject malicious code into your website and steal potentially sensitive information or distribute malware. CORS allows a server to indicate permitted resource origins and helps prevent loading malicious third party resources..","為避免此風險，建議參照以下準則：
+•如果應用程序不需要跨域請求，請刪除所有 CORS Header 。
+•從 Access-Control-Allow-Origin 中限制可以發起跨站請求的網域，不應設置為 ""* "" 或 ""null""，除非應用程序上的所有內容皆為公開資訊。 
+•從 Access-Control-Allow-Methods 中限制可發起的跨站請求類型。
+•從 Access-Control-Allow-Credentials 中指定跨站請求中是否帶 cookie，信任網域來源則設置為 true。","To mitigate this vulnerability, we suggest the following:
+•  If your web application does not require cross origin resource loading, remove all CORS headers.
+• Whitelist domains that are allowed to initiate cross site requests with Access-Control-Allow-Origin. Do not specify a wildcard directive ""*"" unless all information is public.
+• Whitelist HTTP methods for cross site requests with Access-Control-Allow-Methods
+• Specify if cookies should be included in cross site requests with Access-Control-Allow-Credentials. Only indicate 'true' for trusted domains.",
+web,web_server,server_csp,CSP 未設定或安全等級不足,CSP Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,,,,,
+web,web_server,server_csp_not_set,CSP 未設定或安全等級不足,CSP Misconfiguration,CSP 未設定,CSP Missing,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,檢測到您的網站在Header 中缺少內容安全策略（CSP），可能導致機敏資訊遭到竊取。CSP 有助於抵禦包括跨站點腳本（XSS）和注入攻擊。,"We detected that your website is missing  Content Security Policy (CSP) headers, which may  allow an adversary to inject malicious code into your website and steal potentially sensitive information or distribute malware. CSP is designed to reduce the attack surface of Cross Site Scripting (XSS) attacks and other code injection attempts.","為避免此風險，建議參照以下準則：
+•於 HTTP Headers 設置 Content-Security-Policy 以支援 Chrome 25 +、Firefox 23+ 和 Safari 7。
+•於 HTTP Headers 設置 X-Content-Security-Policy 以支援 Firefox 4.0+ 和 Internet Explorer 10+。
+•於 HTTP Headers 設置 X-WebKit-CSP 以支援 Chrome 14+ 和Safari 6+。","To mitigate this vulnerability, we suggest the following:
+• Configure the  HTTP Header 'Content-Security-Policy' to support Chrome 25 +,Firefox 23+ , and Safari 7
+• Configure the  HTTP Header  'X-Content-Security-Policy' to support Firefox 4.0+ , and Internet Explorer 10+
+• Configure the  HTTP Header 'X-WebKit-CSP' to support Chrome 14 + and Safari 6+",
+web,web_server,server_csp_all,CSP 未設定或安全等級不足,CSP Misconfiguration,CSP 任意加載,CSP uses wildcard,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站可能有會產生安全疑慮的內容安全策略（CSP）。
+在 CSP 指令中檢測到設定為『*』，這意味著它允許所有來源，當網頁引用的第三方網頁中包含XSS或CSRF程式碼，則會導致自身的網頁受到第三方網頁中的惡意程式攻擊。","We detected that your Content Security Policy (CSP) header 'style-src' is misconfigured to use the wildcard directive: '*', which permits  loading files from arbitrary sources. This allows an adversary to inject malicious code into your website and steal potentially sensitive information or distribute malware.
+CSP is designed to reduce the attack surface of Cross Site Scripting (XSS) attacks and other code injection attempts, but using dangerous directives may nullify the protections CSP provides.","為避免此風險，建議參照以下準則：
+•於 HTTP Headers 設置 『Content-Security-Policy: default-src 'self';』。","To mitigate this vulnerability, we suggest the following:
+• Reconfigure your CSP header to use ""Content-Security-Policy: default-src 'self';""",
+web,web_server,server_csp_style,CSP 未設定或安全等級不足,CSP Misconfiguration,CSP style-src 配置錯誤,CSP style-src misconfiguration,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站使用會產生安全疑慮的內容安全策略（CSP）。
+在 CSP 指令中檢測到 style-src 中有設定『unsafe-inline』，允許網頁程式碼中嵌入任意來源的 inline 資料。駭客可藉此植入攻擊程式碼，騙取用戶點擊並觸發惡意程式來竊取用戶資訊。","We detected that your Content Security Policy (CSP) header 'style-src' is misconfigured to use unsafe directives: 'unsafe–inline' 'unsafe–eval'. This allows an adversary to inject malicious code into your website and steal potentially sensitive information or distribute malware.
+CSP is designed to reduce the attack surface of Cross Site Scripting (XSS) attacks and other code injection attempts, but using dangerous directives may nullify the protections CSP provides.","為避免此風險，建議參照以下準則：
+•移除 『style-src : 'unsafe-inline'』。
+•指定本機與信任的 css style 來源『style-src : 'self'，http://css.security.com』。
+
+修改與配置方式請參考：
+•https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src
+","To mitigate this vulnerability, we suggest the following:
+• Reconfigure your CSP header and remove ""style-src: 'unsafe-inline'""
+• Explicitly list trusted css style sources with: ""style-src: 'self', http://css.security.com""
+
+For configuration steps, refer to:
+• https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src",
+web,web_server,server_csp_script,CSP 未設定或安全等級不足,CSP Misconfiguration,CSP script-src 配置錯誤,CSP script-src misconfiguration,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站使用會產生安全疑慮的內容安全策略（CSP）。
+在 CSP 指令中檢測到 script-src 中有設定『unsafe-inline』，允許網頁程式碼中嵌入任意來源的 inline 資料。駭客可藉此植入攻擊程式碼，騙取用戶點擊並觸發惡意程式來竊取用戶資訊。","We detected that your Content Security Policy (CSP) header 'script-src' is misconfigured to use unsafe directives: 'unsafe–inline' 'unsafe–eval'. This allows an adversary to inject malicious code into your website and steal potentially sensitive information or distribute malware.
+CSP is designed to reduce the attack surface of Cross Site Scripting (XSS) attacks and other code injection attempts, but using dangerous directives may nullify the protections CSP provides.
+","為避免此風險，建議參照以下準則：
+•移除 『script-src : 'unsafe-inline'』。
+•指定本機與信任的 javascript 來源『script-src : 'self'，http://js.security.com』。
+
+修改與配置方式請參考：
+•https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
+","To mitigate this vulnerability, we suggest the following:
+• Reconfigure your CSP header and remove ""script-src: 'unsafe-inline'""
+• Explicitly list trusted css style sources with: ""script-src: 'self', http://js.security.com""
+
+For configuration steps, refer to:
+• https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
+",
+web,web_server,server_xss_protection,XSS-Protection 未設定 ,XSS-Protection Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,檢測到您的網站未啟用 XSS-Protection，此功能是 Internet Explorer、Chrome 和 Safari 提供的一項保護設定，可以降低發生 XSS 的風險，阻止頁面加載 XSS，特別是尚未支持 CSP 設定的舊版網頁瀏覽器使用。,"We detected that your website is missing the XSS-Protection Header. XSS-Protection is a mechanism designed to mitigate XSS attacks by preventing pages from loading potentially malicious external scripts. It is  supported by Internet Explorer, Chrome, and Safari and is crucial to older browsers that do not support CSP.","為避免此風險，建議參照以下準則：
+•於 HTTP Headers 設置 『X-XSS-Protection : 1; mode=block』，在頁面檢測到 XSS 攻擊時阻止頁面加載。
+•若網頁不支援舊版瀏覽器，則不需使用 XSS-Protection，使用 Content-Security-Policy 進行保護。","To mitigate this vulnerability, we suggest the following:
+• Configure the HTTP Header 'X-XSS-Protection : 1; mode=block' to protect older web browsers from XSS attacks.
+• If your website does not support older browsers, configure Content Security Protection (CSP) Headers instead.",
+web,web_server,server_x_frame_options,X-Frame-Options 未設定或安全等級不足,X-Frame-Options Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,,,,,
+web,web_server,server_x_frame_options_not_set,X-Frame-Options 未設定或安全等級不足,X-Frame-Options Misconfiguration,X-Frame-Options 未設定,X-Frame-Options  Missing,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站缺少 X-Frame-Options Header ，這表示網站可能會遭受點擊劫持攻擊的風險。
+點擊劫持是攻擊者在惡意網站上通過 iframe 隱藏目標網頁，欺騙用戶點擊隱藏惡意連結，例如覆蓋於購物網頁的購物車上的隱藏超連結，使使用者點擊後，不經意間下載惡意軟件，訪問惡意網頁。更多資訊可參考：https://tech-blog.cymetrics.io/posts/huli/clickjacking-intro/","We detected that your website is missing the  X-Frame-Options Header, which may allow an attacker to launch a clickjacking attack. A clickjacking attack occurs when an adversary tricks a user into  clicking an overlayed invisible or disguised element to trigger a malicious action. This can cause users to unknowingly download malware, visit malicious sites, or perform a transaction. The X-Frame-Options Header prevents loading resources in iframes and helps prevent clickjacking attacks.","為避免此風險，建議參照以下準則：
+•網站未使用 Frame 則於 HTTP Headers 設置『X-Frame-Options : DENY』，禁用 Frame。
+•網站有使用 Frame 未從外部引用資源則於 HTTP Headers 設置『X-Frame-Options : SAMEORIGIN』。
+•網站有使用 Frame 且從外部引用資源則於 HTTP Headers 設置『X-Frame-Options : ALLOW-FROM 來源網域』，確保只有可信任來源才能嵌入 Frame。","To mitigate this vulnerability, we suggest the following:
+• If the website does not use iframes, configure ""X-Frame-Options : DENY""
+• If the website does not load external iframes, configure ""X-Frame-Options : SAMEORIGIN""
+• If the website loads external iframes, whitelist trusted domains with ""X-Frame-Options : ALLOW-FROM <domain>""",
+web,web_server,server_x_frame_options_multiple,X-Frame-Options 未設定或安全等級不足,X-Frame-Options Misconfiguration,X-Frame-Options 同時存在多組設定,Multiple X-Frame-Options,M,L,,,,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的伺服器在單個 HTTP 回應中發送了多個 X-Frame-Options Header ，這可能導致安全風險。
+例如，瀏覽器可能會忽略 Header 或因此默認為 DENY 選項。
+如果瀏覽器忽略了回應 Header 中 X-Frame-Options的多個定義，則損壞的X-Frame-OptionsHeader 會將您的用戶暴露於諸如 Clickjacking 之類的 UI Redressing 攻擊中。","We detected that your web server has multiple X-Frame-Options Headers, which may cause browsers to ignore the Header or interpret as the DENY option. The X-Frame-Options Header is designed to prevent adversaries from exploiting iframes with clickjacking attacks, and such a misconfiguration may nullify the protection it provides.","為避免此風險，建議參照以下準則：
+•確保每個HTTP回應中僅發送一個 X-Frame-Options Header ，以防止非預期狀況發生。 
+•於 HTTP Headers 設置 『Content-Security-Policy : frame-ancestors '信任來源';』，將允許的來源列入白名單。
+•禁止將已添加到原始碼中 X-Frame-Options Header ，再次部署在apache / IIS服務器中。
+•禁止將 X-Frame-Options Header 添加到原始碼中或在 apache / IIS 服務器中配置的同時，負載均衡器再次設置了『x-frame-options』。
+","To mitigate this vulnerability, we suggest the following:
+• Ensure only one X-Frame-Options Header is present in each response.
+• Whitelist trusted domains with the HTTP Header ""Content-Security-Policy : frame-ancestors '<domain>' ""
+• Ensure the  X-Frame-Options Header is enabled in only one of the following:  the source code, the web server's configuration, or the load balancer's configuration",
+web,web_server,server_x_content_type_options,X-Content-Type-Options 未設定或安全等級不足,X-Content-Type-Options Misconfiguration,,,L,L,2.08,1.18,0.68,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,檢測到您的網站 X-Content-Type-Options 設定安全性不足。X-Content-Type-Options 用來指定網頁的檔案類型，網站如果未在 Header 中正確設定 X-Content-Type-Options 會讓攻擊者有機會在將惡意腳本偽裝成靜態檔案，繞過防護規則。,"We detected that your website is missing the  X-Content-Type-Options Header, which may allow an adversary to bypass protections and load malicious scripts disguised as static files. The  X-Content-Type-Options Header is designed to specify the filetype of the loaded page.","為避免此風險，建議參照以下準則：
+•於 HTTP Headers 設置 『X-Content-Type-Options: nosniff』，強制瀏覽器使用 response 中指定的 content type。
+","To mitigate this vulnerability, we suggest the following:
+• Configure the HTTP Header ""X-Content-Type-Options: nosniff"" to force the browser to interpret files as explicitly stated.",
+web,web_server,server_powered_by,X-Powered-By 未設定或安全等級不足,X-Powered-By Misconfiguration,,,L,L,2.08,1.18,0.68,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,檢測到您的網站在 Header 中洩漏 X-Powered-By 信息，該信息可能會洩露後端伺服器資訊以及所使用的程式語言或框架，造成安全風險。攻擊者可比照各種軟韌體版本資訊找出過期或未修補的系統，進而滲透利用。即使當前版本安全，未來若此版本有新漏洞釋出，您的網站可能因洩漏此資訊而在短時間內遭到攻擊。,"We detected that your web server leaks information via the X-Powered-By Header. This may allow an adversary to fingerprint the technology stack behind the web application and leverage existing vulnerabilities in any outdated or unpatched versions. Equipped with the knowledge, adversaries may choose to attack your website first  when a future weakness related to your technology stack  is uncovered.","為避免此風險，建議參照以下準則：
+•移除 X-Powered-By Header 。 
+•設定 Apache
+在 httpd.conf 加入以下設定：
+<IfModule mod_headers.c>
+Header unset X-Powered-By
+</IfModule>","To mitigate this vulnerability, we suggest the following:
+• Configure your web server to remove the HTTP Header ""X-Powered-By""
+• For configuration references, check: https://www.rapid7.com/blog/post/2019/12/06/hidden-helpers-security-focused-http-headers-to-protect-against-vulnerabilities/",
+web,web_server,server_backend_server,X-Backend-Server 未設定或安全等級不足,X-Backend-Server Misconfiguration,,,L,L,2.08,1.18,0.68,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站中 Header 有後端 Server 版本資料揭露的風險。
+因為 Server 配置 Header 設定時，未特別針對後端 Server 的訊息做隱藏，這可能會導致後端Server的主機名稱和 IP 位置揭露，使攻擊者可以更針對性的設計攻擊。","We detected that your web server leaks information via the X-Backend-Server Header.  This may allow an adversary to fingerprint the backend server and perform targeted attacks. The obtained information may include IP addresses, the server name, and software versions.","為避免此風險，建議參照以下準則：
+•確認報告中後端 Server 的洩漏訊息，確保無主機名稱和 IP 位置揭露。 ","To mitigate this vulnerability, we suggest the following:
+• Ensure that the leaked information does not contain sensitive information.",
+web,web_server,server_asp_net_version,X-AspNet-Version 已啟用,X-AspNet-Version Misconfiguration,,,L,L,2.08,1.18,0.68,,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站中 Header 有AspNet版本資料揭露的風險。
+因為網站使用 asp.net 以及 asp.net mvc 框架使 Header 會出現 X-AspNet-Version＆ X-AspNetMVC-Version 的回應，假如該版本發生了風險，攻擊可以迅速的從 Header 洩露資訊來確定攻擊目標。",We detected that your web server leaks the ASP.NET version via the X-AspNet-Version and  X-AspNetMVC-Version Header.  This  allows an adversary to fingerprint the asp.net and asp.net mvc framework version and perform targeted attacks.,"為避免此風險，建議參照以下準則：
+•刪除 X-ASPNET-VERSION 欄位需將 web.config 檔案，做以下設定：
+<system.web>
+  <httpRuntime enableVersionHeader=""false"" />
+</system.web>
+
+•刪除 X-ASPNETMVC-VERSION 需變更 Global.asax 檔案，在Application_Start 函式中新增程式碼『
+MvcHandler.DisableMvcResponseHeader = true;』","To mitigate this vulnerability, we suggest the following:
+• Configure the  web.config file and make the following modifications:
+<system.web>
+  <httpRuntime enableVersionHeader=""false"" />
+</system.web>
+
+•  Configure the  Global.asax file and add ""MvcHandler.DisableMvcResponseHeader = true;"" to the Application_Start function.",
+web,web_server,server_same_site,SameSite Flag 未設定,SameSite Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站缺少 SameSite 屬性，該屬性可用來阻止瀏覽器將 Cookies 跨網站發送。
+主要為針對跨網站偽造要求攻擊（cross-site request forgery attacks）的防護。","We detected that the cookies on your website lack the SameSite attribute, which helps prevent browsers from sending cookies to external sites that fail the Same Origin Policy. 
+The SameSite attribute was developed to protect websites from Cross Site Request Forgery (CSRF) attacks.","為避免此風險，建議參照以下準則：
+SameSite 有三個數值 — Strict、Lax 和 None，建議依據網站需求選用 Strict 或 Lax 進行設定。
+•Strict 較為嚴格，完全禁止第三方 Cookies，適合用於銀行需要交易的網站中，保障客戶資料安全。
+•Lax 較為寬鬆，允許部分功能，平衡網路安全和使用者體驗的做法。","To mitigate this vulnerability, we suggest the following:
+The SameSite cookie attribute can assume one of three possible values: Strict, Lax, and None. 
+• Strict indicates that cookies will only be sent in a first-party context and not be sent along with requests initiated by third party websites. This is ideal for banking applications where transaction safety is paramount.
+• In comparison, Lax allows cookies to be sent when a user is navigating to the origin site, such as when following a link. This relatively lenient option may provide better user experience.
+
+We recommend using Strict or Lax.",
+web,web_server,server_strict_transport_security,Strict-Transport-Security 未設定,Strict-Transport-Security Misconfiguration,,,L,L,2.08,1.18,0.68,"8-7 設定安全性 Header，防止網頁嵌入
+8-2 使用 HTTP 強制安全傳輸協議",,,6. Develop and maintain secure systems and applications,,檢測到您的網站在Header 中缺少 Strict-Transport-Security 設定，此設定是一種可選擇的安全性強化功能，一旦受瀏覽器收到此 Header ，瀏覽器將只能通過 HTTPS 發送資訊，阻止 HTTP 發送任何資訊。,We detected that your website is missing the  Strict-Transport-Security Header. Strict-Transport-Security is designed to enforce HTTPS by explicitly instructing browsers to reject HTTP communication when this header is present.,"為強化安全性，建議可以參照以下準則：
+•在您的 WebServer 設定『Strict-Transport-Security： max-age=31536000; includeSubDomains』(此設定會禁止只支援 HTTP 的服務訪問頁面)","To mitigate this vulnerability, we suggest the following:
+• Configure the HTTP Header ""Strict-Transport-Security： max-age=31536000; includeSubDomains"" to enforce HTTPS on all listed domains",
+web,web_server,server_httponly,HttpOnly Flag 未設定 ,HttpOnly Misconfiguration,,,M,L,4.17,2.36,1.37,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站在Header 中缺少 HttpOnly屬性，該屬性可用來會限制 cookie 只能經由 HTTP(S) 協定來存取。因此當網站有 XSS 弱點時，若 cookie 含有 HttpOnly flag，則攻擊者無法直接經由 JavaScript 存取使用者的 session cookie，可降低使用者身份被盜用的機率。
+針對跨網站偽造要求的攻擊(cross-site request forgery attacks)作保護。","We detected that the cookies on your website lack the HttpOnly attribute, which restricts cookie manipulation to browsers and prevents code such as JavaScript from accessing cookies. This attribute helps mitigate CSRF attacks since adversaries are unable to extract cookies with malicious scripts.","為避免此風險，建議參照以下準則：
+•以 Java 設置 HttpOnly 為例，可以在 WEB-INF/web.xml 進行設定
+<session-config>
+   <cookie-config>
+    <http-only>true</http-only>
+   </cookie-config>
+</session-config>
+即可設置 HttpOnly 於 session cookie
+•請在伺服器設定中使用 HttpOnly：
+    - Windows IIS server: https://docs.microsoft.com/en-us/answers/questions/179172/implement-domain-http-only-and-secure-cookie-attri.html
+    - Apache server: https://geekflare.com/httponly-secure-cookie-apache/
+    - Nginx server: https://www.nginx.com/blog/nginx-plus-r23-released#cookie-flags","To mitigate this vulnerability, we suggest the following:
+• Configure your web server or web application to enable the HttpOnly cookie flag.
+• For configuration steps, refer to:
+    - Windows IIS server: https://docs.microsoft.com/en-us/answers/questions/179172/implement-domain-http-only-and-secure-cookie-attri.html
+    - Apache server: https://geekflare.com/httponly-secure-cookie-apache/
+    - Nginx server: https://www.nginx.com/blog/nginx-plus-r23-released#cookie-flags",
+web,web_server,server_cache_control,Cache-control 未設定或安全等級不足 ,Cache-control Misconfiguration,,,L,L,2.08,1.18,0.68,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,檢測到您的網站在Header 中缺少 Cache-control 或 Pragma 未正確設定，該屬性可用來限制網頁快取不被共用的快取伺服器存取及設定快取有效期限，使快取資源有有效期限，不易被駭客利用。,"We detected that your website has misconfigured the Cache-control and Pragma HTTP Headers, which are used to indicate caching behavior such as expiration times and revalidation conditions. This allows hackers to obtain cached sensitive information and possibly hijack sessions.","為避免此風險，建議參照以下準則：
+•於 HTTP Header 設置『Cache-Control： no-store』，即可設定不要存任何快取。
+•於 HTTP Header 設置『Cache-Control： no-cache』，即可設定快取須先向伺服器進行驗證。
+•於 HTTP Header 設置『Cache-Control： private』，即可設定快取不能被共用的快取伺服器儲存。
+•於 HTTP Header 設置『Cache-Control： max-age=3600』，即可設定快取內容之有效期限。
+•於 HTTP Header 設置『Cache-Control： must-revalidate』，即可設定快取內容若過期則必須重新驗證。","To mitigate this vulnerability, we suggest the following:
+• To preventing any caching, configure ""Cache-Control： no-store""
+•  To cache but require revalidation, configure ""Cache-Control： no-cache""
+•  To prevent shared caching, configure ""Cache-Control： private""
+• To set expiration times for caching, configure ""Cache-Control： max-age=3600""
+• To always require revalidation, configure ""Cache-Control： must-revalidate""",
+web,web_server,server_secure,Secure Flag 未設定 ,Secure Misconfiguration,,,M,L,4.17,2.36,1.37,"8-7 設定安全性 Header，防止網頁嵌入
+8-2 使用 HTTP 強制安全傳輸協議",,,6. Develop and maintain secure systems and applications,,"檢測到您的網站在 Header 中缺少 Secure 屬性，該屬性用以限制 Cookie 傳輸的方式。
+如果 Secure Attribute 設置為 True 時，Cookie 只能以較安全的形式向伺服器傳輸，例如 HTTPS 的方式，並在過程中進行加密使 Cookie 的內容不容易被竊取。","We detected that the cookies on your website lack the Secure attribute, which prevents browsers from sending cookies via unencrypted HTTP. Adversaries are unable to intercept plaintext cookies when this flag is set to True, which helps mitigate identity theft due to stolen cookies.","為避免此風險，建議參照以下準則：
+•java 在 Cookie Interface 設置 cookie.setSecure(true);。
+•在 web.xml 中設置。
+<session-config>
+ <cookie-config>
+  <secure>true</secure>
+ </cookie-config>
+</session-config>
+•請在伺服器設定中使用 Secure：
+    - Windows IIS server: https://docs.microsoft.com/en-us/answers/questions/179172/implement-domain-http-only-and-secure-cookie-attri.html
+    - Apache server: https://geekflare.com/httponly-secure-cookie-apache/
+    - Nginx server: https://www.nginx.com/blog/nginx-plus-r23-released#cookie-flags","To mitigate this vulnerability, we suggest the following:
+• Configure your web server or web application to enable the Secure cookie flag.
+• For configuration steps, refer to:
+    - Windows IIS server: https://docs.microsoft.com/en-us/answers/questions/179172/implement-domain-http-only-and-secure-cookie-attri.html
+    - Apache server: https://geekflare.com/httponly-secure-cookie-apache/
+    - Nginx server: https://www.nginx.com/blog/nginx-plus-r23-released#cookie-flags",
+web,web_server,server_feature_policy,Feature Policy 未設定 ,Feature Policy Misconfiguration,,,L,L,2.08,1.18,0.68,8-7 設定安全性 Header，防止網頁嵌入,,,6. Develop and maintain secure systems and applications,,"檢測到您網站中缺少 Feature Policy，此設定允許 Web 開發人員有選擇啟用及禁用修改瀏覽器中某些功能和 API 的行為。
+可以避免網站使用敏感的 API（例如攝影機或麥克風）使網頁的安全性提高。","We detected that your website is missing the Feature Policy Header, which is used for websites to allow and deny the use of  certain browser features, such as the microphone and geolocation functions, in frames. Feature Policy helps prevent adversaries from obtaining access to sensitive features even when the website is compromised.","為避免此風險，建議參照以下準則：
+•設置『Feature-Policy： vibrate 'none'; geolocation 'none'』。
+•禁用所有敏感的API及避免網站功能遭到修改或變更。","To mitigate this vulnerability, we suggest the following:
+• Configure the HTTP Header ""Feature-Policy： vibrate 'none'; geolocation 'none'""
+• Disable usage of sensitive APIs and ensure adversaries cannot modify website functionality",
+web,web_server,server_redirect_info,重導向回覆包含大量資訊,Leaked Information in Redirection Response,,,L,L,2.08,1.18,0.68,,,,6. Develop and maintain secure systems and applications,,檢測到您的網站執行導頁時有過多網頁回應，可能讓您的網站在過程中洩漏較敏感資訊或是個人資訊，這些信息可能會導致進一步針對內部系統的攻擊。,We detected that your website contains sensitive information in HTTP responses when processing site redirection. This may allow adversaries to obtain PII or fingerprint the website's technology stack and launch targeted attacks.,"為避免此風險，建議參照以下準則：
+•依據報告檢查並刪除網頁回應中較敏感資訊，如系統資訊或是個人敏感資訊。","To mitigate this vulnerability, we suggest the following:
+• Ensure that the information listed in the details section does not contain sensitive data, such as system information or PII.",
+web,web_server,server_cross_javascript,跨域引用 Javascript 檔案,Cross Site JavaScript Inclusion,,,L,L,2.08,1.18,0.68,,,,6. Develop and maintain secure systems and applications,,檢測到您的網站有引用其三方的程式碼，當您的某些 JavaScript 文件位於不受您管理的第三方域上時，攻擊者可能會嘗試劫持該域或訪問該第三方伺服器導致文件被惡意內容替換。,"We detected that your website includes third-party JavaScript files. If these external domains are compromised, an adversary may replace these files with malicious scripts to trigger code execution on your servers.","為避免此風險，建議參照以下準則：
+•確保只從受信任的來源及域載入 JavaScript 文件。
+•將所有應用程序文件託管在伺服器或值得信任的第三方服務（例如 CDN）。","To mitigate this vulnerability, we suggest the following:
+• Ensure the loaded external JavaScript files are from trusted sources.
+• Consider hosting the web application files on a trusted CDN or server that you control.",
+web,web_server,server_info_leak,資訊洩漏,Information Leakage,,,M,L,4.17,2.36,1.37,,,,6. Develop and maintain secure systems and applications,,,,,,
+web,web_server,server_info_leak_version,資訊洩漏,Information Leakage,伺服器版本洩漏,Leaked Server Version,M,L,,,,,,,,,檢測到伺服器版本資訊。若此版本有已知弱點，可能會被攻擊者直接利用。即使當前版本安全，未來若有新漏洞釋出，您將會成為掌握您資訊的駭客優先攻擊的目標。建議減少揭露在外的資訊。,"We detected that your website leaks information on the server software version, which allows an adversary to launch targeted attacks against your technology's known weaknesses.","為避免此風險，建議參照以下準則：
+•更新至當前最新或無風險之版本。
+•隱藏版本資訊。","To mitigate this vulnerability, we suggest the following:
+• Upgrade your server software to the latest version or at least a later version with no known weaknesses.
+• Hide or remove the server version string from responses..",
+web,web_server,server_info_leak_ip,資訊洩漏,Information Leakage,IP 位置洩漏,Leaked IP Addresses,L,L,,,,,,,,,檢測到 IP 資訊，有可能是預期外的 IP 位置被公開，攻擊者可能會嘗試對外洩的 IP 位置嘗試攻擊。,"We detected that your website leaks IP addresses, which allows an adversary a greater attack surface, especially is the leaked IP is internal or sensitve.","為避免此風險，建議參照以下準則：
+•請驗證所檢測的 IP 位置是否為機密信息。
+•移除或隱藏網頁上檢測到的非公開 IP 位置。","To mitigate this vulnerability, we suggest the following:
+• Ensure the leaked IP addresses are not sensitive.
+• Remove any private IP addresses  from the web page.",
+web,web_server,server_info_leak_error_message,資訊洩漏,Information Leakage,錯誤信息揭露,Leaked Error Messages,M,L,,,,,,,,,"檢測到您的網站頁面包含一條錯誤/警告消息，該消息可能會洩露敏感信息，造成安全風險。
+較常見是紀錄異常的文件位置，內容包含網頁結構及資料夾名稱，導致攻擊者可藉此針對網頁進行資料探尋、替換等攻擊行為。",We detected that your website leaks error or warning messages with debugging information that may help adversaries fingerprint your technology stack and file system. This gives an attacker detailed insight into the system internals and precipitates further attacks.,"為避免此風險，建議參照以下準則：
+•查看此頁面的原始碼，並改用自定義的錯誤頁面。
+•可考慮實現機制為，在向客戶端（瀏覽器）提供錯誤參考碼/識別碼的同時，將詳細信息記錄到伺服器端，而不向用戶公開。","To mitigate this vulnerability, we suggest the following:
+• Check the page's source code and use custom and general error pages.
+• Consider logging events and errors on the server side and hide such information from the client side.",
+web,web_server,server_options,未正面表列限制僅接受所需的 HTTP 請求方法,Missing whitelist of HTTP methods,,,M,L,4.17,2.36,1.37,8-3 正面表列限制僅接受所需的 HTTP 請求方法,,,,,檢測到您的網站開啟非必需的 HTTP 請求方法，例如：Trace，可以使攻擊者追蹤流量藉此發現可能的私密 IP 位置。,"We detected that your web server does not explicitly list accepted HTTP methods via the OPTIONS method. This indicates that some excessive  and sensitive methods might be enabled, such as the Trace method which leaks debug messages and possibly internal IP addresses, or the PUT method which allows uploading files to the server.","為避免此風險，建議參照以下準則：
+•應正面表列並限制接受僅接受所需的 HTTP 請求方法（如 GET 、 POST）。","To mitigate this vulnerability, we suggest the following:
+• Explicitly state whitelisted HTTP methods(i.e GET and POST) with the OPTIONS method.",
+web,web_server,server_header_content_inconsist,允許回應內容需與 Header 宣告內容類型不一致,Inconsistent Headers and Response Content,,,M,M,4.17,2.36,1.37,8-4 確保回應內容需與 Header 宣告內容類型一致,,,,,檢測到您的網站允許回應內容與 Header 宣告內容類型不一致，可能導致攻擊者竄改 Header 內容成功，使機敏資訊揭露或讓攻擊者獲取更高級別權限。,We detected that your web server allows the response content to differ from data indicated in the request headers. This may allow an adversary to modify headers and gain sensitive information or higher privileges.,"為避免此風險，建議參照以下準則：
+•應採用 HTTP 請求 Header content-type 欄位（如 application/xml、application/json 等）並確保回應內容與 Header 所宣告內容類型 （content-type）一致。","To mitigate this vulnerability, we suggest the following:
+• Ensure that the request header ""Content-Type"" matches the response format.",
+web,web_server,server_cookie_session_expire,cookie 或 session 無有效期限及正確性,Missing Cookie and Session Validation and Expiration Times,,,M,M,4.17,2.36,1.37,8-8 確保 cookie 或 session 的有效期限及正確性,,,,,檢測到您的網站 cookie 或 session 無有效期限及正確性，這會提高網站的風險性，例如攻擊者竄改網站 cookie 或 session ，使機敏資訊揭露或讓攻擊者獲取更高級別權限，或是意外洩漏網站 cookie 或 session 卻因無有效期限而使風險一直存在。,"We detected that the cookies and sessions for your website lacks expiration times or validation, which allows an adversary to forge cookies and sessions to obtain higher privileges or use a stolen cookie for long term exploitation.","為避免此風險，建議參照以下準則：
+•應確保網站 cookie 或 session 的加密規則及使用，且在一定期限內會過期。","To mitigate this vulnerability, we suggest the following:
+• Ensure that the website cookies and sessions are encrypted and sufficiently validated
+• Ensure that the website cookies and sessions have expiration times",
+web,web_application,web_csrf_token,缺少 CSRF Token,Missing CSRF Token,,,M,H,33.33,2.36,1.37,,,,6. Develop and maintain secure systems and applications,,"檢測到您的網站缺少CSRF Tokens，可能會導致跨站點請求偽造攻擊（CSRF）。​
+此攻擊會導致攻擊者以使用者名義發送郵件、消息，盜取帳號。
+是一種誘使使用者在他們不知道的情況發送http請求到目標網站，包括但不限於
+•受害者在目標網站上進行活動的session。 
+•通過目標網站上的http auth對受害者進行身份驗證。","We detected that your website is missing CSRF tokens, which are the primary defense against Cross Site Request Forgery (CSRF) attacks. 
+
+A CSRF attack is when an attacker tricks an authenticated victim to unknowingly perform an action, such as making a transaction or changing the account password. This may result in theft, account takeover, or impersonated phishing attacks.","為避免此風險，建議參照以下準則：
+•使用經過審查的套件或框架。 ​
+•使用諸如 owasp csrfguard 之類的反 CSRF 套件。​
+•避免使用 GET request 進行改變狀態的請求。
+•檢查 http 引用Header 以查看該請求是否源自預期的頁面。","To mitigate this vulnerability, we suggest the following:
+• Use well-audited frameworks with builtin CSRF protection.
+• Use anti-CSRF libraries such as OWASP CSRFGuard.
+• Do not use GET requests for state changing operations.
+• Verify the Origin and Referer standard HTTP headers to ensure requests are coming from expected locations.",
+web,web_application,web_http_https_mixed,HTTP 與 HTTPS 混用,Mixing HTTP and HTTPS,,,M,M,33.33,2.36,1.37,8-2 使用 HTTP 強制安全傳輸協議,,,6. Develop and maintain secure systems and applications,,,,,,
+web,web_application,web_http_https_mixed_http,HTTP 與 HTTPS 混用,Mixing HTTP and HTTPS,HTTP 存取 HTTPS 資訊,Accessing HTTPS Content with HTTP,M,M,,,,8-2 使用 HTTP 強制安全傳輸協議,,,6. Develop and maintain secure systems and applications,,檢測到您的網站不強制網站使用 HTTPS 瀏覽網站，可以使用HTTP對網站內容進行存取，這將導致傳輸過程中資料不被加密，進而增加資料揭露的風險。,We detected that your website does not enforce HTTPS. HTTPS encrypts the transmitted data to prevent leaking  sensitive information to adversaries.,"為避免此風險，建議參照以下準則：
+•至伺服器對可進行存取之協定進行調整，關閉網站可使用 HTTP 存取功能。","To mitigate this vulnerability, we suggest the following:
+• Configure your web server to disable HTTP access and enforce HTTPS.",
+web,web_application,web_http_https_mixed_https,HTTP 與 HTTPS 混用,Mixing HTTP and HTTPS,HTTPS 存取 HTTP 資訊,Accessing HTTP Content with HTTPS,M,M,,,,8-2 使用 HTTP 強制安全傳輸協議,,,6. Develop and maintain secure systems and applications,,"檢測到您網站中此 HTTPS 頁面中有不安全的HTTP表單的，這可能會產生安全風險。
+攻擊者可利用 HTTP 表單未加密內容的風險而使用中間人攻擊來劫持此頁面，替換或欺騙表單的目標。","We detected that your HTTPS page contains HTTP forms, which may allow an adversary to access unencrypted sensitive data through a man-in-the-middle attack by intercepting and modifying communication.","為避免此風險，建議參照以下準則：
+•表單目標應指向安全的 HTTPS 頁面。
+•為 Web 應用程序中的所有 HTTP POST 請求配置 HTTPS，以確保所有資源都是通過 HTTPS 加密傳輸。
+•將 HTTPS 頁面上所有的 HTTP 請求用 HTTPS 取代。包含 JavaScript 檔案、CSS 樣式表、影像檔、影片檔或是其他多媒體文件連結。","To mitigate this vulnerability, we suggest the following:
+• Forms should make requests to safe HTTPS endpoints.
+• Ensure all information is transmitted with HTTPS by configuring HTTPS for all POST requests in the web application.
+• Ensure all requests are made with HTTPS in HTTPS pages. This applies for JavaScript files, CSS styles, images, videos, or other multimedia.",
+web,web_application,web_viewstate,ViewState,ViewState,,,L,L,16.67,1.18,0.68,,,,,,,,,,
+web,web_application,web_viewstate_ip,ViewState,ViewState,ViewState IP 位置洩漏,ViewState Leaks IP Addresses,L,L,,,,,,,,,"檢測到您的網站在 ViewState 上下文中有序列化的IP位置洩漏
+這會導致可能是預期外的 IP 位置被公開。","We detected that your website leaks IP information in the ViewState mechanism. The ViewState technique in ASP.NET stores serialized data, which may contain potentially sensitive information such as IP addresses.","為避免此風險，建議參照以下準則：
+•請驗證所檢測的 IP 位置是否為機密信息。
+•移除或隱藏網頁上檢測到的非公開 IP 位置。","To mitigate this vulnerability, we suggest the following:
+• Ensure the leaked IP addresses are not sensitive.
+• Remove any private IP addresses from the ViewState.",
+web,web_application,web_viewstate_mail,ViewState,ViewState,ViewState 電子郵件洩漏,ViewState Leaks Email Addresses,L,L,,,,,,,,,"檢測到您的網站在 ViewState 上下文中有序列化的電子郵件洩漏。
+這會導致可能是預期外的不公開電子郵件被公開","We detected that your website leaks email information in the ViewState mechanism. The ViewState technique in ASP.NET stores serialized data, which may contain potentially sensitive information such as email addresses.","為避免此風險，建議參照以下準則：
+•請驗證所檢測的電子郵件是否為機密信息。
+•移除或隱藏網頁上檢測到的非公開電子郵件。","To mitigate this vulnerability, we suggest the following:
+• Ensure the leaked email addresses are not sensitive.
+• Remove any email addresses that are not public from the ViewState.",
+web,web_application,web_referer,Referer 資訊洩露,Informaiton Leakage in Referer Header,,,L,L,16.67,1.18,0.68,,,,,,檢測到您的網站 Referer 有洩漏資訊的風險產生，當瀏覽器向 web 伺服器傳送請求的時候，一般會帶上 Referer，協助分析使用者來源，但可能不小心包含使用者敏感資訊，例如 sessionid 或是 token 放在url中傳遞，導致以上資訊被包含在 Referer 資訊中。,"We detected that your web server leaks information in the Referer Header. Requests often include the Referer HTTP Header to help websites analyze client sources. However, they may contain sensitive information such as sessionids, cookies, or tokens, which allow adversaries to obtain critical data.","為避免此風險，建議參照以下準則：
+•檢查 Referer 內容無洩漏個人敏感資訊及在 Referrer Policy 設定下列參數。
+    - no-referrer
+    - no-referrer-when-downgrade
+    - same-origin
+    - origin
+    - strict-origin
+    - origin-when-cross-origin
+    - strict-origin-when-cross-origin
+    - unsafe-url","To mitigate this vulnerability, we suggest the following:
+• Ensure the leaked information does not contain PII or other sensitive data
+• Configure the following directives in the Referer Policy:
+    - no-referrer
+    - no-referrer-when-downgrade
+    - same-origin
+    - origin
+    - strict-origin
+    - origin-when-cross-origin
+    - strict-origin-when-cross-origin
+    - unsafe-url",
+web,certificate,cert_no_https,未提供 HTTPS,HTTPS Not Supported,,,H,M,80.00,20.00,10.00,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default (Section 21 The Data Controller shall collect, use, or disclose Personal Data according to the purpose notified to the data subject prior to or at the time of such collection.)
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的網站不使用 HTTPS。使用 HTTP 對網站內容進行存取，將導致傳輸過程中資料不被加密，進而增加資料揭露的風險。若您傳輸帳號密碼或是個資等敏感資訊，可能被駭客明文讀取進而竊取機密。,"We detected that your server does not support HTTPS. When data is transmitted via HTTP, the communication is not encrypted and an adversary may intercept and obtain sensitive information, such as identity cookies and PII, in plaintext.","為避免此風險，建議參照以下準則：
+•請向您的 CA 申請憑證，並在伺服器中進行設定使用 HTTPS。
+    - Windows IIS server 請參照 https://nknuahuang.wordpress.com/2020/08/07/windows-server-iis安裝ssl，設定http-強制轉-https/
+    - Apache server 請參照 https://techexpert.tips/apache/enable-https-apache/
+    - Nginx server 請參照 https://blog.gtwang.org/linux/nginx-create-and-install-ssl-certificate-on-ubuntu-linux/
+","To mitigate this vulnerability, we suggest the following:
+• Register an SSL certificate with your CA and configure your server to use HTTPS.
+    - Windows IIS server: https://techexpert.tips/iis/enable-https-iis/
+    - Apache server: https://techexpert.tips/apache/enable-https-apache/
+    - Nginx server: http://nginx.org/en/docs/http/configuring_https_servers.html",
+web,certificate,cert_ssl_too_old,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,,,H,L,6.45,4.72,2.73,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+","SSL（ Secure Sockets Layer）安全通訊端層，是一種標準技術，用於保持網際網路連線安全防止系統之間的敏感資料被駭客讀取甚至修改任何傳輸資訊。
+TLS（ Transport Layer Security）傳輸層安全性，是一種取代 SSL 的加密協定，比 SSL 更能提供更高更安全的連線。使用過舊或已廢棄的協議可能導致駭客利用已知漏洞竊取傳輸中的機敏資料。",SSL (Secure Sockets Layer) is a cryptographic network protocol designed to provide secure communication over the internet. TLS (Transport Layer Security) is an enhanced version and successor of SSL. Using outdated or deprecated protocol versions may allow adversaries to exploit known vulnerabilities and exfiltrate sensitive information.,"為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用強度較高協定並移除有資安疑慮的舊協定。
+    - Windows server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://medium.com/@lawrencechuang760223/如何在apache-server下停用ssl2-0-ssl3-0-tls1-0-96120ebb333e
+    - Nginx server 請參照 https://www.liaohaha.tw/2020/03/nginxtls-1011.html","To mitigate this vulnerability, we suggest the following:
+• Configure your server to use newer and higher protocol versions and remove flawed protocols. 
+    - Windows IIS server: https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server: https://www.leaderssl.com/news/471-how-to-disable-outdated-versions-of-ssl-tls-in-apache
+    - Nginx server: https://techexpert.tips/nginx/nginx-disable-ssl-tls-1-0-tls-1-1/",
+web,certificate,cert_ssl_too_old_ssl2,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,使用 SSL 2.0,Supports SSL 2.0,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器使用 SSL 2.0。SSL 2.0 於 1995 問世並在 2011 因嚴重資安問題而被廢棄，請停用 SSL 2.0。,We detected that your server uses SSL 2.0. SSL 2.0 was introduced in 1995 and deprecated in 2011 due to severe security flaws. Disable SSL 2.0 in your servers.,•請確認網站已停用 SSLv2。,•Please confirm that the website has disabled SSLv2.,
+web,certificate,cert_ssl_too_old_ssl3,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,使用 SSL 3.0,Supports SSL 3.0,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器使用 SSL 3.0。SSL 3.0 於 1996 問世並在 2015 因嚴重資安問題而被廢棄，請停用 SSL 3.0。,We detected that your server uses SSL 3.0. SSL 3.0 was introduced in 1996 and deprecated in 2015 due to severe security flaws. Disable SSL 3.0 in your servers.,•請確認網站已停用 SSLv3。,• Please confirm that the website has disabled SSLv3.,
+web,certificate,cert_ssl_too_old_tls1,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,使用 TLS 1.0,Supports TLS 1.0,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器使用 TLS 1.0。TLS 1.0 於 1999 問世並在 2020 因資安問題而被廢棄，請停用 TLS 1.0。,We detected that your server uses TLS 1.0. TLS 1.0 was introduced in 1999 and deprecated in 2020 due to severe security flaws. Disable TLS 1.0 in your servers.,•請確認網站已停用 TLS 1.0。,• Please confirm that the website has disabled TLS 1.0.,
+web,certificate,cert_ssl_too_old_tls1_1,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,使用 TLS 1.1,Supports TLS 1.1,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器使用 TLS 1.1。TLS 1.1 於 2006 問世並在 2020 因資安問題而被廢棄，請停用 TLS 1.1。,We detected that your server uses TLS 1.1. TLS 1.1 was introduced in 2006 and deprecated in 2020 due to severe security flaws. Disable TLS 1.1 in your servers.,•請確認網站已停用 TLS 1.1。,• Please confirm that the website has disabled TLS 1.1.,
+web,certificate,cert_ssl_too_old_tls1_2,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,未使用 TLS 1.2,No Support for TLS 1.2,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器未使用 TLS 1.2。TLS 1.2 於 2008 問世並為建議使用的最低版本。,We detected that your server does not support TLS 1.2. TLS 1.2 was introduced in 2008 and is the minimum recommended protocol version.,•請確認網站已停用 TLS 1.2 中強度不足的加密方式，包含NULL、RC2、RC4、DES、IDEA與TDES/3DES等演算法。,"• Please confirm that the website has disabled the weak encryption methods in TLS 1.2, including NULL, RC2, RC4, DES, IDEA and TDES/3DES algorithms.",
+web,certificate,cert_ssl_too_old_tls1_3,SSL/TLS 協議過舊,Outdated SSL/TLS Versions,未使用 TLS 1.3,No Support for TLS 1.3,H,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.32 Security of processing","5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected
+",檢測到您的伺服器未使用 TLS 1.3。TLS 1.3 於 2018 問世，是目前安全的協定，請使用 TLS 1.3。,We detected that your server does not support TLS 1.3. TLS 1.3 was introduced in 2018 and is currently a safe protocol version. Please configure your servers to use TLS 1.3.,•請確認網站僅使用 TLS 1.3 ，避免與其他加密方式混用。,• Please make sure the website only uses TLS 1.3 and avoid mixing with other encryption methods,
+web,certificate,cert_algo_null,不安全的加密法：使用 NULL 加密套件,Dangerous Ciphers: Supports NULL Ciphers,,,H,L,6.45,4.72,2.73,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.(Protect Cardholder Data with Strong Cryptography During
+Transmission Over Open, Public Networks)
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用 NULL 加密套件。 NULL 加密即伺服器選擇不對傳輸訊息進行加密，而是使用已知且公開的演算法進行資料混淆。這種情況等同完全不對資料做任何保護，駭客可以輕易逆向破解來得到機密資訊。NULL 加密不應被使用在正式環境中，請停用。,"We detected that your server uses NULL ciphers. The NULL cipher, or null encryption, is choosing not to use encryption in the system, and is identical to not providing any protection for the communication. An adversary can simply read or decode the data to obtain sensitive information. Do not use NULL ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of NULL ciphers in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_anoy_null,不安全的加密法：使用匿名 NULL 加密套件,Dangerous Ciphers: Supports Anonymous NULL Ciphers,,,H,L,6.45,4.72,2.73,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用匿名 NULL 加密套件。此時伺服器與客戶端連線時，不會進行身份驗證或是憑證交換，因此駭客可能透過中間人攻擊冒充合法服務來劫持機密資訊。請停用匿名 NULL 加密。,"We detected that your server uses Anonymous NULL ciphers. The Anonymous NULL ciphersuites do not perform authentication or certificate exchange when establishing client connections, thus they are vulnerable to man-in-the-middle attacks. Do not use Anonymous NULL ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of Anonymous NULL ciphers in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_export,不安全的加密法：使用 EXPORT 加密套件,Dangerous Ciphers: Supports EXPORT Ciphers,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用 EXPORT 加密套件。EXPORT 加密套件是一組由美國情報機關特意設計且強度較弱的加密法，用以監控美國境外的通訊訊息，因此能被駭客輕易破解。請停用 EXPORT 加密套件。,"We detected that your server uses EXPORT ciphers. The EXPORT ciphersuites were designed by US intelligence agencies to be deliberately weak and can be compromised in a relatively short period of time, which may result in theft of sensitive data.Do not use EXPORT ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of EXPORT ciphers in your web server, for configuration references, check:
+    - Windows IIS server:https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_low,不安全的加密法：使用低強度加密套件,Dangerous Ciphers: Supports LOW grade Ciphers,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用低強度加密套件。低強度加密套件，包含 RC2、RC4、MD5、DES 等，使用長度較短的金鑰，因此複雜度與防禦能力均較弱，有許多已知弱點能允許駭客破解加密訊息。請停用低強度加密套件。,"We detected that your server uses LOW grade ciphers. The  LOW grade ciphersuites, including RC2, RC4, MD5, and DES, use shorter encryption keys and offer less complexity and protection. These ciphers have several known weaknesses and can be compromised in a relatively short period of time, which may result in theft of sensitive data. Do not use  LOW grade ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of LOW grade ciphers in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_3des,不安全的加密法：使用 3DES 或 IDEA 加密套件,Dangerous Ciphers: Supports 3DES and IDEA Ciphers,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用 3DES 或 IDEA 加密套件。3DES 雖為低強度加密套件 DES 的加強版，但已被破解且受 SWEET32 等攻擊的威脅。IDEA 為另一用以替代 DES 的加密法，同樣已被破解。這兩種皆為較弱的加密套件，能允許駭客破解加密訊息，請停用。,"We detected that your server uses 3DES and IDEA ciphers. The 3DES cipher is an enhanced version of the LOW grade DES cipher, but it has been cracked and is vulnerable to weaknesses such as the SWEET32 attack. The IDEA  cipher is another alternative to DES and is also vulnerable to several attacks. Do not use 3DES and IDEA ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of 3DES and IDEA ciphers in your web server, for configuration references, check:
+    - Windows IIS server:https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_cbc,不安全的加密法：使用 CBC 加密套件,Dangerous Ciphers: Supports CBC Ciphers,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用 CBC 加密套件。 為了對較長的訊息進行加密，會先將明文訊息切成若干個固定大小的區塊、再逐一加密並串連組合來構成完整秘文。CBC （Cipher block chaining）即其中一種組合區塊的方式，由於機制相對簡單，針對 CBC 已有許多攻擊手法，能導致傳輸的機敏資料被破解。請停用 CBC 的加密套件。 ,"We detected that your web server uses CBC ciphers. 
+When encrypting larger amounts of data, the plaintext is first divided into fixed-length blocks, which are then encrypted and chained into the full ciphertext. Cipher Block Chaining (CBC) mode is a commonly used type of such operations. Due to its simplicity, CBC is vulnerable to several known attacks and can be compromised in a relatively short period of time, which may result in theft of sensitive data. Do not use CBC ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Disable usage of CBC ciphers in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_use_no_forward,不安全的加密法：使用不提供前向保密的加密套件,Dangerous Ciphers: Supports STRONG grade Ciphers without Forward Secrecy,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用不提供前向保密的強加密套件。強加密套件包含 AEAD 等安全且沒有已知威脅的加密法。前向保密，有時稱為完全前向保密，是一種密碼學中的安全屬性，指當前或是長期使用的金鑰如果洩漏了並不會導致過去的對話被破解，能保證歷史通訊的保密性。使用不提供前向保密的強加密套件無法抵擋未來金鑰暴露的威脅。,"We detected that your web server uses STRONG grade ciphersuites that do not provide Forward Secrecy. STRONG grade ciphers, such as AEAD, are secure and have no known weaknesses. Forward Secrecy, also known as Perfect Forward Secrecy, is a feature in cryptography that guarantees the security of past comunication even if long-term secrets used in the session key are compromised. If STRONG grade ciphers without forward secrecy are used, an adversary may decrypt past traffic and leak sensitive information.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Enable usage of STRONG grade ciphersuites that provide Forward Secrecy ciphers in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_algo_not_forward,不安全的加密法：未提供使用前向保密的加密套件,Dangerous Ciphers: No Support for STRONG grade Ciphers with Forward Secrecy,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器不提供使用前向保密的強加密套件。強加密套件包含 AEAD 等安全且沒有已知威脅的加密法。前向保密，有時稱為完全前向保密，是一種密碼學中的安全屬性，指當前或是長期使用的金鑰如果洩漏了並不會導致過去的對話被破解，能保證歷史通訊的保密性。,"We detected that your web server does not support STRONG grade ciphersuites that provide Forward Secrecy. STRONG grade ciphers, such as AEAD, are secure and have no known weaknesses. Forward Secrecy, also known as Perfect Forward Secrecy, is a feature in cryptography that guarantees the security of past comunication even if long-term secrets used in the session key are compromised.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Enable usage of STRONG grade ciphersuites that provide Forward Secrecy in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_forward,前向保密,Forward Secrecy,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",前向保密，有時稱為完全前向保密，是一種密碼學中的安全屬性，指當前或是長期使用的金鑰如果洩漏了並不會導致過去的對話被破解，能保證歷史通訊的保密性。," Forward Secrecy, also known as Perfect Forward Secrecy, is a feature in cryptography that guarantees the security of past comunication even if long-term secrets used in the session key are compromised.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用此加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• Configure your server to enable forward secrecy:
+    - Windows IIS server: https://www.hass.de/content/setup-microsoft-windows-or-iis-ssl-perfect-forward-secrecy-and-tls-12
+    - Apache server: https://www.digicert.com/kb/ssl-support/ssl-enabling-perfect-forward-secrecy.htm
+    - Nginx server:https://www.digicert.com/kb/ssl-support/ssl-enabling-perfect-forward-secrecy.htm and  https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_6",
+web,certificate,cert_forward_offered,前向保密,Forward Secrecy,未提供前向保密,No Support for Forward Secrecy,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器不提供前向保密。,We detected that your server does not support forward secrecy.,,,
+web,certificate,cert_forward_offered_ecdhe,前向保密,Forward Secrecy,前向保密未使用高強度的 ECDHE 曲線,Weak ECDHE Curves,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器前向保密未使用高強度的 ECDHE 曲線。ECDHE 是一種匿名的密鑰合意協議（Key-agreement protocol），採用橢圓曲線密碼學來加強安全性，且能提供前向保密。使用高強度的 ECDHE 曲線能保證建立安全的通訊通道。,We detected that your server uses weak ECDHE curves. ECDHE is a key agreement protocol using elliptic-curve cryptography and provides forward secrecy. Using strong ECDHE curves provides a more secure channel for communications.,,,
+web,certificate,cert_forward_dh,前向保密,Forward Secrecy,前向保密未使用高強度的 DH 組,Weak DH Groups,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器前向保密未使用高強度的 DH 組。 DH 組代表的是密鑰合意協議（Key-agreement protocol）中所使用的金鑰長度。一般來說，數字越高的 DH 組越安全，運算也更費時。建議您使用 19、20、21 的 DH 組並避免使用1、2、5、14 的 DH 組。,"We detected that your server uses weak DH groups. A Diffie-Hellman (DH) group determines the strength of the key used in a key-agreement protocol, with a higher number indicating more security and computation complexity. We suggest using the group numbers 19, 20, 21 and avoid using 1, 2, 5, 14 for forward secrecy.",,,
+web,certificate,cert_not_strong,系統預設強度不足,Weak System Defaults,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",當客戶端與伺服器進行連線並協議共同使用的通訊協議與加密套件時，客戶端會分別提供優先序高至低排列的加密套件與協議列表。伺服器端將參照己方之對應列表，並選擇雙方所共同支援且優先度最高的項目。,"When the client and server attempts to initiate a connection, they must agree upon the protocol and cipher suite to use. The client provides a list of supported protocols and ciphers in order of preference, and the server will check its corresponding lists and select the first match available to both parties.",,,
+web,certificate,cert_not_strong_default_list,系統預設強度不足,Weak System Defaults,無預設使用加密套件列表,No Default Cipher Order,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器未指定預設使用的加密套件列表。若不提供此列表，則駭客可任意選擇易破解之弱加密套件，可能造成機密資訊遭竊。,"We detected that your server does not have a default cipher order list. If no preference is indicated, an adversary can deliberately select an easily crackable weak cipher and steal sensitive information.","為避免此風險，建議參照以下準則：
+•指定預設使用的加密套件列表。此表應依加密強度由高至低排列，並排除不安全的加密套件。
+    - Windows IIS server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/manage-tls#configuring-tls-cipher-suite-order
+    - Apache server 請參照 https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ciphersuites
+    - Nginx server 請參照 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_4","To mitigate this vulnerability, we suggest the following:
+• Configure your server to use a cipher order list. This list must be ordered by preference and must not contain dangerous ciphers:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows-server/security/tls/manage-tls
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ciphersuites
+    - Nginx server: https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_4",
+web,certificate,cert_not_strong_ssl_tls,系統預設強度不足,Weak System Defaults,預設未使用強 SSL/TLS 協議,Weak SSL/TLS Version,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器未預設使用強 SSL/TLS 協議。若不優先指定強 SSL/TLS 協議，駭客可任意選擇易破解之加密協議，可能造成機密資訊遭竊。,"We detected that your server does not indicate a preference for strong SSL/TLS protocols, which allows an adversary to deliberately select a flawed protocol and steal sensitive information. We settled upon a weak cipher when negotiating with your server.","為避免此風險，建議參照以下準則：
+•列表應指定優先使用強 SSL/TLS 協議。此表應依加密強度由高至低排列，並排除不安全的 SSL/TLS 協議。
+    - Windows server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://medium.com/@lawrencechuang760223/如何在apache-server下停用ssl2-0-ssl3-0-tls1-0-96120ebb333e
+    - Nginx server 請參照 https://www.liaohaha.tw/2020/03/nginxtls-1011.html","To mitigate this vulnerability, we suggest the following:
+• Configure your server to prefer stronger protocols:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows-server/security/tls/manage-tls
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ciphersuites
+    - Nginx server: https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5",
+web,certificate,cert_not_strong_default,系統預設強度不足,Weak System Defaults,預設未使用強加密法,Weak Ciphers,L,L,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器未預設使用強加密套件。若不優先指定強加密套件，則駭客可任意選擇易破解之弱加密套件，可能造成機密資訊遭竊。,"We detected that your server does not indicate preference for strong ciphers, which allows an adversary to deliberately select an easily crackable weak cipher and steal sensitive information. We settled upon a weak protocol when negotiating with your server.","為避免此風險，建議參照以下準則：
+•列表應指定優先使用強加密套件。此表應依加密強度由高至低排列，並排除不安全的加密套件。
+    - Windows IIS server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/manage-tls#configuring-tls-cipher-suite-order
+    - Apache server 請參照 https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ciphersuites
+    - Nginx server 請參照 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_4","To mitigate this vulnerability, we suggest the following:
+• Configure your server to use a cipher order list. This list must be ordered by preference and must not contain dangerous ciphers:
+    - Windows IIS server: https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server: https://www.leaderssl.com/news/471-how-to-disable-outdated-versions-of-ssl-tls-in-apache
+    - Nginx server: https://techexpert.tips/nginx/nginx-disable-ssl-tls-1-0-tls-1-1/",
+web,certificate,cert_lib,憑證簽章使用不安全的加密套件,Certificate uses Weak Ciphers,,,L,M,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",,,,,
+web,certificate,cert_lib_algo,憑證簽章使用不安全的加密套件,Certificate uses Weak Ciphers,使用不安全的加密演算法,Dangerous Encryption Algorithm,L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證使用不安全的加密演算法。此加密演算法用於簽署憑證金鑰，須避免使用 SHA1 與 MD家族（MD3、MD4、MD5）等弱加密套件。,"We detected that your certificate uses a dangerous encryption algorithm for the key signature. Avoid using weak ciphers, such as SHA1 and the MD suite (MD3, MD4, MD5).","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用至少 SHA2 強度的強加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Enable usage of at least SHA2 level ciphersuites in your web server, for configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_lib_weak_key,憑證簽章使用不安全的加密套件,Certificate uses Weak Ciphers,使用長度不足的加密金鑰,Short Encryption Key,L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的憑證使用長度不足的加密金鑰。依據美國國家標準技術研究所（NIST），建議使用的最小金鑰長度如下：
+• ECC（ECDSA、EdDSA、DH）：224 位元
+• RSA、DSA、DH：2048 位元
+• AES：128 ","We detected that your certifice uses short encryption keys. As suggested by NIST, the minimum key length for each cipher should be:
+• ECC (ECDSA, EdDSA, DH): 224 bytes
+• RSA, DSA, DH: 2048 bytes
+• AES: 128 bytes","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用適當長度的強加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Configure your web server to use strong ciphersuites with sufficient key lengths. For configuration references, check:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.7",
+web,certificate,cert_lib_wrong_key,憑證簽章使用不安全的加密套件,Certificate uses Weak Ciphers,錯誤使用加密金鑰,Incorrect Key Usage,L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing  (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證錯誤使用加密金鑰。金鑰用法擴充（key usage extensions）定義憑證中公開金鑰的用途，分類包含：數位簽章、金鑰加密、資料加密、金鑰協定、憑證簽署等等。DSA 與 ECDSA 應用於數位簽章，DH 與 ECDH 應用於金鑰協定，RSA 應用於金鑰加密。更多資訊請參照：https://help.hcltechsw.com/domino/11.0.1/zh_TW/admin/conf_keyusageextensionsandextendedkeyusage_r.html,"We detected that the key usage of your certificate is incorrect. The key usage extension defines the purpose or mode of operation of the public key contained in the certificate. Available extensions include digital signature, key encipherment, data encipherment, key agreeement, certificate signing etc. Different ciphers are applied according to usage. For example, DSA and ECDSA are used in digital signatures, DH and ECDH are adopted in key agreement, and RSA is primarily applied to key encipherment. For more details, refer to:  https://help.hcltechsw.com/domino/11.0.1/zh_TW/admin/conf_keyusageextensionsandextendedkeyusage_r.html","為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 更新憑證。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to modify and update your certificate.",
+web,certificate,cert_chain,憑證信任鏈,Certificate Chain of Trust,,,L,M,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",,,,,
+web,certificate,cert_chain_ca,憑證信任鏈,Certificate Chain of Trust,合法的 CA 簽署,Trusted CA,L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未由合法的 CA 簽署。自行簽署的憑證不安全且可能被客戶的瀏覽器回絕或阻擋。,We detected that your certificate was not signed by a valid CA. A  self-signed certificate is dangerous and will be blocked or rejected by the client's browser.,"為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 並使用簽署過的憑證。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to obtain a signed certificate.",
+web,certificate,cert_chain_host,憑證信任鏈,Certificate Chain of Trust,主機名稱驗證,Server Name Indication (SNI),L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未通過主機名稱驗證。此項目檢測您的網域或主機名稱是否符合憑證上簽署的伺服器名稱或是憑證主旨別名。,We detected that your certificate did not pass the Server Name Indication (SNI) validation test. Please ensure tha the domain name or hostname matches that indicated on the certificate.,"為避免此風險，建議參照以下準則：
+•請確認您的網域或主機名稱符合憑證上簽署的伺服器名稱或是憑證主旨別名。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your domain name or hostname matches the issuee's name or SAN on the certificate. Contact your CA if necessary.",
+web,certificate,cert_chain_validate,憑證信任鏈,Certificate Chain of Trust,憑證信任鏈驗證,Chain Validation,L,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未通過憑證信任鏈驗證。信任鏈，或稱數位憑證鏈，是一連串的數位憑證，由根憑證為起點透過層層信任，使終端實體憑證的持有者可以獲得轉授的信任，以證明身分。伺服器除了應提供自己的終端憑證外，也應附上中繼憑證以供查驗。,"We detected that your certificate did not pass chain validation. A digital chain of trust is a hierarchy of linked signed certificates with the trust anchor being the root Certificate Authority (CA). Each layer validates the next link in the chain, and thus validity is delegated to the end entity is all intermediaries are trustworthy. A server must supply its certificate and all intermediate certificates for validation.","為避免此風險，建議參照以下準則：
+•若您的憑證不合法、已過期、或是被撤銷而失效，請聯繫您的 CA 求助。","To mitigate this vulnerability, we suggest the following:
+• If  your certificate is self-signed, expired, revoked, or otherwise invalid, contact your CA for assistance..",
+web,certificate,cert_expired,憑證過期,Certificate Expired,,,M,M,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證已過期。自 2020 年 9 月起，所有憑證的有效期限應小於 13 個月。憑證須於過期前更新以延長效期。,"We detected that your certificate has been expired. Starting September 2020, the validity period of certificates must not exceed 13 months. Contact your CA to renew your certificate before It expires.","為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 更新憑證。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to renew your certificate.",
+web,certificate,cert_too_long,憑證效期過長,Certificate Validity Period Too Long,,,L,M,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證效期過長。不應有任何憑證效期逾 5 年。自 2018 年 3 月起，所有憑證的有效期限應小於 27 個月。自 2020 年 9 月起，所有憑證的有效期限應小於 13 個月。,"We detected that the validaity period of your certificate is too long. Certificates must not have a validity period exceeding 5 years. Starting March 2019, the validity period is limited to 27 months and further reduced to 13 months after September 2020.","為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 更新憑證。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to renew your certificate.",
+web,certificate,cert_revoke,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,,,M,M,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing (Art.33 Notification of a personal data breach to the supervisory authority)","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","目前有兩種檢測憑證是否已被撤銷的方式：憑證撤銷列表（CRL）與線上憑證狀態協議（ OCSP）。
+CRL 由 CA 發行，紀錄這個 CA 所發行的憑證中哪些效期未過但已被撤銷。此黑名單會被客戶端用來判斷憑證是否有效且可信任。
+OCSP 是一個提供動態查詢憑證狀態的協議，能讓客戶端驗證憑證時根據憑證序號到憑證上所記錄的 OCSP URI 查詢狀態，確保憑證可被信任。相較於 CRL，OCSP 更節省網路與客戶端運算資源。","There are currently two alternative mechanisms to implement certificate revocation: Certificate Revocation List (CRL) and Online Certificate Status Protocol (OCSP).
+CRL is maintianed and published by CAs to record certificates that are still within their validity periods but have been revoked. Client side applications consult this list to determine the validity of certificates.
+OCSP is similar to CRL, but instead of having the client download the entire list of revoked certificates, the client queries a public OCSP responder server and receives a response on the server's validity. This saves network and client resources compared to CRL.",,,
+web,certificate,cert_revoke_crl,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,CRL 撤銷,CRL Revocation,M,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證被列於憑證撤銷列表（CRL）上。,We detected that your certificate was listed on the Certificate Revocation List (CRL).,"為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 以檢查您的憑證為何被撤銷。可能的理由包含：造假或不正當發行之憑證、網域所有權更動、憑證金鑰洩漏等等。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to identify why your certificate was revoked. Possible reasons include:  fraudulent or illegitimate certificates, changes in domain ownership, leaked certificate private keys etc.",
+web,certificate,cert_revoke_ocsp,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,OCSP 撤銷,OCSP Revocation,M,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證被 OCSP 服務列為撤銷狀態。 ,We detected that your certificate was listed on the Online Certificate Status Protocol (OCSP).,"為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 以檢查您的憑證為何被撤銷。可能的理由包含：造假或為正當發行之憑證、網域所有權更動、憑證金鑰洩漏等等。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to identify why your certificate was revoked. Possible reasons include:  fraudulent or illegitimate certificates, changes in domain ownership, leaked certificate private keys etc.",
+web,certificate,cert_revoke_validate,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,憑證未提供撤銷驗證機制,No Revocation Mechanism,M,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未提供 CRL 或 OCSP。 CRL 或 OCSP 為兩種檢查憑證是否被撤銷的方式，用於客戶端驗證伺服器是否可以信任，必須至少提供一種機制。,We detected that your certificate provides neither CRL nor OCSP. CRL and OCSP are two alternative certificate revocation mechanisms and at least one must be supported.,"為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 並要求在憑證上使用 CRL 或 OCSP。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to enable CRL or OCSP.",
+web,certificate,cert_revoke_ocsp_stapling,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,使用 OCSP Stapling,OCSP Stapling,M,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未使用 OCSP Stapling。OCSP 原本的機制為：客戶端拿到伺服器的憑證後，會再去向 OCSP Responder 查詢憑證狀態，因此 OSCP Responder 必須負擔很大的流量。為了改善這狀況，一個改良版本的做法是伺服器先向 OCSP Responder 查詢自己的 OSCP 結果，並在返還憑證時附上這個結果，即為 OCSP Stapling。,"We detected that your certificate does not support OCSP Stapling. In vanilla OCSP, the OSCP responder must handle heavy network load from incoming client requests, thus an enhanced feature, which instructed the server to obtain its own OCSP response beforehand and staple it to the certificate during the session handshake, emerged. This technique is known as OCSP Stapling.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中使用此加密套件。
+    - Windows IIS server (TLS) 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#enableocspstaplingforsni
+    - Apache server 請參照 https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ocspstapling
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_6","To mitigate this vulnerability, we suggest the following:
+• Configure your server to support OCSP stapling:
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows-server/security/tls/tls-registry-settings#enableocspstaplingforsni
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html#ocspstapling
+    - Nginx server: https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_7",
+web,certificate,cert_revoke_ocsp_must_staple,憑證撤銷機制未設定完整,Certificate Revocation Misconfiguration,標註 OCSP Must-Staple,OCSP Must-Staple,M,M,,,,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的憑證未標註 OCSP Must-Staple。OCSP Must-Staple 為一種憑證擴充機制，指示客戶端應預期憑證附上 OSCP 結果來證明此憑證未被撤銷。伺服器必須啟用 OCSP Stapling 才能使用此擴充功能。
+由於此機制較新，目前未設定雖不至於影響營運，但未來可能造成瀏覽器對您的網站的安全評分降低，因此建議設置。 ","We detected that your certificate is missing OCSP Must–Staple. OCSP Must–Staple is a certificate extension mechanism that instructs the client to expect a stapled OCSP result along the certificate or reject the certificate otherwise. This option enforces the OCSP certificate revocation mechanism, thus OCSP Stapling must be supported and enabled by the server.
+OCSP Must-Staple is relatively new, so there is currently no detrimental effect without it. However, browsers’ security rating of your website may drop if this option is not enabled in the future. Hence, we recommend setting OSCP Must-Staple.","為避免此風險，建議參照以下準則：
+•請聯繫您的 CA 並要求在憑證上使用 OCSP Must-Staple。","To mitigate this vulnerability, we suggest the following:
+• Contact your CA to configure OCSP Must–Staple for your certificate.",
+web,certificate,cert_resource_check,憑證授權機關資源記錄檢查,Missing CAA Record,,,M,M,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的憑證未設定憑證授權機關資源記錄檢查（CAA RR）。CAA RR 為一種授權某 CA 為某機構發行憑證的 DNS 紀錄，能確保只有授權的 CA 能為您發行憑證，防止任意 CA 擅自簽署您網域的憑證。,"We detected that your certificate is missing a Certificate Authority Authorization Resource Record (CAA Record). CAARRs are DNS records published by domain owners to explicitly specify allowed CAs to issue SSL certificates for their domains. Without CAARRs, any unauthorized CA may issue a certificate for your domain, which may allow adversaries to claim valid certificate to your domain.","為避免此風險，建議參照以下準則：
+•請為您的網域設定 CAA Record。
+
+設定方法請參照 
+https://docs.digicert.com/manage-certificates/dns-caa-resource-record-check/ 以及 https://sslmate.com/caa/eord","To mitigate this vulnerability, we suggest the following:
+• Publish CAA Records for your domain. 
+
+Refer to these resources:
+https://docs.digicert.com/manage–certificates/dns–caa–resource–record–check/
+https://sslmate.com/caa/
+https://docs.aws.amazon.com/acm/latest/userguide/setup-caa.html
+",
+web,certificate,cert_heartbleed,Heartbleed,Heartbleed,,,H,L,6.45,4.72,2.73,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 Heartbleed（CVE-2014-0160）漏洞。Heartbleed 是一個於2014年4月公佈的 OpenSSL 加密庫的漏洞，能允許駭客透過特殊封包讀取受害伺服器記憶體中的資料，進而竊聽且取機密資訊。OpenSSL 加密庫廣泛使用於 TLS 協議中，從 1.0.1 至 1.0.1f  皆有此問題。更多資訊請參照 https://heartbleed.com,"We detected that your server is vulnerable to the Heartbleed bug (CVE-2014-0160). The Heartbleed bug disclosed in April 2014 stems from an implementation error in the OpenSSL library and allows and attacker to leak memory from the victim server via a crafted packet. The out of bounds read may leak sensitive information such as session cookies, encryption keys, or other PII stored in memory. The vulnerable OpenSSL versions are 1.0.1 to 1.0.1f. For more information, check: https://heartbleed.com","為避免此風險，建議參照以下準則：
+•請將您伺服器上的 OpenSSL 加密庫更新至最新版本。","To mitigate this vulnerability, we suggest the following:
+• Upgrade the OpenSSL package on your server to the latest version.",
+web,certificate,cert_ccs_injection,CCS Injection,CCS Injection,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有 CCS 注入漏洞（CVE-2014-0224）。CCS 注入漏洞是一個於2014年4月公佈的 OpenSSL 加密庫的漏洞，能允許駭客強迫使用 OpenSSL 加密庫的伺服器與客戶端使用較弱的加密套件，進而破解通訊內容、竊取機密資訊。受影響的版本包括：
+• OpenSSL 1.0.1 至 1.0.1g
+• OpenSSL 1.0.0 至 1.0.0l
+• OpenSSL 0.9.8y 之前的所有版本
+更多資訊請參照 http://ccsinjection.lepidum.co.jp","We detected that your server is vulnerable to the CCS Injection bug (CVE-2014-0224). The CCS Injection bug disclosed in April 2014 allows an attacker to decrypt intercepted data by forcing OpenSSL clients and servers to use weak keys for communication.
+The vulnerable OpenSSL versions are:
+• OpenSSL 1.0.1 to 1.0.1g
+• OpenSSL 1.0.0 to 1.0.0l
+• prior to OpenSSL 0.9.8y 
+For more information, check: http://ccsinjection.lepidum.co.jp","為避免此風險，建議參照以下準則：
+•請將您伺服器上的 OpenSSL 加密庫更新至最新版本。","To mitigate this vulnerability, we suggest the following:
+• Upgrade the OpenSSL package on your server to the latest version.",
+web,certificate,cert_ticketbleed,Ticketbleed,Ticketbleed,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有 Ticketbleed（CVE-2016-9244）漏洞。Ticketbleed 是在 F5 BIG-IP 產品中的漏洞，能允許駭客一次存取 31 位元的記憶體資訊。駭客經多次操作，可以洩漏金鑰內容或是其他機密資訊並破解對話。受影響的版本請參照此列表：https://support.f5.com/csp/article/K05121675
+更多資訊請參照 https://filippo.io/ticketbleed/","We detected that your server is vulnerable to the Ticketbleed bug (CVE-2016-9244). The Ticketbleed bug is a vulnerability in F5 BIG-IP products which allow an attacker to extract 31 bytes from the memory. After repeated operations, an attacker may leak sensitive information such as session cookies, encryption keys, or other PII stored in memory. 
+For a list of affected products,check: https://support.f5.com/csp/article/K05121675
+For more information, check: https://filippo.io/ticketbleed/","為避免此風險，建議參照以下準則：
+•您可以停用 TLS 會話記錄單來完全避免此漏洞。F5 提供的步驟如下：
+1. 登錄到配置實用程序。
+2. 在菜單上導航到本地流量 > 配置文件 > SSL > 客户端。
+3. 將配置的選項從基本切換到高級。
+4. 取消選中 Session Ticket 選項以禁用該功能。
+5. 單擊更新以保存更改。","To mitigate this vulnerability, we suggest the following:
+• You can disable TLS session tickets as a complete mitigation. The instructions are:
+1. Log in to the Configuration utility
+2. Navigate on the menu to Local Traffic > Profiles > SSL > Client
+3. Toggle the option for Configuration from Basic to Advanced
+4. Uncheck the Session Ticket option to disable the feature
+5. Click Update to save the changes",
+web,certificate,cert_robot,ROBOT,ROBOT,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 ROBOT（CVE-2017-17382 CVE-2017-17427 CVE-2017-17428 CVE-2017-13098 CVE-2017-1000385 CVE-2017-13099 CVE-2016-6883 CVE-2012-5081 CVE-2017-6168）漏洞。ROBOT 是一個已存在 19 年的密碼學漏洞，發生於 SSL 在 RSA 加密金鑰時的實作錯誤。駭客可以利用此漏洞破解加密通訊並竊取機密資訊。更多資訊及受影響的產品請參照 https://robotattack.org,"We detected that your server is vulnerable to the ROBOT bug (CVE-2017-17382 CVE-2017-17427 CVE-2017-17428 CVE-2017-13098 CVE-2017-1000385 CVE-2017-13099 CVE-2016-6883 CVE-2012-5081 CVE-2017-6168). The ROBOT bug stems from an implementation error in the RSA module, resulting in a weakness in the cryptography which allows an attacker to fully decrypt any communication using RSA. 
+For more information, check: https://robotattack.org","為避免此風險，建議參照以下準則：
+•若您使用列於 https://robotattack.org 中的產品，請儘速更新或是安裝補丁。請設定停用有用到 RSA 加密的套件（TLS_RSA 開頭），若有用到 DHE 或 ECDHE 的套件則不受影響。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• If you use any of the products listed in https://robotattack.org, please update or install patches as soon as possible. Disable any ciphers using RSA (with names starting with TLS_RSA). Ciphers using DHE or ECDHE are unaffected.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_secure_renegotiation,Secure Renegotiation,Secure Renegotiation,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+5. Protect all systems against malware and regularly update antivirus software or programs
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有不安全的重新協商漏洞（CVE-2009-3555）。由於SSL/TLS 協議設計不周，導致重新協商時使用的參數不受到當前會話的密碼學機制保障。因此，駭客可以利用中間人攻擊將惡意資料注入對話中，達成對話劫持攻擊、將 HTTPS 降級 HTTP、冒充受害者等目的。,"We detected that your server is vulnerable to the Secure Renegotiation bug (CVE-2009-3555). Due to insecure designs in SSL/TLS, when renegotiating sessions the exchanges key materials are unprotected and attackers may inject malicious data to hijack the session or impersonate the victim.","為避免此風險，建議參照以下準則：
+•請更新您的 OpenSSL 加密庫至最新版本，並在伺服器上停用重新協商功能。
+•安裝新的 TLS 擴充 renegatiation_info 來促使重新協商時，伺服器與客戶端會在交握過程加上先前對話的資訊。","To mitigate this vulnerability, we suggest the following:
+• Upgrade the OpenSSL package on your server to the latest version.
+• Disable the renegotiation feature on your server.
+• Install the TLS extension renegotiation_info to protect the exchanged key material with cryptographic components from the previous communucation.",
+web,certificate,cert_secure_client_renegotiation,Secure Client-Initiated Renegotiation,Secure Client-Initiated Renegotiation,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器使用客戶端發起安全的重新協商。此功能允許已連線的客戶端發起重新協商的請求來建立一筆新的 SSL 連線。此時，伺服器端為了運算出新的加密材料會消耗比客戶端更多的資源，因此駭客可以透過發起大量重新協商的請求來耗盡伺服器資源。受影響的 OpenSSL 加密庫版本為 0.9.8l、0.9.8m、1.x版本。 ,"We detected that your server uses Client-Initiated Renegotiation, which allows connected clients to request a negotiation for a new SSL session. The server exhausts significantly more computation resources during this operation, and an adversary may leverage this difference to launch as denial od service attack (DoS) and deplete the server of computation resources. 
+The vulnerable OpenSSL versions are: 0.9.8l, 0.9.8m, and 1.x","為避免此風險，建議參照以下準則：
+•請更新您的 OpenSSL 加密庫至最新版本，並在伺服器上停用重新協商功能或是限制系統接受重新協商請求的上限。","To mitigate this vulnerability, we suggest the following:
+• Upgrade the OpenSSL package on your server to the latest version.
+• Disable the renegotiation feature on your server or limit the number of renegotiation requests the system will accept.",
+web,certificate,cert_crime,CRIME,CRIME,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 CRIME（CVE-2012-4929）漏洞。CRIME 利用資料在 SSL/TLS 壓縮前後的長度與內容關聯性，使駭客可以透過壓縮不同資料，觀察並推論出加密資料中的機密資訊。當伺服器與客戶端皆支援SSL/TLS 壓縮時，此攻擊得以成立。,"We detected that your server is vulnerable to the CRIME exploit (CVE-2012-4929). The CRIME bug  is due to implementation errors in the SSL/TLS compression functionality in the OpenSSL library. When data compression is enabled, an adversary can deduce the contents of the transmitted information by observing the difference and correlation of the returned compressed data. ","為避免此風險，建議參照以下準則：
+•請在您的伺服器上停用 TLS 1.0 、TLS 壓縮與 SPDY 壓縮功能。","To mitigate this vulnerability, we suggest the following:
+•Disable usage of TLS 1.0, TLS compression, and SPDY compression.",
+web,certificate,cert_breach,BREACH,BREACH,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有 BREACH（CVE-2013-3587）漏洞。BREACH 漏洞 CRIME 漏洞類似，皆為 SSL/TLS 壓縮功能設計不當所導致，不過 BREACH 漏洞特別針對 HTTP 壓縮功能，且與 SSL/TLS 版本或是使用的加密套件無關。若 HTTP 壓縮功能開啟，則使駭客可以利用資料在 SSL/TLS 壓縮前後的長度與內容關聯性，透過壓縮不同資料，觀察並推論出加密資料中的機密資訊。
+要達成此攻擊有三個條件：
+• 頁面中沒有無法預測的元素，例如某欄位放隨機值
+• 發起的請求中含有機敏資訊，例如 session cookie 或其他 PII
+• 攻擊者能劫持並修改請求與回應，藉此觀察訊息長度與內容
+詳細規範請參考：
+•http://breachattack.com","We detected that your server is vulnerable to the BREACH exploit (CVE-2011-3389). BREACH, similar to CRIME, is due to implementation errors in the SSL/TLS compression functionality in the OpenSSL library, especially in the HTTP compression component. This vulnerability affects all versions of SSL/TLS. When HTTP compression is enabled, an adversary can deduce the contents of the transmitted information by observing the difference and correlation of the returned compressed data. 
+To accomplish a BREACH attack, 3 conditions must be met:
+1.	There are no unpredictable values, such as random tokens, in the webpage.
+2.	The request contains sensitive data, such as session cookies or identity tokens.
+3.	The adversary may send and receive requests on behalf of the victim, either by intercepting or other methods of observing data.
+For more details, refer to: http://breachattack.com","為避免此風險，建議參照以下準則：
+• 請在您的伺服器上停用 HTTP 壓縮功能或是在回覆中添加隨機數量的位元來隱藏壓縮長度。
+• 若無法停用此功能，確保三個條件無達成。","To mitigate this vulnerability, we suggest the following:
+•Disable usage of HTTP compression on your web server or add random values in your webpage to make it unpredictable.
+• If such configuration is not available, ensure the 3 conditions cannot be satisfied.",
+web,certificate,cert_poodle,POODLE,POODLE,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 POODLE（CVE-2014-3566）漏洞。POODLE 漏洞是一種版本降級攻擊，當伺服器協議使用 TLS 協定失敗時，會選擇降級使用已被破解的 SSL 3.0，使駭客可以藉此洩漏機密資訊。,We detected that your server is vulnerable to the POODLE exploit (CVE-2014-3566). POODLE is a version downgrade attack that leverages the fallback mechanism when a TLS handshake fails to force the client and server to use a legacy and flawed protocol. This man-in-the-middle attack allows the adversary to leak encrypted messages which may contain sensitive information such as session cookies and other transmitted PII.,"為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用 SSL 3.0。
+    - Windows server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://medium.com/@lawrencechuang760223/如何在apache-server下停用ssl2-0-ssl3-0-tls1-0-96120ebb333e
+    - Nginx server 請參照 https://www.liaohaha.tw/2020/03/nginxtls-1011.html","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable SSL 3.0. 
+    - Windows IIS server: https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server: https://www.leaderssl.com/news/471-how-to-disable-outdated-versions-of-ssl-tls-in-apache
+    - Nginx server: https://techexpert.tips/nginx/nginx-disable-ssl-tls-1-0-tls-1-1/",
+web,certificate,cert_tls_scsv,TLS Fallback SCSV,TLS Fallback SCSV,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器不支援 TLS Fallback SCSV（RFC 7507）。TLS Fallback SCSV 是一個用來預防版本降級攻擊的機制，能在不影響舊版客戶端的情況下防止 POODLE 等攻擊，其限制是客戶端必須支援此機制。POODLE 漏洞是一種版本降級攻擊，當伺服器協議使用 TLS 協定失敗時，會選擇降級使用已被破解的 SSL 3.0，使駭客可以藉此洩漏機密資訊。無法立即停用 SSL 3.0 的網站應啟用此機制。,"We detected that your server does not support TLS Fallback SCSV (RFC 7507). TLS Fallback SCSV is a mitigation for the POODLE attack, which leverages the fallback to SSL 3.0 when negotiation for higher TLS versions fails to perform a version downgrade attack. TLS Fallback SCSV is an extension that  prevents POODLE while supporting older clients and servers, and should be supported if you cannot entirely disable SSL 3.0.","為避免此風險，建議參照以下準則：
+•請在伺服器中設定使用 TLS_FALLBACK_SCSV 來防止版本降級攻擊。請注意，若客戶端最高只支援 SSL 3.0 且伺服器有提供 SSL 3.0，則此機制無效。最好的解法是完全停用 SSL 3.0。
+    - Windows server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://medium.com/@lawrencechuang760223/如何在apache-server下停用ssl2-0-ssl3-0-tls1-0-96120ebb333e
+    - Nginx server 請參照 https://www.liaohaha.tw/2020/03/nginxtls-1011.html","To mitigate this vulnerability, we suggest the following:
+• Configure your server to enable  TLS Fallback SCSV. Note that if the client does not support any protocol higher than SSL 3.0 and your server suports SSL 3.0, this protection does not work. Please completely  disable SSL 3.0. 
+    - Windows IIS server: https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server: https://www.leaderssl.com/news/471-how-to-disable-outdated-versions-of-ssl-tls-in-apache
+    - Nginx server: https://techexpert.tips/nginx/nginx-disable-ssl-tls-1-0-tls-1-1/",
+web,certificate,cert_sweet32,Sweet32,Sweet32,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 Sweet32（CVE-2016-2183、CVE-2016-6329）漏洞。進行加密時，會先將明文訊息切成若干個固定大小的區塊再逐一加密組合，構成完整秘文。若區塊過小，則駭客可以利用生日攻擊（birthday attack，見 https://www.sciencedirect.com/topics/computer-science/birthday-attack）來暴力破解。當伺服器支援 64 位元的加密及持續性 HTTP 連線時，駭客可以利用 Sweet32 攻擊破解加密訊息並竊取機密資訊。請使用至少 128 位元的加密套件。,"We detected that your server is vulnerable to the Sweet32 exploit (CVE-2016-2183, CVE-2016-6329). When encrypting larger amounts of data, the plaintext is first divided into fixed-length blocks, which are then encrypted and chained into the full ciphertext. If the blocks are too short, ad adversary may leverage birthday attacks (https://www.sciencedirect.com/topics/computer-science/birthday-attack) to brute force the plaintext and obtain sensitive information. Your server is vulnerable to Sweet32 if your server supports 64-bit encryption and long-lasting HTTP connections. Please use at least 128-bit ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用使用 64 位元的加密套件，並選擇至少 128 位元的加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable 64-bit ciphers and choose at least 128-bit ciphers.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_freak,FREAK,FREAK,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有 FREAK（CVE-2015-0204）漏洞。FREAK 是利用分解 EXPORT 加密套件的金鑰的一種中間人攻擊，能允許駭客竊聽加密通訊來獲得機密資料。EXPORT 加密套件是一組由美國情報機關特意設計且強度較弱的加密法，用以監控美國境外的通訊頻道。請設定停用 EXPORT 加密套件。
+
+詳細規範請參考：
+• https://freakattack.com/ ","We detected that your server is vulnerable to the FREAK exploit (CVE-2015-0204). The FREAK vulnerability exists when your server supports EXPORT ciphers, which are developed by intelligence agencies and can be easily cracked. An adversary may intercept communication and obtain sensitive information, such as session cookies and other transmitted PII. Please disable EXPORT ciphers.
+For more information, check: https://freakattack.com/ ","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用 EXPORT 加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable EXPORT ciphers.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.7",
+web,certificate,cert_drown,DROWN,DROWN,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 DROWN（CVE-2016-0800 CVE-2016-0703）漏洞。DROWN 漏洞發生於支援 SSL 2.0 且重複利用金鑰與憑證的伺服器。因為 SSL 2.0 已被破解，駭客可以藉此攻擊破解版本較高之 TLS 加密通訊中的機密資訊。 請設定停用 SSL 2.0。,"We detected that your server is vulnerable to the DROWN exploit (CVE-2016-0800 CVE-2016-0703). The DROWN vulnerability exists when your server supports SSL 2.0 and reuses certificates and keys. Since SSL 2.0 has been cracked, an adversary may leverage DROWN to attack communications using higher TLS versions and obtain sensitive information. Please disable SSL 2.0","為避免此風險，建議參照以下準則：
+•請在伺服器中設定停用 SSL 2.0。若有任何服務支援 SSL 2.0，請確保其金鑰沒有被用於其他地方。
+    - Windows server 請參照 https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server 請參照 https://medium.com/@lawrencechuang760223/如何在apache-server下停用ssl2-0-ssl3-0-tls1-0-96120ebb333e
+    - Nginx server 請參照 https://www.liaohaha.tw/2020/03/nginxtls-1011.html","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable SSL 2.0. If any of your services support SSL 2.0, ensure the keys are not used anywhere else. 
+    - Windows IIS server: https://docs.microsoft.com/zh-tw/windows-server/security/tls/tls-registry-settings#tls-dtls-and-ssl-protocol-version-settings
+    - Apache server: https://www.leaderssl.com/news/471-how-to-disable-outdated-versions-of-ssl-tls-in-apache
+    - Nginx server: https://techexpert.tips/nginx/nginx-disable-ssl-tls-1-0-tls-1-1/",
+web,certificate,cert_logjam,LOGJAM,LOGJAM,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有  LOGJAM（CVE-2015-4000）漏洞。 LOGJAM 攻擊的對象是使用長度 512 位元至 1024 位元的 Diffie-Hellman（DH）金鑰。商業應用中，伺服器常重複使用幾組常用質數作為金鑰材料，因此駭客可預先計算好部分金鑰材料來加速破解攔截到的加密封包，在數分鐘內竊取機密資訊。建議使用至少 2048 位元的 DH 或是 ECDH 金鑰。
+
+詳細規範請參考：
+• https://weakdh.org/logjam.html","We detected that your server is vulnerable to the LOGJAM exploit (CVE-2015-4000). The LOGJAM vulnerability exists when your server uses short Diffie-Hellman (DH) keys with lengths between 512 and 1024 bits. In business applications, servers often reuse common primes  as key materials. An adversary may precompute partial key materials and quickly decrypt intercepted packets in minutes. We recommend using at least 2048-bit DH or ECDH keys.
+For more information, check: https://weakdh.org/logjam.html","為避免此風險，建議參照以下準則：
+• 停用 DHE 加密套件（含 DHE_EXPORT）。
+• 拒絕過短的 DH 金鑰材料。
+• 使用高強度的 DH 組。","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable DHE ciphers, including DHE_EXPORT
+• Do not use DH key materials with insufficient lengths
+• Use stronger DH groups",
+web,certificate,cert_beast,BEAST,BEAST,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected","檢測到您的伺服器有 BEAST（CVE-2011-3389）漏洞。BEAST 利用 TLS 1.0 中使用的 CBC 加密套件已被破解的弱點，使駭客得以破解加密通訊並竊取機密資訊。進行加密時，會先將明文訊息切成若干個固定大小的區塊、逐一加密並串連組合來構成完整秘文。CBC （Cipher block chaining）即其中一種組合區塊的方式，針對 CBC 已有許多攻擊手法，能導致傳輸的機敏資料被破解。請停用 CBC 的加密套件並停用 TLS 1.0 。
+BEAST 攻擊成功的條件為： 
+1. 駭客可以透過某個漏洞或功能在同源的網站中注入 JavaScript 或 applet
+2. 伺服器使用有弱點的 SSL 版本以及 CBC 加密套件
+3. 駭客可以透過中間人攻擊或其他網路監聽方式讀取傳送的封包 ","We detected that your server is vulnerable to the BEAST exploit (CVE-2011-3389). BEAST stems from an implementation error in TLS 1.0 when CBC ciphers are used, which allows an adversary to obtain sensitive information. When encrypting larger amounts of data, the plaintext is first divided into fixed-length blocks, which are then encrypted and chained into the full ciphertext. Cipher Block Chaining (CBC) mode is a commonly used type of such operations. Due to its simplicity, CBC is vulnerable to several known attacks and can be compromised in a relatively short period of time. 
+To accomplish a BEAST attack, 3 conditions must be met:
+1.	The adversary can inject JavaScript or applet into the same origin of the website.
+2.	The server uses a vulnerable version of SSL and block ciphers.
+3.	The adversary can perform network sniffing of the connection.
+Please disable TLS 1.0 and CBC ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用 SSL 3.0、TLS 1.0、CBC 加密套件。請使用 TLS 1.3以及 AEAD 加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable SSL 3.0, TLS 1.0, and CBC ciphers. Please use TLS 1.2 and above and AEAD ciphers.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.6",
+web,certificate,cert_lucky13,LUCKY13,LUCKY13,,,L,L,1.61,1.18,0.68,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 LUCKY13（CVE-2013-0169）漏洞。LUCKY13 是針對使用 CBC 模式的 TLS 1.1 TLS 1.2 協定的時間差攻擊。進行加密時，會先將明文訊息切成若干個固定大小的區塊再逐一加密組合，構成完整秘文。CBC （Cipher block chaining）即其中一種組合區塊的方式，會將每一個區塊的輸出做為下一個區塊的其中一個輸入值進行運算。LUCKY13 為一種進階的 CBC 攻擊，能允許駭客破解加密通訊並竊取機密資訊。請停用 CBC 的加密套件。,"We detected that your server is vulnerable to the LUCKY13 exploit (CVE-2013-0169). LUCKY13 is plaintext-recovery attack based on statistical analysis of timing data for crafted packets. The vulnerability exists in TLS 1.1 and TLS 1.2 with CBC padding. When encrypting larger amounts of data, the plaintext is first divided into fixed-length blocks, which are then encrypted and chained into the full ciphertext. Cipher Block Chaining (CBC) mode is a commonly used type of such operations.LUCKY13 is an advanced CBC attack and allows adversaries to obtain sensitive information. Please disable CBC ciphers.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用 TLS 1.0 與 CBC 加密套件。請使用 TLS 1.3以及 AEAD 加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable TLS 1.0 and CBC ciphers. Please use TLS 1.2 and above and AEAD ciphers.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.7",
+web,certificate,cert_rc4,RC4,RC4,,,M,L,3.23,2.36,1.37,,10.1 Cryptographic Controls,"Art.24 Responsibility of the controller
+Art.25 Data protection by design and by default
+Art.33 Security of processing","4. Encrypt transmission of cardholder data across open, public networks.
+6. Develop and maintain secure systems and applications","PR.DS-2: Data-in- transit is protected
+PR.DS-5: Protections against data leaks are implemented
+PR.PT-4:
+Communications and control networks are protected",檢測到您的伺服器有 RC4（CVE-2013-2566 CVE-2015-2808）漏洞。RC4 是一種快速且消耗較少運算資源的串流加密套件，不受到區塊加密的弱點（如 BEAST、LUCKY13）影響。不過，RC4 加密後的結果並非完全亂數，導致駭客可以觀察多組秘文並透過統計分析破解並竊取機密資訊。請停用 RC4 的加密套件。,"We detected that your server is vulnerable to the RC4 exploit (CVE-2013-2566 CVE-2015-2808). RC4 is a fast stream cipher that uses less resources and is not vulnerable to attacks against block ciphers. However, data encrypted by RC4 is not completely random, which allows an attacker to crack sensitive information via statistical analysis of observed ciphertext.","為避免此風險，建議參照以下準則：
+•請在伺服器設定中停用 RC4 加密套件。請使用 TLS 1.3以及 AEAD 加密套件。
+    - Windows IIS server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Apache server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers
+    - Nginx server 請參照 https://www.gss.com.tw/blog/set-https-connect-protocols-and-ciphers 與 https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5","To mitigate this vulnerability, we suggest the following:
+• Configure your server to disable RC4 ciphers. Please use TLS 1.2 and above and AEAD ciphers.
+    - Windows IIS server: https://docs.microsoft.com/en-us/windows/win32/secauthn/prioritizing-schannel-cipher-suites?redirectedfrom=MSDN
+    - Apache server: https://httpd.apache.org/docs/trunk/ssl/ssl_howto.html
+    - Nginx server: https://beaglesecurity.com/blog/article/nginx-server-security.html and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#toc_5
+• Also check: https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1d&guideline=5.8",
+web,domain,domain_alike,相似的網域,Similar Domains,,,L,H,20.00,1.18,0.68,,,,,,檢測到與您的網域相似的網域名。駭客可能為了發動釣魚攻擊，註冊與您相似的網域以誘騙使用者交出帳號密碼。例如：註冊 Go0gle 或 Goog1e,"We detected several domains similar to yours. An adversary may register a similar domain name, such as Go0gle and Goog1e, to launch a phishing attack against your customers and steal their credentials.","為避免此風險，建議參照以下準則：
+•檢視該網域對貴單位造成的影響。
+•考慮買下相似域名來保護公司名譽。","To mitigate this vulnerability, we suggest the following:
+• Investigate if the similar domains have any detrimental effects on your company
+• Consider purchasing similar domains to protect your company's reputation.",
+web,domain,domain_related,相關的網域,Relevant Domains,,,L,H,20.00,1.18,0.68,,,,,,檢測到與您相關的網域。這些網域可能是您的子網域或是其他相關事業群所管轄的網段，能提供駭客更大的攻擊面與資訊。建議您檢查此清單是否包含內部網域與服務、或是其他不應公開於網路上的資訊，可能成為駭客入侵的破口。,"We detected several domains related to yours. Make sure they are not internal domains, such as development and private systems, to prevent an adversary from abusing them.","為避免此風險，建議參照以下準則：
+•如需對外開放此網域， 請確認上面資料皆可被公開。
+•不應對外開放此雲端儲存， 請立即修改配置。","To mitigate this vulnerability, we suggest the following:
+• If the domain must be externally open, make sure all exposed information is public.
+• If the domain corresponds to a private cloud service, modify configurations immediately to secure it.",
+web,domain,domain_hijacking,子網域劫持,Subdomain Hijacking,,,M,M,40.00,2.36,1.37,,,,,,"檢測到您的子網域有被劫持的風險。此漏洞發生的原因為錯誤配置，導致主機指向一個不存在或是未使用的服務。駭客可以透過在特定第三方服務中註冊帳戶來接管該網域。
+
+詳細規範請參考：
+•https://www.mdeditor.tw/pl/261t/zh-tw","We detected that your domain is vulnerable to subdomain hijacking. This vulnerability stems from DNS misconfigurations, when a domain record exists for a  nonexistent or deprecated third party service. An adversary can register the service to claim the domain name and direct visitors to his malicious site.","為避免此風險，建議參照以下準則：
+•檢視您的 DNS 紀錄是否指向不存在或是未使用的服務。請移除，或是重設指向運作中的服務。
+•檢視您的服務提供商是否有嚴謹的網域驗證機制。","To mitigate this vulnerability, we suggest the following:
+• Investigate if your DNS CNAME record points to a  nonexistent or deprecated third party service. Remove the record or register the service to claim the domain name.
+• Ensure that your service provider has rigorous domain authentication mechanisms in place.",
+web,domain,domain_emum,子網域枚舉,Subdomain Enumeration,,,L,L,20.00,1.18,0.68,,,,,,檢測到您的子網域。內部網域（例如：開發測試網域、內部系統與服務）不應公開於網路上，可能成為駭客入侵的破口。,"We detected several of your subdomains via enumeration. Make sure they are not internal domains, such as development and private systems, to prevent an adversary from abusing them.","為避免此風險，建議參照以下準則：
+•如需對外開放此子網域， 請確認上面資料皆可被公開。
+•不應對外開放此子網域， 請立即修改配置。","To mitigate this vulnerability, we suggest the following:
+• If the domain must be externally open, make sure all exposed information is public.
+• If the domain is private, modify configurations immediately to secure it.",
+email,email_service,mail_public_imap,公開的 IMAP 服務,Public IMAP Service,,,L,M,25.00,1.85,0.68,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+21. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 IMAP (Internet Message Access Protocol) ，如果對外開放卻未做好權限控管，會讓攻擊者有機會利用您的帳號下載信件，造成機密資料外流。,We detected that your server exposes a public IMAP (Internet Message Access Protocol) service. An adversary can log in to the server and download emails from your account if access control is misconfigured.,"若非必要，請關閉此服務。否則，為避免此風險，建議參照以下準則：
+•設定連線白名單(依據您使用的郵件伺服器設定)。
+•僅允許 port 993 的 SSL 連線。
+•透過 webmail 從 https 連線 。","To mitigate this vulnerability, we suggest the following:
+• If possible, disable the service or hide it within your internal network.
+• Whitelist trusted sources of connection.
+• Only allow SSL connections which run on port 993
+• Connect with HTTPS via webmail",
+email,email_service,mail_public_pop3,公開的 POP3 服務,Public POP3 Service,,,L,M,25.00,1.85,0.68,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+22. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 POP3 (Post Office Protocol) ，如果對外開放卻未做好權限控管，會讓攻擊者有機會利用您的帳號下載信件，造成機密資料外流。,We detected that your server exposes a public POP3 (Post Office Protocol) service. An adversary can log in to the server and download emails from your account if access control is misconfigured.,"若非必要，請關閉此服務。否則，為避免此風險，建議參照以下準則：
+•設定連線白名單(依據您使用的郵件伺服器設定)。
+•僅允許 port 995 的 SSL 連線。
+•透過 webmail 從 https 連線 。","To mitigate this vulnerability, we suggest the following:
+• If possible, disable the service or hide it within your internal network.
+• Whitelist trusted sources of connection.
+• Only allow SSL connections which run on port 995
+• Connect with HTTPS via webmail",
+email,email_service,mail_public_smtp,公開的 SMTP 服務,Public SMTP Service,,,M,M,50.00,3.70,1.37,,"13.1 Network Security Management
+9.4 System and application access control",,"6. Develop and maintain secure systems and applications.
+23. Identify and authenticate access to system components.(???)","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.PT-3: Access to systems and assets is controlled, incorporating the principle of least functionality",檢測到公開的 SMTP (Simple Mail Transfer Protocol) ，如果對外開放卻未做好權限控管，會讓攻擊者有機會藉由冒充您的網域寄送釣魚信件，或是登入您的帳號檢視信件內容，造成名譽受損與機密資料外流。,We detected that your server exposes a public SMTP (Simple Mail Transfer Protocol) service. An adversary can log in to the server and view messages or send phishing emails from your account if access control is misconfigured. This may result in sensitive data exposure and reputation damage.,"為避免此風險，建議參照以下準則：
+•設定連線白名單(依據您使用的郵件伺服器設定)。
+•僅允許 port 465 或 port 587 的 SSL 連線。
+•強制客戶端使用憑證驗證而非帳密登入。
+•僅允許白名單內的寄件人(smtpd_reject_unlisted_sender, Sender Filter)。","To mitigate this vulnerability, we suggest the following:
+• If possible, disable the service or hide it within your internal network.
+• Whitelist trusted sources of connection.
+• Only allow SSL connections which run on port 465 or 587
+• Authenticate with client certificates instead of passwords
+• Whitelist trusted senders (smtpd_reject_unlisted_sender, Sender Filter)",
+email,dmarc,dmarc_no,沒有 DMARC 紀錄,Missing DMARC Record,,,H,M,50.00,18.52,6.83,,,,,,"未找到 DMARC 紀錄。DMARC 紀錄是一筆 DNS 文字（TXT）記錄，幫助讓發信端和收信端雙方可確認對方身分，可用於防止詐騙和網路釣魚。DMARC 會指示收信方對於驗證失敗的信件該如何處理，此一政策有效的設定值包含： 
+•None：不採取任何行為 
+•Quarantine：隔離（不同伺服器行為不同，可能是集中到隔離中心、或是進入使用者垃圾信夾） 
+•Reject：拒絕，在 SMTP 傳輸層直接捨棄 
+DMARC 也可以設定回報用的電子信箱，幫助寄信者了解收信狀況。請注意，DMARC 紀錄須設置於 _dmarc.<your_domain> 的子網域下，且由 v=DMARC1 字串開頭，否則無效。","We detected that your server is missing DMARC records. A DMARC record is a DNS record that helps email server validate the authenticity of emails and take appropriate actions. This helps mitigate phishing and fraud. 
+DMARC instructs the receiver mail server on how to process emails that failed authentication by specifying 'policies', which may hold one of three values:
+•	None: No action, let the email through
+•	Quarantine: Send the email to the quarantine center or trash/spam folder. The actual action depends on server implementation.
+•	Reject: Discard the email or bounce at the SMTP protocol level
+
+DMARC also supports periodically reporting to give senders insight to the authenticity of mail sent on their behalf. Please note that DMARC must be set under the subdomain ""_dmarc.<your_domain>"" and must start with ""v=DMARC1"" to be a valid record.","為避免此風險，建議參照以下準則：
+•請為您的網域設定 DMARC 紀錄（必須先設置 SPF 與 DKIM），詳細步驟請依照您的郵件系統來決定。
+
+修改與配置方式請參考：
+•DMARC 紀錄產生工具 : https://app.dmarcanalyzer.com/dns/dmarc
+•Gsuite : https://support.google.com/a/answer/2466580?hl=en 
+•O365 : https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/use-dmarc-to-validate-email?view=o365-worldwide 
+•SendGrid : https://sendgrid.com/docs/ui/sending-email/how-to-implement-dmarc/","To mitigate this vulnerability, we suggest the following:
+• Configure and publish a valid DMARC record for your domain. Note that SPF and DKIM records must be present. Detailed setup instructions depend on your email solution.
+
+DMARC record generator : https://app.dmarcanalyzer.com/dns/dmarc
+
+For configuration steps, refer to:
+• Gsuite : https://support.google.com/a/answer/2466580?hl=en 
+• O365 : https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/use-dmarc-to-validate-email?view=o365-worldwide 
+• SendGrid : https://sendgrid.com/docs/ui/sending-email/how-to-implement-dmarc/",
+email,dmarc,dmarc_multiple,多個 DMARC 紀錄,Multiple DMARC Records,,,M,L,10.00,3.70,1.37,,,,,,"不允許設定複數個 DMARC 紀錄。DMARC 紀錄是一筆 DNS 文字（TXT）記錄，幫助讓發信端和收信端雙方可確認對方身分，可用於防止詐騙和網路釣魚。DMARC 會指示收信方對於驗證失敗的信件該如何處理，此一政策有效的設定值包含： 
+•None：不採取任何行為 
+•Quarantine：隔離（不同伺服器行為不同，可能是集中到隔離中心、或是進入使用者垃圾信夾） 
+•Reject：拒絕，在 SMTP 傳輸層直接捨棄 
+DMARC 也可以設定回報用的電子信箱，幫助寄信者了解收信狀況。請注意，DMARC 紀錄須設置於 _dmarc.<your_domain> 的子網域下，且由 v=DMARC1 字串開頭，否則無效。
+
+詳細規範請參考：
+•https://tools.ietf.org/html/rfc7489#section-6.6.3","We detected that your server has multiple DMARC records, which is a violation of the DMARC specifications. This may result in undefined behavior at the receiving mail server, such as ignoring all records, accepting all emails, or other random action.
+A DMARC record is a DNS record that helps email server validate the authenticity of emails and take appropriate actions. This helps mitigate phishing and fraud. 
+DMARC instructs the receiver mail server on how to process emails that failed authentication by specifying 'policies', which may hold one of three values:
+•	None: No action, let the email through
+•	Quarantine: Send the email to the quarantine center or trash/spam folder. The actual action depends on server implementation.
+•	Reject: Discard the email or bounce at the SMTP protocol level
+
+DMARC also supports periodically reporting to give senders insight to the authenticity of mail sent on their behalf. Please note that DMARC must be set under the subdomain ""_dmarc.<your_domain>"" and must start with ""v=DMARC1"" to be a valid record.","為避免此風險，建議參照以下準則：
+•請檢查您的 DMARC 紀錄並移除重複或多餘的紀錄，或是合併為一筆。","To mitigate this vulnerability, we suggest the following:
+• Ensure there is only one DMARC record. Remove redundant records or merge duplicates.",
+email,dmarc,dmarc_location,DMARC 紀錄位置,Incorrect DMARC location,,,M,L,10.00,3.70,1.37,,,,,,,,,,
+email,dmarc,dmarc_location_wrong,DMARC 紀錄位置,Incorrect DMARC location,DMARC 紀錄位置錯誤,Incorrect DMARC location,M,L,,,,,,,,,檢測到DMARC 紀錄位置錯誤。請注意，DMARC 紀錄須設置於 _dmarc.<your_domain> 的子網域下，且由 v=DMARC1 字串開頭，否則無效。未帶有 _dmarc 子域名前綴的 DMARC 紀錄會被忽略。,"We detected that your DMARC record is configured under incorrect locations. A DMARC record must be set under the subdomain ""_dmarc.<your_domain>"" and must start with ""v=DMARC1"" to be valid.","為避免此風險，建議參照以下準則：
+•DMARC 紀錄必須帶有 _dmarc 子域名前綴，這筆紀錄的域名須為 _dmarc.<your_domain>。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your DMARC record is set under the subdomain ""_dmarc.<your_domain>"". ",
+email,dmarc,dmarc_location_root,DMARC 紀錄位置,Incorrect DMARC location,設於根網域的 DMARC 紀錄,DMARC under Root Domain,M,L,,,,,,,,,設置於根網域的 DMARC 紀錄是無效的。請注意，DMARC 紀錄須設置於 _dmarc.<your_domain> 的子網域下，且由 v=DMARC1 字串開頭，否則無效。未帶有 _dmarc 子域名前綴的 DMARC 紀錄會被忽略。如果您在根網域設置了一份 DMARC 紀錄副本，請移除。,"We detected that your DMARC record is configured under the root domain. A DMARC record must be set under the subdomain ""_dmarc.<your_domain>"" and must start with ""v=DMARC1"" to be a valid record. If you have a duplicate DMARC record under ""<your_domain>"", please remove it.","為避免此風險，建議參照以下準則：
+•DMARC 紀錄必須帶有 _dmarc 子域名前綴，這筆紀錄的域名須為 _dmarc.<your_domain>。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your DMARC record is set under the subdomain ""_dmarc.<your_domain>"". ",
+email,dmarc,dmarc_another,查詢 DMARC 紀錄時獲取其他紀錄,Other Records Retreived when Querying DMARC Records,,,M,L,10.00,3.70,1.37,,,,,,,,,,
+email,dmarc,dmarc_another_txt,查詢 DMARC 紀錄時獲取其他紀錄,Other Records Retreived when Querying DMARC Records,查詢 DMARC 紀錄時獲取無關的 TXT 紀錄,TXT Records Retreived when Querying DMARC Records,M,L,,,,,,,,,查詢您的 DMARC 紀錄時獲取無關的 TXT 紀錄。帶有 _dmarc 子域名前綴的 TXT 紀錄不應該有 DMARC 紀錄之外的設定，請移除。若您的 DMARC 紀錄開頭並非 v=DMARC1 字串或是有其他字元，請修正。,"We detected that you have set unrelated TXT records under the ""_dmarc.<your_domain>"" subdomain. The ""_dmarc"" prefix should only be used for DMARC records. Other types of records should be removed or configured under their respective domains. Please note that your DMARC record must start with ""v=DMARC1"" and must not be prefixed with other characters, such as whitespaces.","為避免此風險，建議參照以下準則：
+•請檢查您的 DMARC 紀錄並移除無關的紀錄。
+•請檢查您的 DMARC 紀錄是否正確，請移除多餘字元。","To mitigate this vulnerability, we suggest the following:
+• Ensure that ONLY your DMARC record is set under ""_dmarc.<your_domain>""
+• Ensure that your DMARC record starts with ""v=DMARC1"" and does not contain redundant characters",
+email,dmarc,dmarc_another_spf,查詢 DMARC 紀錄時獲取其他紀錄,Other Records Retreived when Querying DMARC Records,查詢 DMARC 紀錄時獲取 SPF 紀錄,SPF Records Retreived when Querying DMARC Records,M,L,,,,,,,,,查詢您的 DMARC 紀錄時獲取 SPF 紀錄。DMARC 紀錄須設置於 _dmarc.<your_domain> 的子網域下，且由 v=DMARC1 字串開頭，否則無效。此問題可能是因為不存在符合 _dmarc 子網域的 DMARC 紀錄，導致存取 TXT 紀錄時被導向原網域。,"We detected that you have set unrelated SPF records under the ""_dmarc.<your_domain>"" subdomain. The ""_dmarc"" prefix should only be used for DMARC records. Other types of records should be removed or configured under their respective domains. This problem may occur when you are missing a valid DMARC record and the request is redirected to the root domain.","為避免此風險，建議參照以下準則：
+•請為您的網域設定有效的 DMARC 紀錄。請注意，DMARC 紀錄必須帶有 _dmarc 子域名前綴，這筆紀錄的域名須為 _dmarc.<your_domain>。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your DMARC record is set under the subdomain ""_dmarc.<your_domain>"".",
+email,dmarc,dmarc_syntax,DMARC 紀錄語法,DMARC Syntax Error,,,M,L,10.00,3.70,1.37,,,,,,您的 DMARC 紀錄含有語法錯誤，可能導致收信方驗證時因為解析錯誤而不採用您的設定。標籤與標籤值之間皆以一個等號（=）區隔，中間不可以有任何空白。如果在解析 DMARC 紀錄的時候發生語法錯誤，例如：錯字、不在定義內的未知標籤或標籤值、重複的標籤、大小寫錯誤等等，都會直接被忽略。也就是說，出錯的地方會被套用預設標籤值，而這個預設值通常是最寬鬆、保護效果最差的。錯誤發生位置請參照『更多資訊』。參數設定請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-dkimdmarc/#dmarc,"We detected that your DMARC records contain syntax errors, which may cause receiving mail servers to discard or ignore your record due to parsing errors. Each tag and value must be separated with ""="" (equal) and contain no spaces. Common syntax errors include: typos, undefined tags or values, duplicate tags, mixed uppercases and lowercases etc. When encountering errors, the receiving mail server may choose to neglect your settings and adopt default values, which are usually more lax and permissive. For the exact location of errors, refer to the ""more information"" section. 
+For configurations, please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-dkimdmarc/#dmarc","為避免此風險，建議參照以下準則：
+•錯誤發生位置請參照『更多資訊』。
+
+修改與配置方式請參考：
+•DMARC 紀錄產生工具 https://app.dmarcanalyzer.com/dns/dmarc","To mitigate this vulnerability, we suggest the following:
+• For the exact location of errors, refer to the ""more information"" section.
+
+For configuration details, refer to:
+• DMARC record generator:  https://app.dmarcanalyzer.com/dns/dmarc",
+email,dmarc,dmarc_syntax_must,DMARC 紀錄語法,DMARC Syntax Error,DMARC 紀錄缺少必要參數,Missing Required Tags,M,L,,,,,,,,,"您的 DMARC 紀錄缺少 p 參數。 p 參數為必要設定，代表寄信方要求收信方在驗證失敗時採取的處理策略。有效的設定值包含： 
+•None：不採取任何行為 。
+•Quarantine：隔離（不同伺服器行為不同，可能是集中到隔離中心、或是進入使用者垃圾信夾） 。
+•Reject：拒絕，在 SMTP 傳輸層直接捨棄。","We detected that your DMARC record is missing the policy ""p"" tag. The p tag is required since it instructs receiving mail servers the preferred policy when DMARC authentication fails. Valid values include:
+• None: don't take any action
+• Quarantine: flag as suspicious (varies according to mail servers, the email may be sent tp the quarantine center or the spam folder)
+• Reject: reject at the SMTP layer","為避免此風險，建議參照以下準則：
+•請在您的 DMARC 紀錄中加上 p 參數。","To mitigate this vulnerability, we suggest the following:
+• Add the policy ""p"" tag to your DMARC record",
+email,dmarc,dmarc_syntax_invalid_key,DMARC 紀錄語法,DMARC Syntax Error,DMARC 紀錄含有不合法的參數,Invalid Tags,M,L,,,,,,,,,您的 DMARC 紀錄含有不合法的參數，合法的參數為： v、pct、ruf、rua、rf、ri、p、sp、adkim、aspf。,"We detected that your DMARC record contains invalid or undefined tags. The valid tags are: v, pct, ruf, rua, rf, ri, p, sp, adkim, aspf.","為避免此風險，建議參照以下準則：
+•請檢查您的 DMARC 紀錄中是否有拼字錯誤的參數，否則請移除不合法的參數。","To mitigate this vulnerability, we suggest the following:
+• Check if your DMARC record contains mispelled tag names. Remove or correct as appropriate.",
+email,dmarc,dmarc_syntax_invalid_value,DMARC 紀錄語法,DMARC Syntax Error,DMARC 紀錄含有不合法的參數值,Invalid Tag Values,M,L,,,,,,,,,您的 DMARC 紀錄含有不合法的參數值。,We detected that your DMARC records contain invalid tag values.,"為避免此風險，建議參照以下準則：
+•請檢查您 DMARC 紀錄中的參數值是否為有效值，否則請移除。","To mitigate this vulnerability, we suggest the following:
+• Check if your DMARC record contains mispelled or invalid tag values. Remove or correct as appropriate.",
+email,dmarc,dmarc_report,DMARC 紀錄指定的回報信箱,DMARC Reporting Mailbox,,,L,L,5.00,1.85,0.68,,,,,,"DMARC 紀錄可以用 rua 標籤指示彙整報告（aggregate report）要寄送的位置、ruf 指示失敗報告（failure report）要寄送的位置。
+彙整報告包含所有信件的 DMARC 驗證情況，不論成功還是失敗都會紀錄，內容包含採用的 DMARC 紀錄、SPF 與 DKIM 的結果、alignment 細節、最後的 policy 與實際執行的 action、還有驗證結果的統計數字等等。失敗報告用於鑑識，包含更詳細的資訊，例如原信件內容，會在 DMARC 驗證失敗時馬上通知。","You can specify the DMARC aggregate report destination mailbox with the ""rua"" tag and the failure report destination mailbox with the ""ruf"" tag. The aggregate report contains all DMARC authentication results and detailed information including the retreived record, SPF and DKIM results, alignment, the taken policy and action, and aggregated statistics. The failure report is used in forensics and contain content of the original email. The aggregate report is sent daily and the failure report is sent immediately whenever conditions are met.",,,
+email,dmarc,dmarc_report_mx,DMARC 紀錄指定的回報信箱,DMARC Reporting Mailbox,DMARC 紀錄指定的回報信箱缺少 MX 紀錄,DMARC Reporting Mailbox Missing MX Records,L,L,,,,,,,,,您的 DMARC 紀錄指定的回報信箱缺少 MX 紀錄，將導致收信方無法順利寄送每日的彙整報告或失敗報告。,We detected that your DMARC reporting mailbox is missing MX records. The receiving mail server will be unable to send the daily aggregate reports or failure reports.,"為避免此風險，建議參照以下準則：
+•請檢查您 DMARC 紀錄指定的回報信箱是否有拼字錯誤，否則請確認此信箱是否有設置 MX 紀錄。","To mitigate this vulnerability, we suggest the following:
+• Check if your DMARC reporting mailbox is mispelled. Otherwise, ensure the mailbox domains have valid MX records.",
+email,dmarc,dmarc_report_wrong,DMARC 紀錄指定的回報信箱,DMARC Reporting Mailbox,DMARC 紀錄指定的回報信箱有誤,Invalid DMARC Reporting Mailbox,L,L,,,,,,,,,DMARC 紀錄指定的回報信箱有誤，將導致收信方拒絕寄送彙整報告與失敗報告或甚至因為解析錯誤而不採用您的設定，導致您無法收到報告。,"We detected that your DMARC reporting mailbox is invalid, which may cause the receiving mail server to refuse to send reports or even reject your record due to parsing errors.","為避免此風險，建議參照以下準則：
+•請檢查您 DMARC 紀錄指定的回報信箱是否有拼字錯誤。","To mitigate this vulnerability, we suggest the following:
+• Check if your DMARC reporting mailbox is mispelled.",
+email,dmarc,dmarc_report_invalid,DMARC 紀錄指定的回報信箱,DMARC Reporting Mailbox,無法驗證 DMARC 紀錄指定的回報信箱,DMARC Reporting Mailbox Validation Errors,L,L,,,,,,,,,您在 DMARC 紀錄指定的回報信箱未授權接收 DMARC 每日的彙整報告與失敗報告。如果收信人網域跟 DMARC 紀錄網域相同不會有這個問題，不過如果今天指定報告要寄送其他網域，則指定收信人網域需要在 <dmarc domain>._report._dmarc.<reporting domain> 發一筆 DMARC 紀錄來授權報告寄送。假設 DMARC 紀錄網域：sender.com，收報告地址為：report@thirdparty.com，則 thirdparty.com 要在 sender.com._report._dmarc.thirdparty.com 發一筆內容為 v=DMARC1 的 TXT 紀錄。這個機制的目的一來是為了防止有人故意用大量報告對第三方的收信人做垃圾信件攻擊（spamming），二來也是保護發行 DMARC 紀錄的網域不要讓過多資訊外流。,"We detected that your DMARC reporting mailbox does not authorize receiving reports for your domain. When your domain does not match the reporting mailbox domain, the designated receiving domain must specify a DMARC record under the  ""<dmarc domain>._report._dmarc.<reporting domain>"" subdomain. For example, if the sender domain is ""sender.com"" and the reporting mailbox is ""report@thirdparty.com"", then ""thirdparty.com"" must specify a TXT record with the contents ""v=DMARC1"" under the ""sender.com._report._dmarc.thirdparty.com"" subdomain. This mechanism is meant to prevent adversaries from spamming third party receivers and from leaking excessive information.","為避免此風險，建議參照以下準則：
+•請檢查您在 DMARC 紀錄指定的回報信箱是否授權接收 DMARC 每日的彙整報告。請確保回報信箱的網域已設置授權紀錄。","To mitigate this vulnerability, we suggest the following:
+• Check if your DMARC reporting mailbox has configured authorization records to allow your domain to send reports.",
+email,dmarc,dmarc_not_best_practice,DMARC 紀錄未採用最佳配置,DMARC Record Does not Follow Best Practices,,,L,L,5.00,1.85,0.68,,,,,,您的 DMARC 紀錄未採用最佳配置。詳細建議請參照『更多資訊』。配置越嚴謹的 DMARC 紀錄越能保護您的組織與顧客免於詐騙與網路釣魚的風險。,"We detected that your DMARC record does not follow best practices. For specific mitigation suggestions, please refer to ""more information"" section. Stricter configurations in your DMARC record provide more protection for your organizations and customers against phishing attacks.","為避免此風險，建議參照以下準則：
+•詳細建議請參照『更多資訊』。","To mitigate this vulnerability, we suggest the following:
+• Please refer to the ""more information"" section for specific suggestions.",
+email,spf,spf_dns,SPF 類型的 DNS 紀錄,SPF Type Records,,,L,L,3.33,1.85,0.68,,,,,,目前 DNS 已不支援 SPF 類型的 DNS 紀錄，請設置為 v=spf1 開頭的 TXT 紀錄。SPF 類型作為 SPF 機制發展的過渡期使用，目前已廢棄，處理方式未定義。,"We detected that your SPF record uses the SPF DNS type. SPF type DNS records were developed to support earlier stages of the SPF mechanism and are now deprecated. Using SPF type DNS records may result in undefined behavior on the receiving server. To configure SPF records, please use TXT records starting with ""v=spf1"".","為避免此風險，建議參照以下準則：
+•請改為設置為 v=spf1 開頭的 TXT 紀錄。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your SPF record is a TXT record starting with ""v=spf1"".",
+email,spf,spf_no,沒有 SPF 紀錄,Missing SPF Record,,,H,L,33.33,18.52,6.83,,,,,,未找到 SPF 紀錄。SPF 紀錄是一筆 DNS 文字 (TXT) 記錄，幫助收信方確認寄信方宣稱之來源是否為合法位置，可與 DKIM 及 DMARC 共同用於防止詐騙和網路釣魚。SPF 可協助伺服器確認看似來自特定網域的郵件是否確實是透過網域擁有者所授權的伺服器傳送。目前 SPF 為郵件驗證主流機制，若不設定可能會導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your server is missing SPF records. An SPF record is a TXT type DNS record that helps the receiving server identify if the email originated from a trusted source. Along with DKIM and DMARC, these three standards provide the pillars of modern email security and helps prevent phishing attacks and fraud. An SPF record explicitly states authorized sending origins for a domain and is consulted by the receiving end to enforce email authentication. Failing to configure an SPF record may cause receiving servers to flag your email as suspicious, send it to the spam folder, or even reject it completely.","為避免此風險，建議參照以下準則：
+•請為您的網域設定 SPF 紀錄，詳細步驟請依照您的郵件系統而定，
+
+修改與配置方式請參考 :
+•Gsuite : https://support.google.com/a/answer/33786?hl=en 
+•O365 : https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/set-up-spf-in-office-365-to-help-prevent-spoofing?view=o365-worldwide 
+•SendGrid : https://sendgrid.com/docs/ui/account-and-settings/spf-records/","To mitigate this vulnerability, we suggest the following:
+• Configure and publish a valid SPF record for your domain.
+
+For configuration steps, refer to:
+• Gsuite : https://support.google.com/a/answer/33786?hl=en 
+• O365 : https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/set-up-spf-in-office-365-to-help-prevent-spoofing?view=o365-worldwide 
+• SendGrid : https://sendgrid.com/docs/ui/account-and-settings/spf-records/",
+email,spf,spf_multiple,多個 SPF 紀錄,Multiple SPF Record,,,M,L,6.67,3.70,1.37,,,,,,"不允許設定複數個 SPF 紀錄。每一個網域應當只有一筆 SPF 紀錄。SPF 紀錄是一筆 DNS 文字 (TXT) 記錄，幫助收信方確認寄信方宣稱之來源是否為合法位置，可與 DKIM 及 DMARC 共同用於防止詐騙和網路釣魚。SPF 可協助伺服器確認看似來自特定網域的郵件是否確實是透過網域擁有者所授權的伺服器傳送。目前 SPF 為郵件驗證主流機制，若不設定可能會導致您寄出的郵件被設為垃圾信甚至直接拒絕。
+
+詳細規範請參考：
+•https://tools.ietf.org/html/rfc4408","We detected that your server has mulitple SPF records for one domain, which is a violation of the SPF specifications. An SPF record is a TXT type DNS record that helps the receiving server identify if the email originated from a trusted source. Along with DKIM and DMARC, these three standards provide the pillars of modern email security and helps prevent phishing attacks and fraud. An SPF record explicitly states authorized sending origins for a domain and is consulted by the receiving end to enforce email authentication. Failing to configure an SPF record may cause receiving servers to flag your email as suspicious, send it to the spam folder, or even reject it completely.
+
+For the full specification, check https://tools.ietf.org/html/rfc4408","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並移除重複或多餘的紀錄，或是合併為一筆。","To mitigate this vulnerability, we suggest the following:
+• Ensure there is only one SPF record. Remove redundant records or merge duplicates.",
+email,spf,spf_parked_domain,網域寄放（Parked Domain）的 SPF 紀錄,Incorrect SPF Record for Parked Domains,,,L,L,3.33,1.85,0.68,,,,,,網域寄放（Parked Domain）因為不允許寄信，SPF 紀錄應設置為『v=spf1 -all』 來防止攻擊者冒用。,"We detected that the SPF record of your parked domain is incorrect. Since parked domains are not allowed to send emails, their SPF records should be set to ""v=spf1 -all"" to prevent abuse from adversaries.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並設為『v=spf1 -all』。","To mitigate this vulnerability, we suggest the following:
+• Ensure your SPF record is set to ""v=spf1 -all"".",
+email,spf,spf_syntax,SPF 紀錄語法錯誤,SPF Syntax Error,,,M,L,6.67,3.70,1.37,,,,,,您的 SPF 紀錄含有語法錯誤，可能導致收信方驗證時因為解析錯誤而不採用您的設定。標籤與標籤值之間皆以一個冒號（:）區隔，中間不可以有任何空白。如果在解析 SPF 紀錄的時候發生語法錯誤，例如：錯字、不在定義內的未知標籤或標籤值、大小寫錯誤等等，都會導致驗證失敗而被收信方過濾，導致您寄出的郵件被設為垃圾信甚至直接拒絕。參數設定請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/,"We detected that your SPF records contain syntax errors, which may cause receiving mail servers to discard or ignore your record due to parsing errors. Each tag and value must be separated with "":"" (comma) and contain no spaces. Common syntax errors include: typos, undefined tags or values, duplicate tags, mixed uppercases and lowercases etc. When encountering errors, the receiving mail server will throw a permanent error and neglect your SPF record. For the exact location of the error, refer to the ""more information"" section. 
+For configurations, please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/","為避免此風險，建議參照以下準則：
+•錯誤發生位置請參照『更多資訊』。
+
+您可以參考這裡的語法說明：https://dmarcian.com/spf-syntax-table/","To mitigate this vulnerability, we suggest the following:
+• For the exact location of the error, refer to the ""more information"" section.
+
+For syntax details, check: https://dmarcian.com/spf-syntax-table/",
+email,spf,spf_syntax_all,SPF 紀錄語法錯誤,SPF Syntax Error,SPF 紀錄在 All 後仍有參數,Tags after All,M,L,,,,,,,,,您的 SPF 紀錄在 All 後仍有參數。在 SPF 紀錄語法中，『all』 機制必須位於最末，任何 『all』 機制後的設置都會被忽略。參數設定請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/,"We detected that your SPF record has additional tags after the ""all"" mechanism. In SPF syntax, the ""all"" tag must be the last tag of the record; anything after it will be ignored.
+For configurations, please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並調整參數順序，將 『all』 機制放在最後。","To mitigate this vulnerability, we suggest the following:
+• Check the order of the tags in your SPF record and ensure that ""all"" comes last.",
+email,spf,spf_syntax_lack_value,SPF 紀錄語法錯誤,SPF Syntax Error,SPF 紀錄中參數缺少值,Missing Tag Values,M,L,,,,,,,,,您的 SPF 紀錄中有參數缺少合理值。參數設定請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/,"We detected that your SPF record is missing tag values.
+For configurations, please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並為參數設置有效值。","To mitigate this vulnerability, we suggest the following:
+• Check if your SPF record contains mispelled or is missing tag values. Remove or correct as appropriate.",
+email,spf,spf_syntax_lack_all,SPF 紀錄語法錯誤,SPF Syntax Error,SPF 紀錄缺少 all 機制,Missing All mechanism,M,L,,,,,,,,,您的 SPF 紀錄缺少 all 機制，可能導致攻擊者在不造成報錯的情況下假冒您的網域。一般來說應設置最嚴謹的 -all，表示除了指定的 IP 外一律拒絕（fail(-)）。參數設定請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/,"We detected that your SPF record is missing the ""all"" mechanism, which may allow an adversary to spoof your domain. The ""all"" mechanism specifies the action on any sources not listed in the previous tags and should be set to the most restrictive ""-all"" to reject any other IPs claiming to send emails on behalf of your domain.
+For configurations, please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並設置 all 機制。注意， all 機制必須位於紀錄最末。","To mitigate this vulnerability, we suggest the following:
+• Ensure that your SPF record specifies the ""all"" tag as the last mechanism.",
+email,spf,spf_dns_too_many,SPF 紀錄需要太多次 DNS 查詢,SPF Record Requires Too Many DNS Lookups,,,M,L,6.67,3.70,1.37,,,,,,您的SPF 紀錄需要太多次 DNS 查詢。根據 RFC 規定，使用 SPF 紀錄驗證寄信方授權的伺服器時，最多進行 10 次 DNS 查詢，任何因為 a、mx、ptr、exists、include、redirect 機制而發起的 DNS 查詢都列入計算。若超過 10 次，收信方會報錯並判定驗證失敗。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record requires too many DNS lookups. According to the RFC, the maximum allowed number of DNS queries required to validate a SPF record is 10. Any DNS lookup, indirect or recursive, triggered by the a, mx, ptr, exists, include, and redirect mechanisms is counted. When the quota is exceeded, the receiving mail server will abort with an error and deem the authentication a failure. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•造成此錯誤最常見的原因，是使用過多的 include 機制，導致 DNS 查詢次數倍數增長。其中一個解法是直接列出所有允許的 IP 位置，但缺點是當使用的寄信服務更動其 IP 時，您的紀錄也必須隨之更新。另一個解法是使用多個子網域，切分個別寄信網域，這樣每個子網域都有 10 次 DNS 查詢空間，相應的缺點是寄出的信件上寄件者的網域無法統一，可能導致客戶混淆。
+請參考：https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/#第三方服務","To mitigate this vulnerability, we suggest the following:
+• The problem is most often due to excessively using the ""include"" mechanisms for third party services, thus multiplying the number of DNS queries. One solution would be to expand the included records and list out all IPs, but this method comes with the hassle of updating your record whenever any of your providers do. Another common solution is to divide the sending domain into several subdomains and split the original record so that each domain can have their own provider-specific record and quota of ten lookups. The downside to this method is that emails sent from your domain may carry several different domain names and may potentially confuse customers.
+Please refer to: https://tech-blog.cymetrics.io/posts/crystal/email-sec-settings-spf/",
+email,spf,spf_invalid_ip,SPF 紀錄中有無效的 IP,SPF Record Contains Invalid IPs,,,L,L,3.33,1.85,0.68,,,,,,您的 SPF 紀錄中有無效的 IP，錯誤位置請參照『更多資訊』。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record contains invalid IPs. For the exact location of the error, refer to the ""more information"" section. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您 SPF 紀錄中的 IP 是否為有效值。","To mitigate this vulnerability, we suggest the following:
+• Ensure the IPs listed in your SPF record are valid.",
+email,spf,spf_loop,SPF 紀錄中有迴圈,SPF Record Contains Loops,,,M,L,6.67,3.70,1.37,,,,,,您的 SPF 紀錄中有迴圈，亦即您在 include 機制中列的網域可能在他的 SPF 紀錄中直接或是遞迴間接 include 您的網域，導致 A 授權 B、B 授權 C、C 授權 A 的迴圈狀態。這個問題會使 SPF 紀錄的查詢無限進行直到超過 10 次 DNS 查詢而最後報錯。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record contains loops, which means that you indirectly referenced your domain when specifying another domain using the ""include"" mechanism. This often happens when domain A includes domain B in its record, domain B likewise includes domain C, but domain C in turn includes domain A. This forms a loop in IP resolution and the number of queries will eventually exceed 10 lookups, resulting in an error and authentication failure. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並移除『更多資訊』中的網域（可能是間接被 include）。","To mitigate this vulnerability, we suggest the following:
+• Check your SPF record and remove the domain listed in the ""more information"" section. It may have been indirectly included.",
+email,spf,spf_domain_record,SPF 紀錄包含沒有設置相應紀錄的網域,Missing Record for Domain in SPF Record,,,M,L,6.67,3.70,1.37,,,,,,您的 SPF 紀錄中授權的網域沒有設置相應的 DNS 紀錄，亦即您使用 a、mx、redirect、include、 exists 等機制來導入其他網域，但這些網域卻沒有提供相對的 A/AAAA、MX、SPF、SPF、A/AAAA 等 DNS 紀錄，導致該網域的 IP 授權無效。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that the domains in your SPF record are missing DNS records. If you use the a, mx, redirect, include, and exists mechanisms, the referenced domains must contain, respectively, A/AAAA, MX, SPF, SPF, and A/AAAA DNS records. Otherwise, authorization for the IP is treated as invalid and emails sent from that source will be rejected. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並移除『更多資訊』中的網域。若這是您的網域，請設置相應的 DNS 紀錄。若這是第三方網域，請聯繫他們處理此問題。","To mitigate this vulnerability, we suggest the following:
+• Check your SPF record and remove the domain listed in the ""more information"" section. If you own the domain, configure the corresponding records. Otherwise, contact the owner of the listed domain for support.",
+email,spf,spf_auth_repeat,SPF 紀錄重複授權,SPF Record Duplicate Include,,,L,L,3.33,1.85,0.68,,,,,,您的 SPF 紀錄中重複授權同一網域（例如 SPF 紀錄有：include:a.com include:b.com 但是 a.com 的 SPF 紀錄內已經有 include:b.com），應避免此一多餘的 DNS 查詢。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record listed a domain or IP multiple times via the ""include"" mechanism. A common scenario is when your record specifies ""include:a.com include: b.com"" but the SPF record for a.com contains ""include:b.com"". Unnecessary DNS lookups should be avoided. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並移除『更多資訊』中的網域。造成此錯誤最常見的原因，是您用 include 機制涵蓋的兩個網域中，其中一個在其 SPF 紀錄中已經包含了另一個。例如，若您同時使用 FreshDesk 與 SendGrid 服務，就不需要在 SPF 紀錄中 include SendGrid，因為 FreshDesk 在其 SPF 紀錄中已納入 SendGrid。","To mitigate this vulnerability, we suggest the following:
+• Check your SPF record and remove the domain listed in the ""more information"" section. This problem commonly occurs when you include two domains but one of them has already covered the other. For example, if you use FreshDesk and SendGrid as email providers, you do not have to include SendGrid's record because FreshDesk already has ""include:sendgrid.net"" in its record.",
+email,spf,spf_redirect_and_all,SPF 紀錄同時包含 redirect 與 all 機制,SPF Record Contains Redirect and All,,,L,L,3.33,1.85,0.68,,,,,,您的 SPF 紀錄同時包含 redirect 與 all 機制。Redirect 機制指示收信方使用另一網域的 SPF 紀錄取代自己的。使用 redirect 機制時不應同時使用 all 機制，若 SPF 紀錄中兩者種都有，則 redirect 機制會被忽略。另外，redirect 機制只能設一個，其他皆會被忽略。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record contains both the ""redirect"" and ""all"" mechanism, which is a violation of the SPF specifications. The ""redirect"" mechanism is used to instruct the receiving mail server to adopt the specified domain's SPF record instead of the current record. It can only appear once in the record. The ""redirect"" and ""all"" mechanisms are mutually exclusive, and if both are present, ""redirect"" will be ignored. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並只設置 all 機制或 redirect 機制。","To mitigate this vulnerability, we suggest the following:
+• Check your SPF record and ensure only one of ""all"" and ""redirect"" is specified.",
+email,spf,spf_multiple_redirect,SPF 紀錄包含多項 redirect 機制,SPF Record Multiple Redirect,,,M,L,6.67,3.70,1.37,,,,,,您的 SPF 紀錄同時包含多項 redirect 機制。Redirect 機制指示收信方使用另一網域的 SPF 紀錄取代自己的。使用 redirect 機制時不應同時使用 all 機制，若 SPF 紀錄中兩者種都有，則 redirect 機制會被忽略。Redirect 機制只能設一個，其他皆會被忽略。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。,"We detected that your SPF record contains multiple ""redirect"" tags. The ""redirect"" mechanism is used to instruct the receiving mail server to adopt the specified domain's SPF record instead of the current record. It can only appear once in the record. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並只設置一筆 redirect 機制。","To mitigate this vulnerability, we suggest the following:
+• Check your SPF record and ensure the ""redirect"" tag only appears once.",
+email,spf,spf_ptr,SPF 紀錄使用 ptr 機制,SPF Record Uses PTR,,,L,L,3.33,1.85,0.68,,,,,,"您的 SPF 紀錄使用 ptr 機制。目前 SPF 協議已不支援 ptr 機制。SPF 紀錄機制使用不當可能使收信方忽略您的 SPF 紀錄，導致您寄出的郵件被設為垃圾信甚至直接拒絕。
+
+詳細規範請參考：
+•https://tools.ietf.org/html/rfc7208#section-5.5","We detected that your SPF record uses the ""ptr"" mechanism, which has been deprecated and unsupported by some email servers. Misuse of SPF mechanisms may cause the receiving server to ignore your SPF record and reject your emails.
+For specification details, check: https://tools.ietf.org/html/rfc7208#section-5.5","若非必要，請關閉此服務。否則，為避免此風險，建議參照以下準則：
+•改用 include 機制。","To mitigate this vulnerability, we suggest the following:
+• Remove the ""ptr"" tag in your SPF record. Use the ""include"" mechanism instead.",
+email,spf,spf_all_loosy,SPF 紀錄中 all 機制過於寬鬆,SPF Record Uses Lax All,,,M,L,6.67,3.70,1.37,,,,,,,,,,
+email,spf,spf_all_loosy_all_pass,SPF 紀錄中 all 機制過於寬鬆,SPF Record Uses Lax All,SPF 紀錄中 all 機制為 Pass,All with Pass Qualifier,M,L,,,,,,,,,您的 SPF 紀錄中 all 機制設置為 Pass(+)，表示允許任何 IP 冒充您的網域寄信，等同沒有任何保護。一般來說應設置最嚴謹的 -all，表示除了指定的 IP 外一律拒絕（fail(-)）。,We detected that your SPF record uses the SoftFail (~) qualifier for the 'all' mechanism. This indicates that all IPs are authorized to send emails as your domain and is equivalent to having no protections. The 'all' mechanism should use the Fail (-) qualifier to refuse any IPs out of the whitelist.,"為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並設置 all 機制使用 Fail(-)。","To mitigate this vulnerability, we suggest the following:
+• Please use the Fail(-) qualifier in your SPF record.",
+email,spf,spf_all_loosy_all_softfail,SPF 紀錄中 all 機制過於寬鬆,SPF Record Uses Lax All,SPF 紀錄中 all 機制為 SoftFail,All with SoftFail Qualifier,M,L,,,,,,,,,您的 SPF 紀錄中 all 機制設置為 SoftFail(~)，表示驗證失敗的信件應被標示為不安全，納入垃圾郵件評分，但仍會被送到用戶信箱。如果有設置 DMARC，則 DMARC 紀錄指定的政策會被使用，此時 SoftFail(~) 效用等同 Fail(-)，此風險可略。,"We detected that your SPF record uses the SoftFail (~) qualifier for the 'all' mechanism. This indicates that emails that fail authentication should be marked as suspicious and added to the spam score, but still sent to the user’s inbox. If your DMARC record is set, the action taken will depend on the defined DMARC policy. In this case, the SoftFail(~) and Fail(-) qualifiers are equivalent and this issue can be ignored. ","為避免此風險，建議參照以下準則：
+•請檢查您的 SPF 紀錄並設置 all 機制使用 Fail(-)。","To mitigate this vulnerability, we suggest the following:
+• Please use the Fail(-) qualifier in your SPF record.",
+credential,credential_leakage,exposure_password,帳密外洩,Credentials Leakage,,,H,L,32.00,32.00,5.00,,"8. Asset Management 
+9. Access Control","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject",3. Protect stored cardholder data (Protect Stored Account Data),"PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed
+PR.DS-1: Data-at-rest is protected",檢測到您的帳密在外洩事件中被公布。發生外洩的服務與資料請參照『更多資訊』。,"We detected that your credentials were leaked in data breaches. For details on the leaked email and service, please refer to the ""more information"" section.","為避免此風險，建議參照以下準則：
+•更換並使用高強度的密碼。
+•新密碼不應重複使用於其他服務。
+•新密碼不應使用生日、姓名等容易取得之個資。","To mitigate this vulnerability, we suggest the following:
+• Please change your password to use strong credentials.
+• The password should not be reused in other services.
+•  The password should not contain easily accessible PII such as your birthday and name.",
+credential,credential_leakage,exposure_thirdparty_account,外部服務中的帳號,Exposed External Accounts,,,M,L,16.00,16.00,1.37,,"8. Asset Management 
+9. Access Control","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到您的帳號名稱在外部服務中存在帳號。駭客可能使用您的帳號名稱來註冊外部服務，藉此假冒您的身份與客戶互動並進行詐騙。,We detected accounts using your domain name in external services. An adversary may register services using your organization's name to set up fraudulent services and scam your customers. ,"為避免此風險，建議參照以下準則：
+•檢視『更多資訊』中的帳號是否為您所有
+•檢視該帳號對貴單位造成的影響","To mitigate this vulnerability, we suggest the following:
+• Check if you own the accounts listed in the ""more information"" section
+• Investigate if the accounts have any detrimental effects on your company",
+credential,credential_leakage,exposure_deep_web,暗網資訊,Mentioned in the Darknet,,,M,L,16.00,16.00,1.37,,"8. Asset Management 
+9. Access Control","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject",3. Protect stored cardholder data,ID.RA-2: Threat and vulnerability information is received from information sharing forums and sources,檢測到您的機構在暗網中被提及。駭客可能在論壇中討論與您有關的漏洞或是攻擊，請檢視『更多資訊』的內容是否會對您產生傷害。,"We detected that your organization was mentioned in the Darknet. Adversaries often share newly discovered vulnerabilities and discuss attacks in Darknet forums. Check the ""more information"" section for details.","為避免此風險，建議參照以下準則：
+•檢視『更多資訊』中的資訊對貴單位造成的影響。若為漏洞請儘速修補。","To mitigate this vulnerability, we suggest the following:
+• Investigate if the leaked information in the ""more information"" section has any detrimental effect on your company.
+• Patch the disclosed vulnerability as soon as possible.",
+cloud,cloud_storage,exposure_cloud_storage,公開的雲端儲存,Exposed Cloud Storage,,,M,L,17.78,17.78,1.37,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",公開的雲端儲存能允許任何人存取您的資料、上傳惡意檔案、查看配置等等。洩漏位置請參考『更多資訊』。,"An open cloud storage allows anyone to access your files, upload malicious content, and even modify settings. Check the ""more information"" section for details.","為避免此風險，建議參照以下準則：
+•如需對外開放此雲端儲存， 請確認上面資料皆可被公開。
+•不應對外開放此雲端儲存， 請立即修改配置。","To mitigate this vulnerability, we suggest the following:
+• If the cloud storage must be externally open, make sure all exposed information is public.
+• If the cloud storage is private, modify configurations immediately to secure it.",
+cloud,cloud_storage,exposure_cloud_storage_azure_blob,公開的雲端儲存,Exposed Cloud Storage,Azure Blob Storage,Azure Blob Storage,M,L,,,,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到與您有關的 Azure Blob Storage。,We detected a public Azure Blob Storage potentially related to your organization.,"修改與配置方式請參考：
+•https://docs.microsoft.com/zh-tw/azure/storage/common/storage-auth","For configuration steps, refer to: https://docs.microsoft.com/zh-tw/azure/storage/common/storage-auth",
+cloud,cloud_storage,exposure_cloud_storage_google,公開的雲端儲存,Exposed Cloud Storage,Google Object Storage,Google Object Storage,M,L,,,,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到與您有關的 Google Object Storage。,We detected a public Google Object Storage potentially related to your organization.,"修改與配置方式請參考：
+•https://cloud.google.com/storage/docs/access-control
+","For configuration steps, refer to: https://cloud.google.com/storage/docs/access-control
+",
+cloud,cloud_storage,exposure_cloud_storage_do,公開的雲端儲存,Exposed Cloud Storage,DigitalOcean Space,DigitalOcean Space,M,L,,,,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到與您有關的 DigitalOcean Space。,We detected a public DigitalOcean Space potentially related to your organization.,"修改與配置方式請參考：
+•https://docs.digitalocean.com/products/spaces/how-to/set-file-listing-permissions/
+","For configuration steps, refer to: https://docs.digitalocean.com/products/spaces/how-to/set-file-listing-permissions/
+",
+cloud,cloud_storage,exposure_cloud_storage_s3,公開的雲端儲存,Exposed Cloud Storage,AWS S3 Bucket,AWS S3 Bucket,M,L,,,,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到與您有關的 AWS S3 Bucket。,We detected a public AWS S3 Bucket potentially related to your organization.,"修改與配置方式請參考：
+•https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/access-control-block-public-access.html","For configuration steps, refer to: https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/access-control-block-public-access.html",
+credential,credential_leakage,exposure_public_repo,公共程式庫,Exposed Public Code Repository,,,L,L,8.89,8.89,0.68,,"8. Asset Management 
+9.4 System and application access control
+13.1 Network Security Management","Art.5 Principles relating to processing of personal data
+Art.34. Communication of a personal data breach to the data subject","3. Protect stored cardholder data
+8. Identify and authenticate access to system components","PR.AC-1: Identities and credentials are managed for authorized devices and users
+PR.AC-3: Remote access is managed",檢測到與您有關的公共程式庫（如 GitHub、GitLab）。公共程式庫包含程式碼與歷史編輯紀錄，駭客可能利用程式漏洞攻擊您的機構，或是利用寫在程式碼中的帳號密碼及其他資訊做進一步滲透。,"We detected a public code repository, such as GitHub and GitLab, potentially related to your organization. Public code repositories often contain source code and modifications history, allowing an adversary to attack your organization via vulnerabilities in the code, such as logic errors and hardcoded credentials.","為避免此風險，建議參照以下準則：
+•檢視『更多資訊』中之公共程式庫中是否包含不應揭露的資訊並移除。
+•檢視『更多資訊』中之公共程式庫若不應對外開放請立即修改配置。","To mitigate this vulnerability, we suggest the following:
+• If the code repository must be externally open, make sure all exposed information is public.
+• If the code repository is private, modify configurations immediately to secure it.",
+,,,,,,,,,,,,,,Art.24 Responsibility of the controller,Chapter II Personal Data Protection Section 19,,,,,,
+,,,,,,,,,,,,,,"Art.25 Data protection by design and by default 
+",Chapter II Personal Data Protection Section 21 ,,,,,,
+,,,,,,,,,,,,,,Art.32 Security of processing,Chapter III Rights of the data subject Section 40,http,,,,,
+,,,,,,,,,,,,,,"Art.5 Principles relating to processing of personal data
+",Section 5 ,,,,,,
+,,,,,,,,,,,,,,Art.34. Communication of a personal data breach to the data subject,Chapter III Rights of the data subject Section 40,,,,,,
+,,,,,,,,,,,,,,Art.33 Notification of a personal data breach to the supervisory authority,Chapter III Rights of the data subject Section 37,,,,,,

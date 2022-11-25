@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>分類標籤 | 移除</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>移除標籤</h2>
+    </div>
+    <div><br><label>{{temp_label}}</label><br></div>
+    <label>檢測項目:</label><br>
+    <form action="/select_issue_tag_remove" method="post">
+        <select name="issue_id">
+            <option selected="selected" disabled="disabled" style='display: none' value=''></option>
+            {% for i in issue_list %}
+            <option value="{{ i[0] }}" {{ i[11] }}>{{ i[0] }} | {{ i[1] }} | {{ i[6] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_button" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <label>分類標籤:</label><br>
+    <form action="/button_tag_remove" method="post" onsubmit="return confirm('確定要刪除?');">
+        <div><input type="hidden" id="hide_id" name="hide_id" value="{{input_id}}"></div>
+        <select name="tag_id">
+            {% for i in tag_list %}
+            <option value="{{ i[0] }}" {{ i[3] }}>{{ i[0] }} | {{ i[2] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_tag_button" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+
+<div>
+
+</div>
+
+</body>
+</html>

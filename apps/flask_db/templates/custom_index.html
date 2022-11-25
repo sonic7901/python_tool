@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>首頁</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+<div class="div_title">
+    <div style="font-size:100px;">Cymetrics</div>
+    <div style="height:0px;"></div>
+    <label style="font-size:30px;height:20px;">檢測資料庫</label>
+</div>
+<br>
+<div class="div_button_group">
+    <a href="/issue_add" style="color:black;">
+        <div class="div_button">
+            <label>新增檢測項目</label>
+        </div>
+    </a>
+    <a href="/issue_edit" style="color:black;">
+        <div class="div_button">
+            <label>修改檢測項目</label>
+        </div>
+    </a>
+    <a href="/issue_remove" style="color:black;">
+        <div class="div_button">
+            <label>移除檢測項目</label>
+        </div>
+    </a>
+    <a href="/issue_type" style="color:black;">
+        <div class="div_button">
+            <label>調整項目類型</label>
+        </div>
+    </a>
+    <a href="/type_add" style="color:black;">
+        <div class="div_button">
+            <label>新增分類方法</label>
+        </div>
+    </a>
+    <a href="/type_remove" style="color:black;">
+        <div class="div_button">
+            <label>移除分類方法</label>
+        </div>
+    </a>
+    <a href="/type_item_add" style="color:black;">
+        <div class="div_button">
+            <label>新增分類項目</label>
+        </div>
+    </a>
+    <a href="/type_item_remove" style="color:black;">
+        <div class="div_button">
+            <label>移除分類項目</label>
+        </div>
+    </a>
+</div>
+<div class="div_table">
+    <table class="table1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>原始名稱</th>
+            <th>中文名稱</th>
+            <th>英文名稱</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in issue_list %}
+        <tr>
+            <td>{{ i[0] }}</td>
+            <td>{{ i[1] }}</td>
+            <td>{{ i[6] }}</td>
+            <td>{{ i[5] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

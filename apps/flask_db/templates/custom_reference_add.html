@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>參考連結 | 新增</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>新增連結</h2>
+    </div>
+    <div><br><label>{{temp_label}}</label><br></div>
+    <label>檢測項目:</label><br>
+    <form action="/select_reference_tag" method="post">
+        <select name="issue_id">
+            <option selected="selected" disabled="disabled" style='display: none' value=''></option>
+            {% for i in issue_list %}
+            <option value="{{ i[0] }}" {{ i[11] }}>{{ i[0] }} | {{ i[1] }} | {{ i[6] }}</option>
+            {% endfor %}
+        </select>
+        <button id="select_button" type="submit" class="button_select">確定</button>
+    </form>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+<div>
+    <form action="/button_reference_add" method="post">
+        <div>
+            <button class="button_bar" type="submit">送出</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="div_float">
+            <label>新來源名稱:</label>
+            <br>
+            <input type="text"
+                   id="reference_name"
+                   name="reference_name"
+                   value=""
+                   maxlength="64"/>
+            <br>
+            <br>
+            <label>新來源連結(URL):</label>
+            <br>
+            <input type="text"
+                   id="reference_value"
+                   name="reference_value"
+                   value=""
+                   maxlength="256"
+                   required/>
+            <br>
+        </div>
+        <div class="div_float" style="width: 65%; height: auto;">
+            <p>當前測項參考連結:</p>
+            {% for i in reference_list %}
+            <div class="div_tag" style="width: auto;">
+            <label style="font-size:15px;">{{ i[2] }}({{ i[3] }}) </label>
+            <br>
+        </div>
+        {% endfor %}
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div><input type="hidden" id="hide_id" name="hide_id" value="{{input_id}}"></div>
+        <br>
+
+    </form>
+</div>
+
+</body>
+</html>
