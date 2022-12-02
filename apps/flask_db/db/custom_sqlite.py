@@ -718,7 +718,81 @@ def parser_eas(db_file):
         print('Exception(init_db):' + str(ex))
 
 
+def parser_vas(db_file):
+    try:
+        # add_user(db_file, 'cymetrics', 'aA@123456')
+        add_language(db_file, 'en-US')
+        add_language(db_file, 'zh-TW')
+        nmp = utils.custom_csv.read_file_to_dict("zap_report.csv")
+        # id,type,origin,enabled,risk,cost,name_en,name_zh,desc_en,desc_zh,advice_en,advice_zh
+        count = 1
+        for n in nmp:
+            temp_score = 0
+            if n['risk'] == 'High':
+                temp_score = 75
+            elif n['risk'] == 'Medium':
+                temp_score = 50
+            elif n['risk'] == 'Low':
+                temp_score = 25
 
+            temp_cost = 0
+            if n['cost'] == 'High':
+                temp_cost = 25
+            elif n['cost'] == 'Medium':
+                temp_cost = 9
+            elif n['cost'] == 'Low':
+                temp_cost = 1
+            temp_issue_id = add_issue(db_file, n['origin'], temp_score, temp_cost)
+            if temp_issue_id == 0:
+                continue
+            """
+            add_issue_name(db_file, n['細項(L3) EN'], temp_issue_id, 1, n['細項(L3) EN'])
+            add_issue_name(db_file, n['細項(L3)'], temp_issue_id, 2, n['細項(L3)'])
+            add_issue_description(db_file, n['細項(L3) EN'] + '(英文敘述)', temp_issue_id, 1, n['詳細情況 EN'])
+            add_issue_description(db_file, n['細項(L3)'] + '(中文敘述)', temp_issue_id, 2, n['詳細情況'])
+            temp_advice_id = add_advice(db_file, n['細項(L3)'] + '(英文問題修復建議)', 1, n['修復 EN'])
+            add_link_advice(db_file, temp_issue_id, temp_advice_id)
+            temp_advice_id = add_advice(db_file, n['細項(L3)'] + '(中文問題修復建議)', 2, n['修復'])
+            add_link_advice(db_file, temp_issue_id, temp_advice_id)
+
+            temp_type_id = add_type(db_file, n['次類別(L2)'], 100)
+            add_link_type(db_file, temp_issue_id, temp_type_id)
+
+            temp_type_id = add_type(db_file, n['主類別(L1)'], 100)
+            add_link_type(db_file, temp_issue_id, temp_type_id)
+
+            if not n['ISO'] == '':
+                temp_iso_list = n['ISO'].split('\n')
+                for temp_iso in temp_iso_list:
+                    if not temp_iso == '':
+                        temp_type_id = add_type(db_file, temp_iso, 100)
+                        add_link_type(db_file, temp_issue_id, temp_type_id)
+
+            if not n['GDPR'] == '':
+                temp_gdpr_list = n['GDPR'].split('\n')
+                for temp_gdpr in temp_gdpr_list:
+                    if not temp_gdpr == '':
+                        temp_type_id = add_type(db_file, temp_gdpr, 100)
+                        add_link_type(db_file, temp_issue_id, temp_type_id)
+
+            if not n['PCI DSS'] == '':
+                temp_pci_list = n['PCI DSS'].split('\n')
+                for temp_pci in temp_pci_list:
+                    if not temp_pci == '':
+                        temp_type_id = add_type(db_file, temp_pci, 100)
+                        add_link_type(db_file, temp_issue_id, temp_type_id)
+
+            if not n['NIST CSF'] == '':
+                temp_nist_list = n['PCI DSS'].split('\n')
+                for temp_nist in temp_nist_list:
+                    if not temp_nist == '':
+                        temp_type_id = add_type(db_file, temp_nist, 100)
+                        add_link_type(db_file, temp_issue_id, temp_type_id)
+            """
+            count += 1
+
+    except Exception as ex:
+        print('Exception(init_db):' + str(ex))
 
 
 def unit_test(db_file):
@@ -738,4 +812,5 @@ def unit_test(db_file):
 if __name__ == "__main__":
     init('test.db')
     # unit_test()
-    parser_eas('test.db')
+    parser_vas('test.db')
+    # parser_eas('test.db')

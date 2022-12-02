@@ -1,4 +1,4 @@
-﻿id,type,origin,enabled,risk,cost,name_en,name_zh,desc_en,desc_zh,advice_en,advice_zh
+id,type,origin,enabled,risk,cost,name_en,name_zh,desc_en,desc_zh,advice_en,advice_zh
 0,A1,Directory Browsing,TRUE,,,,,,,,
 2,A1,Private IP Disclosure,TRUE,,,,,,,,
 3,A1,Session ID in URL Rewrite,TRUE,,,,,,,,
