@@ -19,6 +19,7 @@ def init(db_file):
         create_table_link_reference(db_file)
         create_table_type(db_file)
         create_table_link_type(db_file)
+        add_user(db_file, 'cymetrics', 'aA@123456')
     except Exception as ex:
         print('Exception(init):' + str(ex))
 
@@ -88,11 +89,10 @@ def create_table_issue(db_file):
 
 
 def add_issue(db_file, input_origin, input_cvss, input_cost):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input_check
-        check_status = True
         input_origin = str(input_origin)
         if input_origin == '':
             check_status = False
@@ -186,11 +186,10 @@ def create_table_issue_name(db_file):
 
 
 def add_issue_name(db_file, input_name, input_issue_id, input_lang_id, input_display):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input check
-        check_status = True
         # check length
         input_name = str(input_name)
         if len(input_name) > 128:
@@ -250,13 +249,13 @@ def create_table_issue_description(db_file):
 
 
 def add_issue_description(db_file, input_name, input_issue_id, input_lang_id, input_display):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
+        # check ' and "
         input_display = input_display.replace("\'", "`")
         input_display = input_display.replace("\"", "`")
-        # input check
-        check_status = True
         # check length
         input_name = str(input_name)
         if len(input_name) > 128:
@@ -315,10 +314,11 @@ def create_table_advice(db_file):
 
 
 def add_advice(db_file, input_name, input_lang_id, input_display):
+    # input check
+    temp_id = 0
+    check_status = True
     try:
-        # input check
-        temp_id = 0
-        check_status = True
+        # check ' and "
         input_display = input_display.replace("\'", "`")
         input_display = input_display.replace("\"", "`")
         # check length
@@ -371,11 +371,10 @@ def create_table_link_advice(db_file):
 
 
 def add_link_advice(db_file, input_issue_id, input_advice_id):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input_check
-        check_status = True
         # check relation id
         input_issue_id = int(input_issue_id)
         temp_list_issue = read_data(db_file, 'ISSUE')
@@ -427,25 +426,25 @@ def create_table_type(db_file):
 
 
 def add_type(db_file, input_name, input_weight):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        check_status = True
         # check duplicate
         temp_list = read_data(db_file, 'TYPE')
         for temp_data in temp_list:
             if input_name == temp_data[1]:
                 temp_id = temp_data[0]
                 return temp_id
-        # input_check
+        # check lengths
         input_name = str(input_name)
         if len(input_name) > 128:
             check_status = False
-
+        # check range
         input_weight = int(input_weight)
         if not 0 <= input_weight <= 1000:
             check_status = False
-
+        # run sql
         if check_status:
             temp_conn = sqlite3.connect(db_file)
             temp_cmd = temp_conn.cursor()
@@ -480,11 +479,10 @@ def create_table_link_type(db_file):
 
 
 def add_link_type(db_file, input_issue_id, input_type_id):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input_check
-        check_status = True
         # check relation id
         input_issue_id = int(input_issue_id)
         temp_list_issue = read_data(db_file, 'ISSUE')
@@ -536,11 +534,10 @@ def create_table_reference(db_file):
 
 
 def add_reference(db_file, input_name, input_title, input_url):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input_check
-        check_status = True
         # check length
         input_name = str(input_name)
         if len(input_name) > 128:
@@ -586,11 +583,10 @@ def create_table_link_reference(db_file):
 
 
 def add_link_reference(db_file, input_issue_id, input_reference_id):
+    # init
+    temp_id = 0
+    check_status = True
     try:
-        # init
-        temp_id = 0
-        # input_check
-        check_status = True
         # check relation id
         input_issue_id = int(input_issue_id)
         temp_list_issue = read_data(db_file, 'ISSUE')
@@ -627,11 +623,9 @@ def add_link_reference(db_file, input_issue_id, input_reference_id):
 
 def parser_eas(db_file):
     try:
-        # add_user(db_file, 'cymetrics', 'aA@123456')
         add_language(db_file, 'en-US')
         add_language(db_file, 'zh-TW')
         nmp = utils.custom_csv.read_file_to_dict("ithome.csv")
-        count = 1
         for n in nmp:
             temp_score = 0
             if n['風險'] == 'H':
@@ -694,38 +688,16 @@ def parser_eas(db_file):
                         temp_type_id = add_type(db_file, temp_nist, 100)
                         add_link_type(db_file, temp_issue_id, temp_type_id)
 
-            """
-            add_issue(db_file, n['key'], temp_score, '100', temp_cost,
-                      n['細項(L3) EN'], n['細項(L3)'], n['詳細情況 EN'], n['詳細情況'], n['修復 EN'], n['修復'])
-
-            if not n['ISO'] == '':
-                temp_iso_list = n['ISO'].split('\n')
-                for temp_iso in temp_iso_list:
-                    if not temp_iso == '':
-                        add_type(db_file, 'ISO', temp_iso, '', 100)
-                        add_issue_link(db_file, 'ISO', count, read_type_by_name(db_file, 'ISO', temp_iso))
-
-            if not n['GDPR'] == '':
-                temp_gdpr_list = n['GDPR'].split('\n')
-                for temp_gdpr in temp_gdpr_list:
-                    if not temp_gdpr == '':
-                        add_type(db_file, 'GDPR', temp_gdpr, '', 100)
-                        add_issue_link(db_file, 'GDPR', count, read_type_by_name(db_file, 'GDPR', temp_gdpr))
-            """
-            count += 1
-
     except Exception as ex:
         print('Exception(init_db):' + str(ex))
 
 
 def parser_vas(db_file):
     try:
-        # add_user(db_file, 'cymetrics', 'aA@123456')
         add_language(db_file, 'en-US')
         add_language(db_file, 'zh-TW')
         nmp = utils.custom_csv.read_file_to_dict("zap_report.csv")
         # id,type,origin,enabled,risk,cost,name_en,name_zh,desc_en,desc_zh,advice_en,advice_zh
-        count = 1
         for n in nmp:
             temp_score = 0
             if n['risk'] == 'High':
@@ -734,7 +706,6 @@ def parser_vas(db_file):
                 temp_score = 50
             elif n['risk'] == 'Low':
                 temp_score = 25
-
             temp_cost = 0
             if n['cost'] == 'High':
                 temp_cost = 25
@@ -745,52 +716,16 @@ def parser_vas(db_file):
             temp_issue_id = add_issue(db_file, n['origin'], temp_score, temp_cost)
             if temp_issue_id == 0:
                 continue
-            """
-            add_issue_name(db_file, n['細項(L3) EN'], temp_issue_id, 1, n['細項(L3) EN'])
-            add_issue_name(db_file, n['細項(L3)'], temp_issue_id, 2, n['細項(L3)'])
-            add_issue_description(db_file, n['細項(L3) EN'] + '(英文敘述)', temp_issue_id, 1, n['詳細情況 EN'])
-            add_issue_description(db_file, n['細項(L3)'] + '(中文敘述)', temp_issue_id, 2, n['詳細情況'])
-            temp_advice_id = add_advice(db_file, n['細項(L3)'] + '(英文問題修復建議)', 1, n['修復 EN'])
+            add_issue_name(db_file, n['name_en'], temp_issue_id, 1, n['name_en'])
+            add_issue_name(db_file, n['name_zh'], temp_issue_id, 2, n['name_zh'])
+            add_issue_description(db_file, n['name_en'] + '(英文敘述)', temp_issue_id, 1, n['desc_en'])
+            add_issue_description(db_file, n['name_zh'] + '(中文敘述)', temp_issue_id, 2, n['desc_zh'])
+            temp_advice_id = add_advice(db_file, n['name_en'] + '(英文問題修復建議)', 1, n['advice_en'])
             add_link_advice(db_file, temp_issue_id, temp_advice_id)
-            temp_advice_id = add_advice(db_file, n['細項(L3)'] + '(中文問題修復建議)', 2, n['修復'])
+            temp_advice_id = add_advice(db_file, n['name_zh'] + '(中文問題修復建議)', 2, n['advice_zh'])
             add_link_advice(db_file, temp_issue_id, temp_advice_id)
-
-            temp_type_id = add_type(db_file, n['次類別(L2)'], 100)
+            temp_type_id = add_type(db_file, 'OWASP 2021:' + n['type'], 100)
             add_link_type(db_file, temp_issue_id, temp_type_id)
-
-            temp_type_id = add_type(db_file, n['主類別(L1)'], 100)
-            add_link_type(db_file, temp_issue_id, temp_type_id)
-
-            if not n['ISO'] == '':
-                temp_iso_list = n['ISO'].split('\n')
-                for temp_iso in temp_iso_list:
-                    if not temp_iso == '':
-                        temp_type_id = add_type(db_file, temp_iso, 100)
-                        add_link_type(db_file, temp_issue_id, temp_type_id)
-
-            if not n['GDPR'] == '':
-                temp_gdpr_list = n['GDPR'].split('\n')
-                for temp_gdpr in temp_gdpr_list:
-                    if not temp_gdpr == '':
-                        temp_type_id = add_type(db_file, temp_gdpr, 100)
-                        add_link_type(db_file, temp_issue_id, temp_type_id)
-
-            if not n['PCI DSS'] == '':
-                temp_pci_list = n['PCI DSS'].split('\n')
-                for temp_pci in temp_pci_list:
-                    if not temp_pci == '':
-                        temp_type_id = add_type(db_file, temp_pci, 100)
-                        add_link_type(db_file, temp_issue_id, temp_type_id)
-
-            if not n['NIST CSF'] == '':
-                temp_nist_list = n['PCI DSS'].split('\n')
-                for temp_nist in temp_nist_list:
-                    if not temp_nist == '':
-                        temp_type_id = add_type(db_file, temp_nist, 100)
-                        add_link_type(db_file, temp_issue_id, temp_type_id)
-            """
-            count += 1
-
     except Exception as ex:
         print('Exception(init_db):' + str(ex))
 
