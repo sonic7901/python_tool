@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import utils.custom_csv
+import utils.custom_request
 
 
 def init(db_file):
@@ -124,6 +125,26 @@ def add_issue(db_file, input_origin, input_cvss, input_cost):
         print('Exception(add_issue):' + str(ex))
     finally:
         return temp_id
+
+
+def check_issue_exist(db_file, input_origin):
+    # init
+    temp_result = False
+    try:
+        if os.path.isfile(db_file):
+            sql_exec = "select ORIGIN from ISSUE"
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute(sql_exec)
+            temp_data = [item[0] for item in temp_cmd.fetchall()]
+            if input_origin in temp_data:
+                temp_result = True
+        else:
+            print('database ' + str(db_file) + ' not found')
+    except Exception as ex:
+        print('Exception(init):' + str(ex))
+    finally:
+        return temp_result
 
 
 def create_table_language(db_file):
@@ -730,6 +751,34 @@ def parser_vas(db_file):
         print('Exception(init_db):' + str(ex))
 
 
+def parser_zap(db_file):
+    list_alert = utils.custom_request.read_alert()
+    for temp_alert in list_alert:
+        if check_issue_exist('test.db', temp_alert[0]):
+            continue
+
+        temp_score = 0
+        if temp_alert[3] == 'High':
+            temp_score = 75
+        elif temp_alert[3] == 'Medium':
+            temp_score = 50
+        elif temp_alert[3] == 'Low':
+            temp_score = 25
+
+        temp_issue_id = add_issue(db_file, temp_alert[0], temp_score, 0)
+        add_issue_name(db_file, temp_alert[0], temp_issue_id, 1, temp_alert[0])
+        add_issue_name(db_file, temp_alert[0], temp_issue_id, 2, temp_alert[0])
+        add_issue_description(db_file, temp_alert[0] + '(英文敘述)', temp_issue_id, 1, temp_alert[1])
+        add_issue_description(db_file, temp_alert[0] + '(中文敘述)', temp_issue_id, 2, temp_alert[1])
+        temp_advice_id = add_advice(db_file, temp_alert[0] + '(英文問題修復建議)', 1, temp_alert[2])
+        add_link_advice(db_file, temp_issue_id, temp_advice_id)
+        temp_advice_id = add_advice(db_file, temp_alert[0] + '(中文問題修復建議)', 2, temp_alert[2])
+        add_link_advice(db_file, temp_issue_id, temp_advice_id)
+        for temp_type in temp_alert[4]:
+            temp_type_id = add_type(db_file, temp_type, 100)
+            add_link_type(db_file, temp_issue_id, temp_type_id)
+
+
 def unit_test(db_file):
     add_user(db_file, 'user', 'passwd')
     add_issue(db_file, 'unitest origin', 50, 8)
@@ -747,5 +796,6 @@ def unit_test(db_file):
 if __name__ == "__main__":
     init('test.db')
     # unit_test()
-    parser_vas('test.db')
-    # parser_eas('test.db')
+    # parser_vas('test.db')
+    parser_eas('test.db')
+    print(check_issue_exist('test.db', 'Directory Browsing'))

@@ -23,14 +23,16 @@ def read_get(temp_url):
         return {'code': 0, 'text': ''}
 
 
-def read_linkedin_bing():
+def read_alert():
     # 0. init setting
     result_list = []
     basic_url = "https://www.zaproxy.org/docs/alerts/"
+    list_alert_id = []
+
     # 1. first search for count number
     try:
         # alert: 0 ~ 100
-        for i in range(0, 100):
+        for i in range(0, 45):
             try:
                 first_query = basic_url + str(i) + "/"
                 first_response = read_get(first_query)
@@ -48,11 +50,22 @@ def read_linkedin_bing():
                     temp_solution = temp_result_solution.contents[2]
                     temp_solution = temp_solution.strip()
                     print("solution: " + temp_solution)
-                    result_list.append([temp_title, temp_desc, temp_solution])
+
+                    temp_result_risk = first_soup.find_all('td')
+                    temp_risk = temp_result_risk[7].text
+                    print("risk: " + temp_risk)
+                    list_tags = []
+                    temp_tags = temp_result_risk[15].text
+                    if '\n' in temp_tags:
+                        list_split = temp_tags.split('\n')
+                        for temp_split in list_split:
+                            if not temp_split == '':
+                                list_tags.append(temp_split)
+                    result_list.append([temp_title, temp_desc, temp_solution, temp_risk, list_tags])
             except Exception as ex:
                 print('Exception:' + str(ex))
         # alert: 10000 ~ 10300
-        for i in range(10000, 10300):
+        for i in range(10000, 10205):
             try:
                 first_query = basic_url + str(i) + "/"
                 first_response = read_get(first_query)
@@ -70,11 +83,22 @@ def read_linkedin_bing():
                     temp_solution = temp_result_solution.contents[2]
                     temp_solution = temp_solution.strip()
                     print("solution: " + temp_solution)
-                    result_list.append([temp_title, temp_desc, temp_solution])
+
+                    temp_result_risk = first_soup.find_all('td')
+                    temp_risk = temp_result_risk[7].text
+                    print("risk: " + temp_risk)
+                    list_tags = []
+                    temp_tags = temp_result_risk[15].text
+                    if '\n' in temp_tags:
+                        list_split = temp_tags.split('\n')
+                        for temp_split in list_split:
+                            if not temp_split == '':
+                                list_tags.append(temp_split)
+                    result_list.append([temp_title, temp_desc, temp_solution, temp_risk, list_tags])
             except Exception as ex:
                 print('Exception:' + str(ex))
         # alert: 20000 ~ 20100
-        for i in range(20000, 20100):
+        for i in range(20000, 20020):
             try:
                 first_query = basic_url + str(i) + "/"
                 first_response = read_get(first_query)
@@ -92,7 +116,18 @@ def read_linkedin_bing():
                     temp_solution = temp_result_solution.contents[2]
                     temp_solution = temp_solution.strip()
                     print("solution: " + temp_solution)
-                    result_list.append([temp_title, temp_desc, temp_solution])
+
+                    temp_result_risk = first_soup.find_all('td')
+                    temp_risk = temp_result_risk[7].text
+                    print("risk: " + temp_risk)
+                    list_tags = []
+                    temp_tags = temp_result_risk[15].text
+                    if '\n' in temp_tags:
+                        list_split = temp_tags.split('\n')
+                        for temp_split in list_split:
+                            if not temp_split == '':
+                                list_tags.append(temp_split)
+                    result_list.append([temp_title, temp_desc, temp_solution, temp_risk, list_tags])
             except Exception as ex:
                 print('Exception:' + str(ex))
 
@@ -103,4 +138,4 @@ def read_linkedin_bing():
 
 
 if __name__ == "__main__":
-    read_linkedin_bing()
+    read_alert()

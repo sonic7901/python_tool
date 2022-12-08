@@ -91,7 +91,6 @@ def issue_add():
 def button_add():
     sql_db.add_issue('db/test.db',
                      request.form['origin_name'],
-                     request.form['issue_score'],
                      request.form['issue_weight'],
                      request.form['issue_cost'],
                      request.form['name_en'],
