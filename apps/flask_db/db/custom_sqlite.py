@@ -79,7 +79,6 @@ def create_table_issue(db_file):
         temp_cmd = temp_conn.cursor()
         temp_cmd.execute('''CREATE TABLE ISSUE(
                     ID INTEGER PRIMARY KEY,
-                    ORIGIN         TEXT    NOT NULL UNIQUE,
                     CVSS           INT     NOT NULL,
                     COST           INT     NOT NULL);''')
         print('create_table: issue')
@@ -89,19 +88,11 @@ def create_table_issue(db_file):
         print('Exception(create_table_issue):' + str(ex))
 
 
-def add_issue(db_file, input_origin, input_cvss, input_cost):
+def add_issue(db_file, input_cvss, input_cost):
     # init
     temp_id = 0
     check_status = True
     try:
-        input_origin = str(input_origin)
-        if input_origin == '':
-            check_status = False
-        if len(input_origin) > 0:
-            if input_origin[0] == ' ':
-                check_status = False
-        if len(input_origin) > 256:
-            check_status = False
         input_cvss = int(input_cvss)
         if input_cvss < 0 or input_cvss > 100:
             check_status = False
@@ -112,13 +103,13 @@ def add_issue(db_file, input_origin, input_cvss, input_cost):
         if check_status:
             temp_conn = sqlite3.connect(db_file)
             temp_cmd = temp_conn.cursor()
-            sql_exec = f"INSERT INTO ISSUE (ORIGIN, CVSS, COST) " \
-                       f"VALUES (\"{input_origin}\",{input_cvss},{input_cost})"
+            sql_exec = f"INSERT INTO ISSUE (CVSS, COST) " \
+                       f"VALUES ({input_cvss},{input_cost})"
             temp_cmd.execute(sql_exec)
             temp_id = temp_cmd.lastrowid
             temp_conn.commit()
             temp_conn.close()
-            print('add_issue: ' + str(input_origin))
+            print('add_issue(id): ' + str(temp_id))
         else:
             print('add_issue: input error')
     except Exception as ex:
