@@ -1,7 +1,6 @@
 import time
 import sys
 import json
-import pprint
 import difflib
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -9,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.utils import ChromeType
+from webdriver_manager.core.utils import ChromeType
 
 
 def read_get_page(input_url, input_cookie=None, headless_mode=False):
@@ -452,12 +451,12 @@ if __name__ == '__main__':
                     input_username="saicx016",
                     input_password="a12345678",
                     headless_mode=True)
-    
+
     read_login_auto(input_url="http://bioid.tw/login.php",
                     input_username="phe23967@boofx.com",
                     input_password="a12345678",
                     headless_mode=False)
-    
+
     # manual login ithome
     test_json_list = [{'type': 'write', 'xpath': '//*[@id="account"]', 'text': 'saicx016'},
                       {'type': 'write', 'xpath': '//*[@id="password"]', 'text': 'a12345678'},

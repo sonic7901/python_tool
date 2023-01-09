@@ -9,12 +9,9 @@ from copy import deepcopy
 from docx import Document
 from docx.shared import Cm, Mm, Inches
 from docxtpl import DocxTemplate, InlineImage
-<<<<<<< HEAD
 from docx.enum.table import WD_TABLE_ALIGNMENT
-import utils.custom_chrome
-=======
 import custom_chrome
->>>>>>> origin/develop
+import custom_chrome
 import custom_image
 import custom_chart
 
@@ -238,6 +235,10 @@ def transfer_report(report_data_list):
             for site in report_data['site']:
                 # temp_alerts = reversed(site['alerts'])
                 for alert in site['alerts']:
+                    if alert['pluginid'] == '2':
+                        continue
+                    if alert['pluginid'] == '3':
+                        continue
                     # read issue level
                     temp_level = alert['riskdesc'].split('(')
                     level = temp_level[0]
@@ -435,16 +436,17 @@ def transfer_report(report_data_list):
         else:
             add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
 
-        if default_screenshot_url == '':
-            read_screenshot(str(report_data['site'][0]['@name']), report_data['target'] + '.png')
-        else:
-            read_screenshot(default_screenshot_url, report_data['target'] + '.png')
+        if str(report_data['site'][0]['@name']) != '':
+            if default_screenshot_url == '':
+                read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
+            else:
+                read_screenshot(default_screenshot_url, 'temp_screen.png')
 
-        target_count += 1
-        add_screenshot(input_fn, report_data['target'] + '.png',
-                       str(target_count) + '.' + report_data['target'] + '網站進入點:')
+            target_count += 1
+            add_screenshot(input_fn, 'temp_screen.png',
+                           str(target_count) + '.' + report_data['target'] + '網站進入點:')
 
-        os.remove(report_data['target'] + '.png')
+            os.remove('temp_screen.png')
 
 
 def transfer_report_en(report_data_list):
@@ -490,6 +492,10 @@ def transfer_report_en(report_data_list):
                     # read issue level
                     temp_level = alert['riskdesc'].split('(')
                     level = temp_level[0]
+                    if alert['pluginid'] == '2':
+                        continue
+                    if alert['pluginid'] == '3':
+                        continue
                     if "Informational" in level:
                         continue
                     # read issue advice
@@ -507,7 +513,7 @@ def transfer_report_en(report_data_list):
                         cwe_id = alert['cweid']
                     except Exception as ex:
                         cwe_id = ''
-                        utils.custom_log.debug(str(ex))
+                        print(str(ex))
 
                     temp_instances = alert['instances']
                     temp_url_list = []
@@ -688,9 +694,9 @@ def transfer_report_en(report_data_list):
             add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
 
         if default_screenshot_url == '':
-            read_screenshot(str(report_data['site'][0]['@name']), report_data['target'] + '.png')
+            read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
         else:
-            read_screenshot(default_screenshot_url, report_data['target'] + '.png')
-        add_screenshot(input_fn, report_data['target'] + '.png',
+            read_screenshot(default_screenshot_url, 'temp_screen.png')
+        add_screenshot(input_fn, 'temp_screen.png',
                        str(target_count) + '.' + report_data['target'] + ' access url:')
         target_count += 1
