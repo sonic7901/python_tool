@@ -14,10 +14,11 @@ body{
 
 .div_login{
     margin:0px auto;
-    border:2px solid black;
+    border:2px solid #D5D5D5;
     border-radius: 10px;
     height: 500px;
     width: 450px;
+    background-color: #E0E0E0;
 }
 
 .div_float {
@@ -107,7 +108,7 @@ table tbody tr:last-child td:last-child {
 .div_button_group{
     height: 30px;
     width: 90%;
-    margin: 20px auto;
+    margin: 5px auto;
 }
 
 .div_button{

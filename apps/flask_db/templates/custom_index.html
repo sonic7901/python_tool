@@ -23,7 +23,7 @@
     </a>
     <a href="/issue_edit" style="color:black;">
         <div class="div_button">
-            <label>修改檢測項目</label>
+            <label>編輯檢測項目</label>
         </div>
     </a>
     <a href="/issue_remove" style="color:black;">
@@ -31,40 +31,79 @@
             <label>移除檢測項目</label>
         </div>
     </a>
-    <a href="/issue_type" style="color:black;">
+    <div style="height:44px"></div>
+    <a href="/solu_add" style="color:black;">
         <div class="div_button">
-            <label>調整項目類型</label>
+            <label>新增修復建議</label>
         </div>
     </a>
+    <a href="/solu_edit" style="color:black;">
+        <div class="div_button">
+            <label>編輯修復建議</label>
+        </div>
+    </a>
+    <a href="/solu_remove" style="color:black;">
+        <div class="div_button">
+            <label>移除修復建議</label>
+        </div>
+    </a>
+    <a href="/solu_select" style="color:black;">
+        <div class="div_button">
+            <label>分配修復建議</label>
+        </div>
+    </a>
+    <div style="height:44px"></div>
     <a href="/type_add" style="color:black;">
         <div class="div_button">
-            <label>新增分類方法</label>
+            <label>新增測項分類</label>
+        </div>
+    </a>
+    <a href="/type_edit" style="color:black;">
+        <div class="div_button">
+            <label>編輯測項分類</label>
         </div>
     </a>
     <a href="/type_remove" style="color:black;">
         <div class="div_button">
-            <label>移除分類方法</label>
+            <label>移除測項分類</label>
         </div>
     </a>
-    <a href="/type_item_add" style="color:black;">
+    <a href="/type_select" style="color:black;">
         <div class="div_button">
-            <label>新增分類項目</label>
+            <label>分配測項分類</label>
         </div>
     </a>
-    <a href="/type_item_remove" style="color:black;">
+    <div style="height:44px"></div>
+    <a href="/group_add" style="color:black;">
         <div class="div_button">
-            <label>移除分類項目</label>
+            <label>新增類型組別</label>
+        </div>
+    </a>
+    <a href="/group_edit" style="color:black;">
+        <div class="div_button">
+            <label>編輯類型組別</label>
+        </div>
+    </a>
+    <a href="/group_remove" style="color:black;">
+        <div class="div_button">
+            <label>移除類型組別</label>
+        </div>
+    </a>
+    <a href="/group_select" style="color:black;">
+        <div class="div_button">
+            <label>分配類型組別</label>
         </div>
     </a>
 </div>
+<br>
+<br>
+<br>
 <div class="div_table">
     <table class="table1">
         <thead>
         <tr>
             <th>ID</th>
-            <th>原始名稱</th>
             <th>中文名稱</th>
-            <th>英文名稱</th>
         </tr>
         </thead>
         <tbody>
@@ -72,8 +111,6 @@
         <tr>
             <td>{{ i[0] }}</td>
             <td>{{ i[1] }}</td>
-            <td>{{ i[6] }}</td>
-            <td>{{ i[5] }}</td>
         </tr>
         {% endfor %}
         </tbody>

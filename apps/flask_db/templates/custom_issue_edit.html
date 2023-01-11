@@ -16,7 +16,7 @@
             <select name="issue_id">
                 <option selected="selected" disabled="disabled" style='display: none' value=''></option>
                 {% for i in issue_list %}
-                <option value="{{ i[0] }}" {{ i[11] }}>{{ i[0] }} | {{ i[1] }} | {{ i[6] }}</option>
+                <option value="{{ i[0] }}"{{i[2]}}>{{ i[0] }} | {{ i[1] }}</option>
                 {% endfor %}
             </select>
             <button id="select_button" type="submit" class="button_select">確定</button>
@@ -39,19 +39,6 @@
         <br>
         <br>
         <div class="div_float">
-            <label class="label_title">問題原始名稱:</label>
-            <br>
-            <br>
-            <input type="text"
-                   class="input_float"
-                   id="origin_name"
-                   name="origin_name"
-                   value="{{input_origin}}"
-                   size="32"
-                   maxlength="64"
-                   required/>
-        </div>
-        <div class="div_float">
             <label class="label_title">基本分數(0-100):</label>
             <br>
             <br>
@@ -72,7 +59,7 @@
             <br>
         </div>
         <div class="div_float">
-            <label class="label_title">權重(0-200)%:</label>
+            <label class="label_title">權重(0-999)%:</label>
             <br>
             <br>
             <input type="number"
@@ -136,22 +123,6 @@
             <textarea id="desc_en"
                       name="desc_en"
                       required>{{input_desc_en}}</textarea>
-        </div>
-        <div class="div_float">
-            <label class="label_title">中文修復建議:</label>
-            <br>
-            <br>
-            <textarea id="solu_zh"
-                      name="solu_zh"
-                      required>{{input_solu_zh}}</textarea>
-        </div>
-        <div class="div_float">
-            <label class="label_title">英文修復建議:</label>
-            <br>
-            <br>
-            <textarea id="solu_en"
-                      name="solu_en"
-                      required>{{input_solu_en}}</textarea>
         </div>
         <br>
     </form>

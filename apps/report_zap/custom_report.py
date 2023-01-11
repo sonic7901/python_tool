@@ -239,6 +239,8 @@ def transfer_report(report_data_list):
                         continue
                     if alert['pluginid'] == '3':
                         continue
+                    if '10020' in alert['pluginid']:
+                        continue
                     # read issue level
                     temp_level = alert['riskdesc'].split('(')
                     level = temp_level[0]
@@ -495,6 +497,8 @@ def transfer_report_en(report_data_list):
                     if alert['pluginid'] == '2':
                         continue
                     if alert['pluginid'] == '3':
+                        continue
+                    if '10020' in alert['pluginid']:
                         continue
                     if "Informational" in level:
                         continue
