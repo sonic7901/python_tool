@@ -806,6 +806,28 @@ def add_type(input_name, input_weight):
         return temp_id
 
 
+def read_type(input_id):
+    try:
+        temp_list = []
+        try:
+            if os.path.isfile(db_file):
+                sql_exec = f"select * from TYPE where ISSUE_ID={input_id}"
+                temp_conn = sqlite3.connect(db_file)
+                temp_cmd = temp_conn.cursor()
+                temp_cmd.execute(sql_exec)
+                temp_data = temp_cmd.fetchall()
+                for temp_tuple in temp_data:
+                    temp_list.append(list(temp_tuple))
+            else:
+                print('database ' + str(db_file) + ' not found')
+        except Exception as ex:
+            print('Exception(read_type):' + str(ex))
+        finally:
+            return temp_list[0]
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+
 def create_table_link_type():
     try:
         temp_conn = sqlite3.connect(db_file)
@@ -1000,9 +1022,9 @@ def parser_eas():
             add_issue_name(temp_issue_id, 2, n['細項(L3)'])
             add_issue_description(temp_issue_id, 1, n['詳細情況 EN'])
             add_issue_description(temp_issue_id, 2, n['詳細情況'])
-            temp_advice_id = add_advice(n['細項(L3)'] + '(英文問題修復建議)', 1, n['修復 EN'])
+            temp_advice_id = add_solution(n['細項(L3)'] + '(英文問題修復建議)', 1, n['修復 EN'])
             add_link_advice(temp_issue_id, temp_advice_id)
-            temp_advice_id = add_advice(n['細項(L3)'] + '(中文問題修復建議)', 2, n['修復'])
+            temp_advice_id = add_solution(n['細項(L3)'] + '(中文問題修復建議)', 2, n['修復'])
             add_link_advice(temp_issue_id, temp_advice_id)
 
             temp_type_id = add_type(n['次類別(L2)'], 100)
@@ -1071,9 +1093,9 @@ def parser_vas():
             add_issue_name(db_file, n['name_zh'], temp_issue_id, 2, n['name_zh'])
             add_issue_description(temp_issue_id, 1, n['desc_en'])
             add_issue_description(temp_issue_id, 2, n['desc_zh'])
-            temp_advice_id = add_advice(db_file, n['name_en'] + '(英文問題修復建議)', 1, n['advice_en'])
+            temp_advice_id = add_solution(db_file, n['name_en'] + '(英文問題修復建議)', 1, n['advice_en'])
             add_link_advice(db_file, temp_issue_id, temp_advice_id)
-            temp_advice_id = add_advice(db_file, n['name_zh'] + '(中文問題修復建議)', 2, n['advice_zh'])
+            temp_advice_id = add_solution(db_file, n['name_zh'] + '(中文問題修復建議)', 2, n['advice_zh'])
             add_link_advice(db_file, temp_issue_id, temp_advice_id)
             temp_type_id = add_type('OWASP 2021:' + n['type'], 100)
             add_link_type(temp_issue_id, temp_type_id)
@@ -1100,9 +1122,9 @@ def parser_zap():
         add_issue_name(db_file, temp_alert[0], temp_issue_id, 2, temp_alert[0])
         add_issue_description(temp_issue_id, 1, temp_alert[1])
         add_issue_description(temp_issue_id, 2, temp_alert[1])
-        temp_advice_id = add_advice(db_file, temp_alert[0] + '(英文問題修復建議)', 1, temp_alert[2])
+        temp_advice_id = add_solution(db_file, temp_alert[0] + '(英文問題修復建議)', 1, temp_alert[2])
         add_link_advice(db_file, temp_issue_id, temp_advice_id)
-        temp_advice_id = add_advice(db_file, temp_alert[0] + '(中文問題修復建議)', 2, temp_alert[2])
+        temp_advice_id = add_solution(db_file, temp_alert[0] + '(中文問題修復建議)', 2, temp_alert[2])
         add_link_advice(db_file, temp_issue_id, temp_advice_id)
         for temp_type in temp_alert[4]:
             temp_type_id = add_type(temp_type, 100)
@@ -1115,7 +1137,7 @@ def unit_test():
     add_language('zh-tw')
     add_issue_name('test issue name', 1, 1, 'test issue name')
     add_issue_description(1, 1, 'test description')
-    add_advice('test advice name', 1, 'test advice')
+    add_solution('test advice name', 1, 'test advice')
     add_link_advice(1, 1)
     add_type('test type name', 50)
     add_link_type(1, 1)

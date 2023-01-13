@@ -270,6 +270,47 @@ def solution_delete_select():
     return render_template("custom_solution_remove.html", advice_list=show_list)
 
 
+@flask_app.route("/solution_select")
+def solution_select():
+    temp_issues = sql_db.read_data('ISSUE')
+    show_list_1 = []
+    for temp_issue in temp_issues:
+        temp_name = sql_db.read_data_issue_name(temp_issue[0], 2)
+        show_list_1.append([temp_issue[0], temp_name])
+
+    temp_solution = sql_db.read_data('ADVICE')
+    show_list_2 = []
+    for temp_advice in temp_solution:
+        if temp_advice[2] == 2:
+            show_list_2.append([temp_advice[0], temp_advice[1]])
+
+    return render_template("custom_solution_select.html", issue_list=show_list_1, advice_list=show_list_2)
+
+
+def button_solution_select():
+    try:
+        temp_issue_id = request.form['issue_id']
+        temp_types = sql_db.read_type(temp_issue_id)
+
+        temp_issues = sql_db.read_data('ISSUE')
+        show_list_1 = []
+        for temp_issue in temp_issues:
+            temp_name = sql_db.read_data_issue_name(temp_issue[0], 2)
+            show_list_1.append([temp_issue[0], temp_name])
+
+        temp_solution = sql_db.read_data('ADVICE')
+        show_list_2 = []
+        for temp_advice in temp_solution:
+            if temp_advice[2] == 2:
+                show_list_2.append([temp_advice[0], temp_advice[1]])
+
+    except Exception as ex:
+        print('Exception:' + str(ex))
+
+    return render_template("custom_solution_select.html", issue_list=show_list_1, advice_list=show_list_2)
+
+
+
 @flask_app.route("/issue_type")
 def issue_type():
     temp_issues = sql_db.read_data_issues('db/test.db')
@@ -610,4 +651,4 @@ def create_app():
     sql_db.set_db('db/test.db')
     update_user()
     flask_app.debug = True
-    flask_app.run(host="0.0.0.0", port=80, debug=False)
+    flask_app.run(host="0.0.0.0", port=8082, debug=False)
