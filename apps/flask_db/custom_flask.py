@@ -295,6 +295,7 @@ def button_solution_select():
     try:
         temp_issue_id = int(request.form['issue_id'])
         temp_solution_id = int(request.form['advice_id'])
+        temp_link_id = sql_db.read_link_advice(temp_solution_id)
         if sql_db.read_link_advice(temp_issue_id) == 0:
             sql_db.add_link_advice(temp_issue_id, temp_solution_id)
             sql_db.add_link_advice(temp_issue_id, temp_solution_id - 1)

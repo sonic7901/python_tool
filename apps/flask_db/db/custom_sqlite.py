@@ -753,6 +753,45 @@ def add_link_advice(input_issue_id, input_advice_id):
         return temp_id
 
 
+def update_link_advice(input_issue_id, input_advice_id):
+    # init
+    temp_id = 0
+    check_status = True
+    try:
+        # check relation id
+        input_issue_id = int(input_issue_id)
+        temp_list_issue = read_data('ISSUE')
+        temp_id_list = []
+        for temp_issue in temp_list_issue:
+            temp_id_list.append(temp_issue[0])
+        if input_issue_id not in temp_id_list:
+            check_status = False
+        input_advice_id = int(input_advice_id)
+        temp_list_advice = read_data('ADVICE')
+        temp_id_list = []
+        for temp_advice in temp_list_advice:
+            temp_id_list.append(temp_advice[0])
+        if input_advice_id not in temp_id_list:
+            check_status = False
+        # run sql
+        if check_status:
+            # sql
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            sql_exec = f"update LINK_ADVICE set ADVICE_ID={input_advice_id} where ID={input_issue_id}"
+            temp_cmd.execute(sql_exec)
+            temp_id = temp_cmd.lastrowid
+            temp_conn.commit()
+            temp_conn.close()
+            print('add_link_advice')
+        else:
+            print('add_link_advice: input error')
+    except Exception as ex:
+        print('Exception(add_link_advice):' + str(ex))
+    finally:
+        return temp_id
+
+
 def create_table_type():
     try:
         temp_conn = sqlite3.connect(db_file)
@@ -886,7 +925,7 @@ def add_link_type(input_issue_id, input_type_id):
 
 def read_link_advice(input_id):
     # init
-    temp_id = 0
+    temp_id_list = []
     try:
         if os.path.isfile(db_file):
             sql_exec = f"select ID from LINK_ADVICE where ISSUE_ID={input_id}"
@@ -897,13 +936,13 @@ def read_link_advice(input_id):
             temp_data = temp_cmd.fetchall()
             for temp_tuple in temp_data:
                 temp_list.append(list(temp_tuple))
-            temp_id = temp_list[0][0]
+            temp_id_list = temp_list[0]
         else:
             print('database ' + str(db_file) + ' not found')
     except Exception as ex:
         print('Exception(init):' + str(ex))
     finally:
-        return temp_id
+        return temp_id_list
 
 
 def create_table_reference():
