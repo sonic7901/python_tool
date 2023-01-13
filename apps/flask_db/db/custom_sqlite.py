@@ -152,6 +152,7 @@ def add_issue(input_cvss, input_weight, input_cost):
         input_cost = int(input_cost)
         if input_cost < 0 or input_cost > 100:
             check_status = False
+        input_weight = int(input_weight)
         if input_weight < 0 or input_weight > 1000:
             check_status = False
         # sql
@@ -531,6 +532,7 @@ def update_issue_description(input_issue_id, input_lang_id, input_display):
     finally:
         return temp_id
 
+
 def create_table_advice():
     try:
         temp_conn = sqlite3.connect(db_file)
@@ -548,7 +550,7 @@ def create_table_advice():
         print('Exception(create_table_advice):' + str(ex))
 
 
-def add_advice(input_name, input_lang_id, input_display):
+def add_solution(input_name, input_lang_id, input_display):
     # input check
     temp_id = 0
     check_status = True
@@ -588,6 +590,110 @@ def add_advice(input_name, input_lang_id, input_display):
         print('Exception(add_advice):' + str(ex))
     finally:
         return temp_id
+
+
+def update_solution(input_id, input_name, input_lang_id, input_display):
+    # input check
+    temp_result = 0
+    check_status = True
+    try:
+        # check ' and "
+        input_display = input_display.replace("\'", "`")
+        input_display = input_display.replace("\"", "`")
+        # check length
+        input_name = str(input_name)
+        if len(input_name) > 128:
+            check_status = False
+        input_display = str(input_display)
+        if len(input_display) > 2048:
+            check_status = False
+        # check relational id
+        input_language_id = int(input_lang_id)
+        temp_list_language = read_data('LANGUAGE')
+        temp_id_list = []
+        for temp_language in temp_list_language:
+            temp_id_list.append(temp_language[0])
+        if input_language_id not in temp_id_list:
+            check_status = False
+        # run sql
+        if check_status:
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            sql_exec = f"UPDATE ADVICE SET NAME=\"{input_name}\", DISPLAY=\"{input_display}\" where ID={input_id}"
+            temp_cmd.execute(sql_exec)
+            temp_result = 1
+            temp_conn.commit()
+            temp_conn.close()
+            print('update_advice: ' + str(input_name))
+        else:
+            print("update_advice: input error")
+    except Exception as ex:
+        print('Exception(update_advice):' + str(ex))
+    finally:
+        return temp_result
+
+
+def delete_solution(input_id):
+    # init
+    temp_id = 0
+    check_status = True
+    try:
+        # input check
+        input_id = int(input_id)
+        if input_id < 0:
+            check_status = False
+        # sql
+        if check_status:
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            sql_exec = f"DELETE FROM ADVICE where ID={input_id};"
+            temp_cmd.execute(sql_exec)
+            temp_id = 1
+            temp_conn.commit()
+            temp_conn.close()
+            print('remove_issue(id): ' + str(input_id))
+    except Exception as ex:
+        print('Exception:' + str(ex))
+    finally:
+        return temp_id
+
+
+def read_data_advice_name(input_id):
+    temp_list = []
+    try:
+        if os.path.isfile(db_file):
+            sql_exec = f"select NAME from ADVICE where ID={input_id}"
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute(sql_exec)
+            temp_data = temp_cmd.fetchall()
+            for temp_tuple in temp_data:
+                temp_list.append(list(temp_tuple))
+        else:
+            print('database ' + str(db_file) + ' not found')
+    except Exception as ex:
+        print('Exception(read_data_advice_name):' + str(ex))
+    finally:
+        return temp_list[0][0]
+
+
+def read_data_advice_display(input_id):
+    temp_list = []
+    try:
+        if os.path.isfile(db_file):
+            sql_exec = f"select DISPLAY from ADVICE where ID={input_id}"
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute(sql_exec)
+            temp_data = temp_cmd.fetchall()
+            for temp_tuple in temp_data:
+                temp_list.append(list(temp_tuple))
+        else:
+            print('database ' + str(db_file) + ' not found')
+    except Exception as ex:
+        print('Exception(read_data_advice_display):' + str(ex))
+    finally:
+        return temp_list[0][0]
 
 
 def create_table_link_advice():

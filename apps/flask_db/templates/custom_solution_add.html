@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>修復建議 | 新增</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>新增修復建議</h2>
+    </div>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+<div>
+    <form action="/button_solution_add" method="post" class="contact-form">
+        <div>
+            <button class="button_bar" type="submit">送出</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="div_float">
+            <label class="label_title">中文顯示名稱:</label>
+            <br>
+            <br>
+            <input style=type="text"
+                   id="name_zh"
+                   name="name_zh"
+                   value=""
+                   maxlength="64"
+                   class="form-control"
+                   required/>
+            <br>
+            <br>
+            <label>選擇修復建議時的選項名稱(中文)</label>
+        </div>
+        <div class="div_float">
+            <label class="label_title">英文顯示名稱:</label>
+            <br>
+            <br>
+            <input type="text"
+                   id="name_en"
+                   name="name_en"
+                   value=""
+                   maxlength="64"
+                   class="form-control"
+                   required/>
+            <br>
+            <br>
+            <label>選擇修復建議時的選項名稱(英文)</label>
+        </div>
+        <div style="height:205px"></div>
+        <div class="div_float" style="width:45%; height:250px">
+            <label class="label_title">中文修復建議:</label>
+            <br>
+            <br>
+            <textarea id="solution_zh" name="solution_zh" style="width:95%; height:80%" maxlength="1024" required></textarea>
+        </div>
+        <div class="div_float" style="width:45%; height:250px">
+            <label class="label_title">英文修復建議:</label>
+            <br>
+            <br>
+            <textarea id="solution_en" name="solution_en" style="width:95%; height:80%" maxlength="1024" required></textarea>
+        </div>
+        <br>
+    </form>
+</div>
+
+</body>
+</html>

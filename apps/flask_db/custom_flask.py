@@ -87,7 +87,7 @@ def issue_add():
     return render_template("custom_issue_add.html")
 
 
-@flask_app.route("/button_add", methods=["POST"])
+@flask_app.route("/button_issue_add", methods=["POST"])
 def button_add():
     '''
     sql_db.add_issue('db/test.db',
@@ -120,19 +120,7 @@ def issue_edit():
     return render_template("custom_issue_edit.html", issue_list=show_list)
 
 
-@flask_app.route("/issue_type")
-def issue_type():
-    temp_issues = sql_db.read_data_issues('db/test.db')
-    return render_template("custom_issue_type.html", issue_list=temp_issues, temp_label="請由上往下依序選擇")
-
-
-@flask_app.route("/type_add")
-def type_add():
-    temp_types = sql_db.read_data('TYPE')
-    return render_template("custom_type_add.html", type_list=temp_types)
-
-
-@flask_app.route("/button_edit", methods=["POST"])
+@flask_app.route("/button_issue_edit", methods=["POST"])
 def button_edit():
     show_list = []
     list_issues = sql_db.read_data('ISSUE')
@@ -144,7 +132,6 @@ def button_edit():
     else:
         list_issues = sql_db.read_data('ISSUE')
         print("hide_id:" + request.form["hide_id"])
-        select_issue = list_issues[int(request.form["hide_id"]) - 1]
         show_list = []
         for temp_issue in list_issues:
             temp_name = sql_db.read_data_issue_name(temp_issue[0], 2)
@@ -173,7 +160,6 @@ def button_edit():
                                input_id=request.form["hide_id"])
 
 
-
 @flask_app.route("/issue_remove")
 def issue_remove():
     temp_issues = sql_db.read_data('ISSUE')
@@ -184,10 +170,116 @@ def issue_remove():
     return render_template("custom_issue_remove.html", issue_list=show_list)
 
 
-@flask_app.route("/button_remove", methods=["POST"])
+@flask_app.route("/button_issue_remove", methods=["POST"])
 def button_remove():
     sql_db.delete_issue(request.form["issue_id"])
     return redirect("/index")
+
+
+@flask_app.route("/solution_add")
+def solution_add():
+    return render_template("custom_solution_add.html")
+
+
+@flask_app.route("/button_solution_add", methods=["POST"])
+def button_solution_add():
+    temp_result_en = sql_db.add_solution(request.form['name_en'], 1, request.form['solution_en'])
+    temp_result_zh = sql_db.add_solution(request.form['name_zh'], 2, request.form['solution_zh'])
+    if temp_result_en == 0 or temp_result_zh == 0:
+        print("button_advice_add : error")
+    return redirect("/index")
+
+
+@flask_app.route("/solution_edit")
+def solution_edit():
+    temp_solutions = sql_db.read_data('ADVICE')
+    show_list = []
+    for temp_solution in temp_solutions:
+        if temp_solution[2] == 2:
+            show_list.append([temp_solution[0], temp_solution[1]])
+    return render_template("custom_solution_edit.html", advice_list=show_list)
+
+
+@flask_app.route("/solution_edit_select", methods=["POST"])
+def solution_edit_select():
+    temp_advices = sql_db.read_data('ADVICE')
+    show_list = []
+    for temp_advice in temp_advices:
+        if temp_advice[2] == 2:
+            if str(temp_advice[0]) == str(request.form['advice_id']):
+                show_list.append([temp_advice[0], temp_advice[1], 'selected'])
+            else:
+                show_list.append([temp_advice[0], temp_advice[1], ' '])
+    return render_template("custom_solution_edit.html",
+                           advice_list=show_list,
+                           input_name_zh=sql_db.read_data_advice_name(int(request.form['advice_id'])),
+                           input_name_en=sql_db.read_data_advice_name(int(request.form['advice_id']) - 1),
+                           input_solution_zh=sql_db.read_data_advice_display(int(request.form['advice_id'])),
+                           input_solution_en=sql_db.read_data_advice_display(int(request.form['advice_id']) - 1),
+                           input_id=str(request.form['advice_id']))
+
+
+@flask_app.route("/button_solution_edit", methods=["POST"])
+def button_solution_edit():
+    print(request.form['hide_id'])
+    print(request.form['name_en'])
+    print(request.form['solution_en'])
+    temp_result_en = sql_db.update_solution(int(request.form['hide_id']) - 1, request.form['name_en'], 1, request.form['solution_en'])
+    temp_result_zh = sql_db.update_solution(int(request.form['hide_id']), request.form['name_zh'], 2, request.form['solution_zh'])
+    if temp_result_en == 0 or temp_result_zh == 0:
+        print("button_advice_add : error")
+    temp_advices = sql_db.read_data('ADVICE')
+    show_list = []
+    for temp_advice in temp_advices:
+        if temp_advice[2] == 2:
+            if str(temp_advice[0]) == str(request.form['hide_id']):
+                show_list.append([temp_advice[0], temp_advice[1], 'selected'])
+            else:
+                show_list.append([temp_advice[0], temp_advice[1], ' '])
+    return render_template("custom_solution_edit.html",
+                           advice_list=show_list,
+                           input_name_zh=sql_db.read_data_advice_name(int(request.form['hide_id'])),
+                           input_name_en=sql_db.read_data_advice_name(int(request.form['hide_id']) - 1),
+                           input_solution_zh=sql_db.read_data_advice_display(int(request.form['hide_id'])),
+                           input_solution_en=sql_db.read_data_advice_display(int(request.form['hide_id']) - 1),
+                           input_id=str(request.form['hide_id']))
+
+
+@flask_app.route("/solution_delete")
+def solution_delete():
+    temp_solution = sql_db.read_data('ADVICE')
+    show_list = []
+    for temp_advice in temp_solution:
+        if temp_advice[2] == 2:
+            show_list.append([temp_advice[0], temp_advice[1], ' '])
+    return render_template("custom_solution_remove.html", advice_list=show_list)
+
+
+@flask_app.route("/solution_delete_select", methods=["POST"])
+def solution_delete_select():
+    sql_db.delete_solution(request.form['advice_id'])
+    sql_db.delete_solution(int(request.form['advice_id']) -1)
+    temp_advices = sql_db.read_data('ADVICE')
+    show_list = []
+    for temp_advice in temp_advices:
+        if temp_advice[2] == 2:
+            if str(temp_advice[0]) == str(request.form['advice_id']):
+                show_list.append([temp_advice[0], temp_advice[1], 'selected'])
+            else:
+                show_list.append([temp_advice[0], temp_advice[1], ' '])
+    return render_template("custom_solution_remove.html", advice_list=show_list)
+
+
+@flask_app.route("/issue_type")
+def issue_type():
+    temp_issues = sql_db.read_data_issues('db/test.db')
+    return render_template("custom_issue_type.html", issue_list=temp_issues, temp_label="請由上往下依序選擇")
+
+
+@flask_app.route("/type_add")
+def type_add():
+    temp_types = sql_db.read_data('TYPE')
+    return render_template("custom_type_add.html", type_list=temp_types)
 
 
 @flask_app.route("/tag_add")

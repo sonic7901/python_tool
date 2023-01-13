@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>修復建議 | 移除</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>移除修復建議</h2>
+    </div>
+    <br>
+    <div>
+        <label>修復建議:</label><br>
+        <form action="/solution_delete_select" onsubmit="return confirm('確定要刪除?');" method="post">
+            <select name="advice_id">
+                <option selected="selected" disabled="disabled" onsubmit="return confirm('確定要刪除?');" style='display: none' value=''></option>
+                {% for i in advice_list %}
+                <option value="{{ i[0] }}"{{i[2]}}>{{ i[0] }} | {{ i[1] }}</option>
+                {% endfor %}
+            </select>
+            <button id="select_button" type="submit" class="button_select">確定</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
