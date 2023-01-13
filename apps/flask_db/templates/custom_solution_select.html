@@ -11,35 +11,37 @@
     </div>
     <br>
     <div>
-        <label>測試項目:</label><br>
-        <form action="/solution_delete_select" onsubmit="return confirm('確定要刪除?');" method="post">
+
+        <form action="/button_solution_select" method="post">
+            <label>測試項目:</label><br>
             <select name="issue_id">
-                <option selected="selected" disabled="disabled" onsubmit="return confirm('確定要刪除?');" style='display: none' value=''></option>
+                <option selected="selected" disabled="disabled" style='display: none' value=''></option>
                 {% for i in issue_list %}
                 <option value="{{ i[0] }}">{{ i[0] }} | {{ i[1] }}</option>
                 {% endfor %}
             </select>
-            <button id="select_button_issue" type="submit" class="button_select">確定</button>
-        </form>
-    </div>
-    <br>
-    <div>
-        <label>修復建議:</label><br>
-        <form action="/solution_delete_select" onsubmit="return confirm('確定要刪除?');" method="post">
+            <br>
+            <br>
+            <label>修復建議:</label><br>
             <select name="advice_id">
-                <option selected="selected" disabled="disabled" onsubmit="return confirm('確定要刪除?');" style='display: none' value=''></option>
+                <option selected="selected" disabled="disabled" style='display: none' value=''></option>
                 {% for j in advice_list %}
                 <option value="{{ j[0] }}"{{j[2]}}>{{ j[0] }} | {{ j[1] }}</option>
                 {% endfor %}
             </select>
-            <button id="select_button_solution" type="submit" class="button_select">確定</button>
+            <br>
+            <br>
+            <div>
+                <div style="height:10px"></div>
+                <a href="{{url_for('index')}}" style="color:black;">
+                    <button class="button_bar">返回</button>
+                </a>
+            </div>
+            <div>
+                <div style="height:5px"></div>
+                <button id="select_button_issue" type="submit" class="button_select">確定</button>
+            </div>
         </form>
-    </div>
-    <br>
-    <div>
-        <a href="{{url_for('index')}}" style="color:black;">
-            <button class="button_bar">返回</button>
-        </a>
     </div>
 </div>
 </body>

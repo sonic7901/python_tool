@@ -884,6 +884,28 @@ def add_link_type(input_issue_id, input_type_id):
         return temp_id
 
 
+def read_link_advice(input_id):
+    # init
+    temp_id = 0
+    try:
+        if os.path.isfile(db_file):
+            sql_exec = f"select ID from LINK_ADVICE where ISSUE_ID={input_id}"
+            temp_list = []
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute(sql_exec)
+            temp_data = temp_cmd.fetchall()
+            for temp_tuple in temp_data:
+                temp_list.append(list(temp_tuple))
+            temp_id = temp_list[0][0]
+        else:
+            print('database ' + str(db_file) + ' not found')
+    except Exception as ex:
+        print('Exception(init):' + str(ex))
+    finally:
+        return temp_id
+
+
 def create_table_reference():
     try:
         temp_conn = sqlite3.connect(db_file)

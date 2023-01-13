@@ -287,19 +287,27 @@ def solution_select():
     return render_template("custom_solution_select.html", issue_list=show_list_1, advice_list=show_list_2)
 
 
+@flask_app.route("/button_solution_select", methods=["POST"])
 def button_solution_select():
+    # init
+    show_list_1 = []
+    show_list_2 = []
     try:
-        temp_issue_id = request.form['issue_id']
-        temp_types = sql_db.read_type(temp_issue_id)
+        temp_issue_id = int(request.form['issue_id'])
+        temp_solution_id = int(request.form['advice_id'])
+        if sql_db.read_link_advice(temp_issue_id) == 0:
+            sql_db.add_link_advice(temp_issue_id, temp_solution_id)
+            sql_db.add_link_advice(temp_issue_id, temp_solution_id - 1)
+        else:
+            sql_db.update_link_advice(temp_issue_id, temp_solution_id)
+            sql_db.update_link_advice(temp_issue_id, temp_solution_id - 1)
 
         temp_issues = sql_db.read_data('ISSUE')
-        show_list_1 = []
         for temp_issue in temp_issues:
             temp_name = sql_db.read_data_issue_name(temp_issue[0], 2)
             show_list_1.append([temp_issue[0], temp_name])
 
         temp_solution = sql_db.read_data('ADVICE')
-        show_list_2 = []
         for temp_advice in temp_solution:
             if temp_advice[2] == 2:
                 show_list_2.append([temp_advice[0], temp_advice[1]])
@@ -308,7 +316,6 @@ def button_solution_select():
         print('Exception:' + str(ex))
 
     return render_template("custom_solution_select.html", issue_list=show_list_1, advice_list=show_list_2)
-
 
 
 @flask_app.route("/issue_type")
