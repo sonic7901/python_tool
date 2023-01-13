@@ -926,6 +926,7 @@ def add_reference(input_name, input_title, input_url):
     # init
     temp_id = 0
     check_status = True
+
     try:
         # check length
         input_name = str(input_name)
