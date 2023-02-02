@@ -813,7 +813,7 @@ def add_type(input_name, input_weight):
     check_status = True
     try:
         # check duplicate
-        temp_list = read_data( 'TYPE')
+        temp_list = read_data('TYPE')
         for temp_data in temp_list:
             if input_name == temp_data[1]:
                 temp_id = temp_data[0]

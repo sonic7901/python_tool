@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>分類方式 | 修改</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+</head>
+<body>
+<div>
+    <div class="div_top">
+        <h2>修改分類</h2>
+    </div>
+    <div><br><label>{{temp_label}}</label><br></div>
+    <div>
+        <label>檢測項目:</label><br>
+        <form action="/select_type" method="post">
+            <select name="type_id">
+                <option selected="selected" disabled="disabled" style='display: none' value=''></option>
+                {% for i in type_list %}
+                <option value="{{ i[0] }}"{{i[2]}}>{{ i[0] }} | {{ i[1] }}</option>
+                {% endfor %}
+            </select>
+            <button id="select_button" type="submit" class="button_select">確定</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <a href="{{url_for('index')}}" style="color:black;">
+            <button class="button_bar">返回</button>
+        </a>
+    </div>
+</div>
+<div>
+    <form action="/button_type_edit" method="post">
+        <div>
+            <button class="button_bar" type="submit">送出</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="div_float">
+            <label>分類名稱:</label>
+            <br>
+            <br>
+            <input type="text"
+                   id="type_name"
+                   name="type_name"
+                   value="{{input_name}}"
+                   maxlength="64"
+                   required/>
+            <br>
+        </div>
+        <div class="div_float">
+            <label>權重(0-999)%:</label>
+            <br>
+            <br>
+            <input type="number"
+                   class="input_float"
+                   id="type_weight"
+                   name="type_weight"
+                   value="{{input_weight}}"
+                   required/>
+            <br>
+            <br>
+            <label>計算類型分數所用的加權比例，預設為 100%</label>
+        </div>
+        <div class="div_float" style="width: 65%; height: auto;">
+            <p>現有分類:</p>
+            {% for i in type_list %}
+            <div class="div_tag" style="width: auto;">
+                <label style="font-size:15px;">{{ i[1] }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+        <br>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -18,7 +18,7 @@
     </div>
 </div>
 <div>
-    <form action="/button_tag_add" method="post">
+    <form action="/button_type_add" method="post">
         <div>
             <button class="button_bar" type="submit">送出</button>
         </div>
@@ -28,13 +28,28 @@
         <div class="div_float">
             <label>分類名稱:</label>
             <br>
+            <br>
             <input type="text"
-                   id="tag_name"
-                   name="tag_name"
+                   id="type_name"
+                   name="type_name"
                    value=""
                    maxlength="64"
                    required/>
             <br>
+        </div>
+        <div class="div_float">
+            <label>權重(0-999)%:</label>
+            <br>
+            <br>
+            <input type="number"
+                   class="input_float"
+                   id="type_weight"
+                   name="type_weight"
+                   value="100"
+                   required/>
+            <br>
+            <br>
+            <label>計算類型分數所用的加權比例，預設為 100%</label>
         </div>
         <div class="div_float" style="width: 65%; height: auto;">
             <p>現有分類:</p>

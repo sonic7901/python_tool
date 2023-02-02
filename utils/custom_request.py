@@ -228,12 +228,46 @@ def test_tomcat():
         print('test end')
 
 
+def read_nessus(input_plugin_id):
+    pass
+    # 0. init setting
+    result_name = ''
+    result_list = []
+    basic_url = "https://zh-tw.tenable.com/plugins/nessus/"
+
+    # 1. first search for count number
+    try:
+        first_query = basic_url + str(input_plugin_id)
+        first_response = read_get(first_query)
+        if first_response['code'] == 200:
+            first_soup = BeautifulSoup(first_response['text'], 'html.parser')
+            # name
+            temp_result = first_soup.find(class_='h2')
+            result_name = temp_result.text
+            result_list.append(result_name)
+            # detail
+            temp_result_list = first_soup.find_all(class_='mb-3')
+            result_detail = temp_result_list[3].text
+            print(result_detail[2:])
+            result_list.append(result_detail[2:])
+            # solution
+            result_solution = temp_result_list[4].text
+            print(result_solution[4:])
+            result_list.append(result_solution[4:])
+            return result_list
+        else:
+            return result_list
+    except Exception as ex:
+        print('Exception:' + str(ex))
+        return result_list
+
 
 # testcase
 if __name__ == '__main__':
     # read_cloud_platform()
     # read_log4j_software()
-    test_tomcat()
+    # test_tomcat()
+    read_nessus('170113')
     """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:

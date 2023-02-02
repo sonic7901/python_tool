@@ -258,7 +258,7 @@ def solution_delete():
 @flask_app.route("/solution_delete_select", methods=["POST"])
 def solution_delete_select():
     sql_db.delete_solution(request.form['advice_id'])
-    sql_db.delete_solution(int(request.form['advice_id']) -1)
+    sql_db.delete_solution(int(request.form['advice_id']) - 1)
     temp_advices = sql_db.read_data('ADVICE')
     show_list = []
     for temp_advice in temp_advices:
@@ -331,6 +331,43 @@ def type_add():
     return render_template("custom_type_add.html", type_list=temp_types)
 
 
+@flask_app.route("/button_type_add", methods=["POST"])
+def button_type_add():
+    temp_label = ""
+    temp_types = sql_db.read_data('TYPE')
+    check_status = True
+    for temp_type in temp_types:
+        if temp_type[1] == request.form['type_name']:
+            check_status = False
+    if not check_status:
+        temp_label = "送出失敗，已有相同名稱的類別"
+    else:
+        sql_db.add_type(request.form['type_name'], request.form['type_weight'])
+        temp_types = sql_db.read_data('TYPE')
+    return render_template("custom_type_add.html", type_list=temp_types, temp_label=temp_label)
+
+
+@flask_app.route("/type_edit")
+def type_edit():
+    temp_types = sql_db.read_data('TYPE')
+    return render_template("custom_type_edit.html", type_list=temp_types)
+
+
+@flask_app.route("/button_type_edit")
+def button_type_edit():
+    temp_types = sql_db.read_data('TYPE')
+    return render_template("custom_type_edit.html", type_list=temp_types)
+
+
+def type_select():
+    temp_types = sql_db.read_data('TYPE')
+    show_list_1 = []
+    for temp_issue in temp_types:
+        temp_name = sql_db.read_data_issue_name(temp_issue[0], 2)
+        show_list_1.append([temp_issue[0], temp_name])
+    return render_template("custom_type_edit.html", type_list=temp_types)
+
+
 @flask_app.route("/tag_add")
 def tag_add():
     temp_issues = sql_db.read_data_issues('db/test.db')
@@ -339,23 +376,9 @@ def tag_add():
 
 @flask_app.route("/button_tag_add", methods=["POST"])
 def button_tag_add():
-    sql_db.add_tag('db/test.db', request.form['hide_id'], request.form['tag_name'])
-    list_issues = sql_db.read_data_issues('db/test.db')
-    list_tag = sql_db.read_tag_by_id('db/test.db', request.form["hide_id"])
-    list_select = []
-    for issue in list_issues:
-        temp_issue = list(issue)
-        if str(temp_issue[0]) == str(request.form["hide_id"]):
-            temp_issue.append("selected")
-            list_select.append(temp_issue)
-        else:
-            temp_issue.append(" ")
-            list_select.append(temp_issue)
-
-    return render_template("custom_tag_add.html",
-                           issue_list=list_select,
-                           tag_list=list_tag,
-                           input_id=request.form["hide_id"])
+    sql_db.add_type('db/test.db', request.form['tag_name'], request.form['tag_weight'])
+    temp_issues = sql_db.read_data_issues('db/test.db')
+    return render_template("custom_tag_add.html", issue_list=temp_issues)
 
 
 @flask_app.route("/tag_remove")
