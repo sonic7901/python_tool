@@ -220,6 +220,14 @@ def transfer_report():
                             list_report_advice.append(temp_dict["Solution"])
                             list_report_info.append(temp_dict["See Also"])
                             list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
                 # High
                 for temp_dict in temp_dict_list:
                     if not temp_dict["Host"] in list_report_ip:
@@ -239,6 +247,14 @@ def transfer_report():
                             list_report_advice.append(temp_dict["Solution"])
                             list_report_info.append(temp_dict["See Also"])
                             list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
                 # Medium
                 for temp_dict in temp_dict_list:
                     if not temp_dict["Host"] in list_report_ip:
@@ -258,6 +274,14 @@ def transfer_report():
                             list_report_advice.append(temp_dict["Solution"])
                             list_report_info.append(temp_dict["See Also"])
                             list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
                 # Low
                 for temp_dict in temp_dict_list:
                     if not temp_dict["Host"] in list_report_ip:
@@ -340,6 +364,14 @@ def transfer_report():
             if not line == "":
                 target_list.append(line.strip())
                 target_count += 1
+
+    for temp_ip in target_list:
+        if temp_ip not in list_report_ip:
+            print("disconnect 1: " + temp_ip)
+
+    for temp_ip in list_report_ip:
+        if temp_ip not in target_list:
+            print("disconnect 2: " + temp_ip)
 
     replacements = {
         'replace_company': input_company,
