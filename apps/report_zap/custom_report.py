@@ -22,6 +22,7 @@ default_date_before = ''
 default_date_start = ''
 default_date_end = ''
 default_screenshot_url = ''
+default_limit_list = ''
 
 
 def set_company(input_company):
@@ -32,6 +33,11 @@ def set_company(input_company):
 def set_screenshot_url(input_url):
     global default_screenshot_url
     default_screenshot_url = input_url
+
+
+def set_limit_list(input_list):
+    global default_limit_list
+    default_limit_list = input_list
 
 
 def read_json(report_name):
@@ -225,6 +231,7 @@ def transfer_report(report_data_list):
     count_medium = 0
     count_low = 0
     website_count = 0
+    limit_count = 0
 
     for report_data in report_data_list:
         if str(report_data['site'][0]['@name']) != '':
@@ -273,10 +280,19 @@ def transfer_report(report_data_list):
                     temp_url_list = []
                     temp_evidence_list = []
                     for temp_single in temp_instances:
-                        temp_url_list.append(temp_single['uri'])
-                        if not temp_single['evidence'] == '':
-                            temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                        if len(default_limit_list) > 0:
+                            if default_limit_list[limit_count] in temp_single['uri']:
+                                temp_url_list.append(temp_single['uri'])
+                                if not temp_single['evidence'] == '':
+                                    temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                        else:
+                            temp_url_list.append(temp_single['uri'])
+                            if not temp_single['evidence'] == '':
+                                temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                    limit_count += 1
                     temp_url_list = list(set(temp_url_list))
+                    if len(temp_url_list) == 0:
+                        continue
 
                     # test backup
                     report_issue_name = alert['name']
@@ -338,8 +354,6 @@ def transfer_report(report_data_list):
                                     check_issue['target'] = check_issue['target'] + '\n' + report_data['target']
                                 check_status = False
                                 break
-                            else:
-                                pass
                         if check_status:
                             issue_dict = {'id': 'VAS' + str(issue_count).zfill(2),
                                           'name': report_issue_name,
@@ -364,7 +378,6 @@ def transfer_report(report_data_list):
             count_medium += 1
         if temp_issue['level'] == '低':
             count_low += 1
-    # test
 
     custom_image.write_result(issue_list)
     # update image
@@ -406,8 +419,8 @@ def transfer_report(report_data_list):
         'image_dis': InlineImage(doc, 'temp_distribution.jpg', width=Mm(90)),
         'image_9': InlineImage(doc, 'temp_grid.png', width=Mm(180)),
     }
-    doc.render(replacements)  # 渲染替换
-    doc.save(input_fn)  # 保存
+    doc.render(replacements)
+    doc.save(input_fn)
 
     # clear image
     os.remove('temp_score.jpg')
@@ -446,12 +459,13 @@ def transfer_report(report_data_list):
 
             target_count += 1
             add_screenshot(input_fn, 'temp_screen.png',
-                           str(target_count) + '.' + report_data['target'] + '網站進入點:')
+                           str(target_count) + '.' + report_data['target'] + '網站進入點')
 
             os.remove('temp_screen.png')
 
 
 def transfer_report_en(report_data_list):
+    global default_screenshot_url
     # read input
     if default_company == '':
         input_company = 'Example Company'
@@ -482,6 +496,7 @@ def transfer_report_en(report_data_list):
     count_medium = 0
     count_low = 0
     website_count = 0
+    limit_count = 0
 
     for report_data in report_data_list:
         try:
@@ -523,10 +538,19 @@ def transfer_report_en(report_data_list):
                     temp_url_list = []
                     temp_evidence_list = []
                     for temp_single in temp_instances:
-                        temp_url_list.append(temp_single['uri'])
-                        if not temp_single['evidence'] == '':
-                            temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                        if len(default_limit_list) > 0:
+                            if default_limit_list[limit_count] in temp_single['uri']:
+                                temp_url_list.append(temp_single['uri'])
+                                if not temp_single['evidence'] == '':
+                                    temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                        else:
+                            temp_url_list.append(temp_single['uri'])
+                            if not temp_single['evidence'] == '':
+                                temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+
                     temp_url_list = list(set(temp_url_list))
+                    if len(temp_url_list) == 0:
+                        continue
 
                     # test backup
                     report_issue_name = alert['name']
@@ -604,6 +628,7 @@ def transfer_report_en(report_data_list):
                             print("id:" + issue_dict['id'])
                             issue_count += 1
 
+
             for temp_issue in issue_list:
                 if temp_issue['level'] == 'High ':
                     count_high += 1
@@ -615,6 +640,7 @@ def transfer_report_en(report_data_list):
             # screenshot
         except Exception as ex:
             print(ex)
+        limit_count += 1
 
     custom_image.write_result_en(issue_list)
 
@@ -691,16 +717,21 @@ def transfer_report_en(report_data_list):
 
     target_count = 1
     for report_data in report_data_list:
-        if str(report_data['site'][0]['@name']) == '':
-            add_target(input_fn, report_data['target'], str(report_data['input']))
-            continue
+        if len(default_limit_list) > 0:
+            add_target(input_fn, report_data['target'], default_limit_list[target_count - 1])
         else:
-            add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
+            if str(report_data['site'][0]['@name']) == '':
+                add_target(input_fn, report_data['target'], str(report_data['input']))
+                continue
+            else:
+                add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
 
+        if len(default_limit_list) > 0:
+            default_screenshot_url = default_limit_list[target_count - 1]
         if default_screenshot_url == '':
             read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
         else:
             read_screenshot(default_screenshot_url, 'temp_screen.png')
-        add_screenshot(input_fn, 'temp_screen.png',
-                       str(target_count) + '.' + report_data['target'] + ' access url:')
+
+        add_screenshot(input_fn, 'temp_screen.png', str(target_count) + '.' + report_data['target'])
         target_count += 1

@@ -426,7 +426,8 @@ def read_get_page_screenshot(input_url, input_path, input_filename, input_cookie
          "AppleWebKit/537.36 (KHTML, like Gecko) " \
          "Chrome/92.0.4515.159 Safari/537.36"
     chrome_options.add_argument('user-agent={}'.format(ua))
-    driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=chrome_options)
+    # driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=chrome_options)
+    driver = webdriver.Chrome("chromedriver.exe", options=chrome_options)
     # 4. set cookie
     if input_cookie:
         driver.get(input_url)

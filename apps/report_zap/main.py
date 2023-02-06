@@ -3,16 +3,16 @@ import custom_report
 if __name__ == '__main__':
     # example start
     # set company name
-    custom_report.set_company('example')
-    # custom_report.set_screenshot_url('https://cymetrics.io/zh-tw/')
+    custom_report.set_company('Forte')
+    custom_report.set_limit_list(['https://www.forteinsurance.com/bank-online-portal'])
     # normal example
-    main_json_1 = custom_report.read_json('example.json')
-    main_json_1["target"] = "Device_1"
+    main_json_1 = custom_report.read_json('2023-02-03-ZAP-Report-www.forteinsurance.com.json')
+    main_json_1["target"] = "bank-online-portal"
     # none issue example
-    main_json_2 = {'target': 'Device_2', 'site': [{'@name': ''}], 'input': '192.168.1.1'}
+    # main_json_2 = {'target': 'Device_2', 'site': [{'@name': ''}], 'input': '192.168.1.1'}
     # generator report
-    # custom_report.transfer_report([main_json_1, main_json_2])
-    custom_report.transfer_report_en([main_json_1, main_json_2])
+    custom_report.transfer_report_en([main_json_1])
+    # custom_report.transfer_report_en([main_json_1, main_json_2])
     # example end
     '''
     custom_report.set_company('財團法人國家實驗研究院')
