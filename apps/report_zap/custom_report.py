@@ -515,6 +515,8 @@ def transfer_report_en(report_data_list):
                         continue
                     if '10020' in alert['pluginid']:
                         continue
+                    if '90022' in alert['pluginid']:
+                        continue
                     if "Informational" in level:
                         continue
                     # read issue advice
@@ -620,7 +622,7 @@ def transfer_report_en(report_data_list):
                                           'cost': report_issue_cost,
                                           'type': report_issue_type,
                                           'target': report_data['target'],
-                                          'url': temp_url_list,
+                                          'url': list(set(temp_url_list)),
                                           'detail': report_issue_detail,
                                           'advice': report_issue_advice,
                                           'info': temp_evidence_list}
@@ -726,12 +728,12 @@ def transfer_report_en(report_data_list):
             else:
                 add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
 
-        if len(default_limit_list) > 0:
-            default_screenshot_url = default_limit_list[target_count - 1]
         if default_screenshot_url == '':
-            read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
+            if len(default_limit_list) > 0:
+                read_screenshot(default_limit_list[target_count - 1], 'temp_screen.png')
+            else:
+                read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
         else:
             read_screenshot(default_screenshot_url, 'temp_screen.png')
-
         add_screenshot(input_fn, 'temp_screen.png', str(target_count) + '.' + report_data['target'])
         target_count += 1

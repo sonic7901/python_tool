@@ -4,10 +4,11 @@ if __name__ == '__main__':
     # example start
     # set company name
     custom_report.set_company('Forte')
-    custom_report.set_limit_list(['https://www.forteinsurance.com/bank-online-portal'])
+    custom_report.set_limit_list(['https://www.forteinsurance.com/auto-insurance'])
+    custom_report.set_screenshot_url('https://www.forteinsurance.com/auto-insurance/ai-login/')
     # normal example
-    main_json_1 = custom_report.read_json('2023-02-03-ZAP-Report-www.forteinsurance.com.json')
-    main_json_1["target"] = "bank-online-portal"
+    main_json_1 = custom_report.read_json('2023-02-07-ZAP-Report-www.forteinsurance.com.json')
+    main_json_1["target"] = "auto-insurance"
     # none issue example
     # main_json_2 = {'target': 'Device_2', 'site': [{'@name': ''}], 'input': '192.168.1.1'}
     # generator report

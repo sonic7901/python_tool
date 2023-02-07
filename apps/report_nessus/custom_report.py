@@ -167,11 +167,13 @@ def add_issue(input_docx,
                 table_issue.rows[4].cells[1].paragraphs[url_count].paragraph_format.first_line_indent = Cm(0)
                 table_issue.rows[4].cells[1].paragraphs[url_count].add_run(i)
             url_count += 1
+            '''
             if url_count > 9:
                 table_issue.rows[4].cells[1].add_paragraph('')
                 table_issue.rows[4].cells[1].paragraphs[url_count].paragraph_format.first_line_indent = Cm(0)
                 table_issue.rows[4].cells[1].paragraphs[url_count].add_run('⋮')
                 break
+            '''
         table_issue.rows[5].cells[1].paragraphs[0].add_run(input_detail)
         table_issue.rows[6].cells[1].paragraphs[0].add_run(input_advice)
         table_issue.rows[7].cells[1].paragraphs[0].add_run(input_info)
