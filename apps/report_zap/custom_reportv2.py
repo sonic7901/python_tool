@@ -25,8 +25,6 @@ def trans_report(input_json_list):
     except Exception as ex:
         print('Exception:' + str(ex))
 
-def
-
 
 if __name__ == '__main__':
     trans_report([read_json('example.json')])
