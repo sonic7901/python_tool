@@ -55,6 +55,26 @@ def read_data(input_table):
         return temp_list
 
 
+def read_gpt_update():
+    # init
+    temp_list = []
+    try:
+        if os.path.isfile(db_file):
+            sql_exec = "select value from STATUS WHERE type=\"gpt_update\""
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            temp_cmd.execute(sql_exec)
+            temp_data = temp_cmd.fetchall()
+            for temp_tuple in temp_data:
+                temp_list.append(list(temp_tuple))
+        else:
+            print('database ' + str(db_file) + ' not found')
+    except Exception as ex:
+        print('Exception(read_data):' + str(ex))
+    finally:
+        return temp_list[0]
+
+
 def read_data_issue_name(input_id, input_language):
     # init
     temp_list = []
@@ -1053,6 +1073,36 @@ def add_link_reference(input_issue_id, input_reference_id):
         return temp_id
 
 
+def update_status(input_status_name, input_status_value):
+    # init
+    check_status = True
+    try:
+        # input check
+        input_display = str(input_status_name)
+        if len(input_display) > 128:
+            check_status = False
+        if int(input_status_value) > 100:
+            check_status = False
+        if int(input_status_value) < 0:
+            check_status = False
+        # sql
+        if check_status:
+            temp_conn = sqlite3.connect(db_file)
+            temp_cmd = temp_conn.cursor()
+            sql_exec = f"UPDATE STATUS SET value=\"{input_status_value}\" " \
+                       f"where type=\"{input_status_name}\""
+            temp_cmd.execute(sql_exec)
+            temp_conn.commit()
+            temp_conn.close()
+        else:
+            print('update_status: input error')
+    except Exception as ex:
+        print('Exception(update_status):' + str(ex))
+        check_status = False
+    finally:
+        return check_status
+
+
 def parser_eas():
     try:
         add_language('en-US')
@@ -1208,8 +1258,9 @@ def unit_test():
 
 
 if __name__ == "__main__":
-    init()
+    update_status('gpt_update', 1)
+    # init()
     # unit_test()
     # parser_vas('test.db')
-    parser_eas()
-    print(check_issue_origin('Directory Browsing'))
+    # parser_eas()
+    # print(check_issue_origin('Directory Browsing'))

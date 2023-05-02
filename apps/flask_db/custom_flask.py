@@ -17,7 +17,10 @@ from flask_login import (
 
 import configparser
 import os
+import time
+import threading
 import db.custom_sqlite as sql_db
+import utils.custom_request
 
 # config init
 config = configparser.ConfigParser()
@@ -558,7 +561,6 @@ def select_issue_tag():
 
     return render_template("custom_tag_add.html",
                            issue_list=list_select,
-                           tag_list=list_tag,
                            input_id=request.form["issue_id"])
 
 
@@ -652,6 +654,102 @@ def select_tag():
                            input_id=request.form["issue_id"])
 
 
+@flask_app.route("/update_setting")
+def update_setting():
+    temp_process = sql_db.read_gpt_update()
+    if int(temp_process[0]) != 0:
+        return render_template("custom_gpt.html", button_status="disabled", button_label="等待中")
+    else:
+        return render_template("custom_gpt.html", button_label="更新")
+
+
+@flask_app.route("/update_cvss", methods=["POST"])
+def button_update_cvss():
+    temp_process = sql_db.read_gpt_update()
+    if int(temp_process[0]) != 0:
+        return render_template("custom_gpt.html", button_status="disabled", button_label="等待")
+
+    def update_function():
+        temp_dict = utils.custom_request.read_get_json("https://internal-api.dev.cymetrics.io/security/issue")
+        temp_json_list = temp_dict['json']
+        temp_json_list.reverse()
+        count = 0
+        for temp_json in temp_json_list:
+            count += 1
+            test_process = float(count / len(temp_json_list)) * 100
+            test_process = round(test_process, 2)
+            # test_process = count
+            sql_db.update_status('gpt_update', test_process)
+            print("process: " + str(test_process))
+            temp_name = str(temp_json['name'])
+            print('名稱: ' + temp_json['name'])
+            temp_issue = utils.custom_request.read_get_json("https://internal-api.dev.cymetrics.io/security/issue?key="
+                                                            + str(temp_json['key']))
+            temp_issue_json = temp_issue['json']
+            temp_issue_json['description'] = temp_issue_json['description']['id']
+            temp_issue_json['descriptionId'] = temp_issue_json.pop('description')
+            temp_issue_json['recommendation'] = temp_issue_json['recommendation']['id']
+            temp_issue_json['recommendationId'] = temp_issue_json.pop('recommendation')
+            temp_compliance_list = []
+            for temp_compliance in temp_issue_json['complianceList']:
+                temp_compliance_list.append(temp_compliance['id'])
+            temp_weight_list = []
+            for temp_compliance in temp_issue_json['complianceList']:
+                temp_weight_list.append(temp_compliance['weight'])
+            temp_issue_json['complianceList'] = temp_compliance_list
+            temp_issue_json['complianceIdList'] = temp_issue_json.pop('complianceList')
+            temp_issue_json['weightList'] = temp_weight_list
+            temp_url = "https://internal-api.dev.cymetrics.io/security/issue"
+            temp_question_1 = "如果網站上發現\"" + \
+                              temp_name + \
+                              "\"可能會有什麼資安問題, 多數情況下這些問題CVSSv3.1分數範圍是多少"
+            print("提問: " + temp_question_1)
+            temp_data = utils.custom_request.read_gpt(temp_question_1)
+            temp_data['content'] = temp_data['content'].replace("\n", "")
+            temp_content = temp_data['content']
+            print("回答: " + temp_content)
+            time.sleep(25)
+            temp_score_list = []
+            for i in range(0, len(temp_content)):
+
+                if temp_content[i] == '.' and temp_content[i + 1] != ' ':
+                    temp_spilt_score = int(float(temp_content[i - 1] + temp_content[i] + temp_content[i + 1]) * 10)
+                    # bypass CVSSv3.1
+                    if temp_spilt_score == 31 and temp_content[i - 2] == 'v':
+                        continue
+                    if temp_content[i - 1] == '0' and temp_content[i + 1] == '0':
+                        temp_spilt_score = 10
+                    temp_score_list.append(temp_spilt_score)
+
+            if len(temp_score_list) == 0:
+                print("分數: 0(無法評估)")
+                print("-----------------------")
+                temp_issue_json['riskLevel'] = 0
+                utils.custom_request.read_put(temp_url, temp_issue_json)
+            else:
+                print(temp_score_list)
+                average = sum(temp_score_list) / len(temp_score_list)
+                temp_issue_json['riskLevel'] = average
+                utils.custom_request.read_put(temp_url, temp_issue_json)
+                print("分數: " + str(average))
+                print("-----------------------")
+
+
+    # 創建新的thread
+    thread_update = threading.Thread(target=update_function)
+
+    # 開啟新的thread
+    thread_update.start()
+    return render_template("custom_gpt.html", button_status="disabled", button_label="等待")
+
+
+@flask_app.route('/process_gpt')
+def process_gpt():
+    # 這裡簡單示範了每秒傳回一個隨機數字的做法，你可以根據自己的需求進行修改
+    data = {'value': sql_db.read_gpt_update()}
+    return jsonify(data)
+
+
 @flask_app.route("/index", methods=["GET"])
 @login_required
 def index():
@@ -680,6 +778,7 @@ def page_not_found(e):
 def create_app():
     # unit_test_report()
     sql_db.set_db('db/test.db')
+    sql_db.update_status('gpt_update', 0)
     update_user()
     flask_app.debug = True
     flask_app.run(host="0.0.0.0", port=8082, debug=False)

@@ -9,7 +9,7 @@ def read_ask(input_string):
     question = input_string
 
     # 設定 GPT-3 模型的引擎 ID
-    model_engine = "text-davinci-003"
+    model_engine = "text-davinci-002"
 
     # 呼叫 OpenAI API 並取得答案
     response = openai.Completion.create(
@@ -31,7 +31,7 @@ def read_cvss(input_issue_name):
     # init
     temp_result = 0
     try:
-        temp_str = f"多數情況下,{input_issue_name}的平均CVSSv3分數是多少?只給我數字就好"
+        temp_str = f"如果網站上發現\"{input_issue_name}\"可能會有什麼資安問題, 從這些問題來評估CVSSv3.1的分數可能落在哪個數字範圍?"
         temp_result = read_ask(temp_str)[0]
     except Exception as ex:
         print('Exception:' + str(ex))
@@ -68,7 +68,7 @@ def read_owasp(input_issue_name):
 
 
 if __name__ == '__main__':
-    test_issue_name = "Command Injection"
+    test_issue_name = "CSP 未設定"
     print(test_issue_name)
-    print("CVSSv3: " + str(read_cvss(test_issue_name)))
-    print("OWASP Top 10(2021): " + str(read_owasp(test_issue_name)))
+    print("CVSSv3: " + read_cvss(test_issue_name))
+    print("OWASP Top 10(2021): " + read_owasp(test_issue_name))

@@ -15,23 +15,53 @@
     <label style="font-size:30px;height:20px;">檢測資料庫</label>
 </div>
 <br>
+<div class="div_buttion_group_title">1. 維護功能:</div>
+<div class="div_button_group">
+    <a href="/update_setting" style="color:black;">
+        <div class="div_button">
+            <label>分數更新</label>
+        </div>
+    </a>
+</div>
+<div class="div_buttion_group_title">2. 檢測項目:</div>
 <div class="div_button_group">
     <a href="/issue_add" style="color:black;">
         <div class="div_button">
-            <label>新增檢測項目</label>
+            <label>新增</label>
         </div>
     </a>
     <a href="/issue_edit" style="color:black;">
         <div class="div_button">
-            <label>編輯檢測項目</label>
+            <label>編輯</label>
         </div>
     </a>
     <a href="/issue_remove" style="color:black;">
         <div class="div_button">
-            <label>移除檢測項目</label>
+            <label>移除</label>
         </div>
     </a>
-    <div style="height:44px"></div>
+</div>
+
+<div class="div_table">
+    <table class="table1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>中文名稱</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in issue_list %}
+        <tr>
+            <td>{{ i[0] }}</td>
+            <td>{{ i[1] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="div_button_group">
     <a href="/solution_add" style="color:black;">
         <div class="div_button">
             <label>新增修復建議</label>
@@ -52,7 +82,8 @@
             <label>分配修復建議</label>
         </div>
     </a>
-    <div style="height:44px"></div>
+</div>
+<div class="div_button_group">
     <a href="/type_add" style="color:black;">
         <div class="div_button">
             <label>新增測項分類</label>
@@ -73,7 +104,8 @@
             <label>分配測項分類</label>
         </div>
     </a>
-    <div style="height:44px"></div>
+</div>
+<div class="div_button_group">
     <a href="/group_add" style="color:black;">
         <div class="div_button">
             <label>新增類型組別</label>
@@ -95,27 +127,7 @@
         </div>
     </a>
 </div>
-<br>
-<br>
-<br>
-<div class="div_table">
-    <table class="table1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>中文名稱</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in issue_list %}
-        <tr>
-            <td>{{ i[0] }}</td>
-            <td>{{ i[1] }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+
 
 </body>
 </html>

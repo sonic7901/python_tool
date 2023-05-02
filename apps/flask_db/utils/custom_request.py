@@ -1,4 +1,5 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 
 
@@ -21,6 +22,84 @@ def read_get(temp_url):
     except Exception as ex:
         print('Exception:' + str(ex))
         return {'code': 0, 'text': ''}
+
+
+def read_get_json(temp_url):
+    # 0. init setting
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/92.0.4515.159 '
+                      'Safari/537.36',
+        'Accept-Language': 'zh-TW,zh;'
+                           'q=0.9,en-US;'
+                           'q=0.8,en;'
+                           'q=0.7',
+    }
+    # 1. get
+    try:
+        temp_request = requests.get(temp_url, headers=headers)
+        return {'code': temp_request.status_code, 'json': temp_request.json()}
+    except Exception as ex:
+        print('Exception:' + str(ex))
+        return {'code': 0, 'json': ''}
+
+
+def read_put(input_url, input_data):
+    # 0. init setting
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/92.0.4515.159 '
+                      'Safari/537.36',
+        'Content-Type': 'application/json'
+    }
+    json_payload = json.dumps(input_data)
+    # 1. put
+    try:
+        temp_request = requests.put(input_url, headers=headers, data=json_payload)
+        return {'code': temp_request.status_code}
+    except Exception as ex:
+        print('Exception:' + str(ex))
+        return {'code': 0, 'json': ''}
+
+
+def read_gpt(temp_question):
+    # 0. init setting
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/92.0.4515.159 '
+                      'Safari/537.36',
+        'Accept-Language': 'zh-TW,zh;'
+                           'q=0.9,en-US;'
+                           'q=0.8,en;'
+                           'q=0.7',
+        'Authorization': 'Bearer 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',
+        'Content-Type': 'application/json'
+
+    }
+    # 要傳送的參數
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {
+                "role": "user",
+                "content": temp_question
+            }
+        ],
+        "temperature": 0.01
+    }
+    # 將參數轉換為 JSON 格式
+    json_payload = json.dumps(payload)
+    # 1. post
+    try:
+        temp_request = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, data=json_payload)
+        temp_dict = temp_request.json()
+        return {'code': temp_request.status_code, 'content': temp_dict['choices'][0]['message']['content']}
+    except Exception as ex:
+        print('Exception:' + str(ex))
+        return {'code': 0, 'json': ''}
 
 
 def read_alert():
@@ -138,4 +217,8 @@ def read_alert():
 
 
 if __name__ == "__main__":
-    read_alert()
+    # read_alert()
+    main_data = read_gpt("如果網站上發現\"未設定 SPF\"會有哪些資安問題, 從這些資安問題來評估的CVSSv3.1分數可能落在哪個數字範圍?")
+    print(main_data['content'])
+    main_data_2 = read_gpt("這段文字中的CVSS分數煩為的中間數為多少? 只回答我中間數的數字\"" + main_data['content'] + "\"")
+    print(main_data_2['content'])
