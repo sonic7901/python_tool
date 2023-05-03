@@ -75,7 +75,7 @@ def read_gpt(temp_question):
                            'q=0.9,en-US;'
                            'q=0.8,en;'
                            'q=0.7',
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
         'Content-Type': 'application/json'
 
     }

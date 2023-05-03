@@ -1103,6 +1103,22 @@ def update_status(input_status_name, input_status_value):
         return check_status
 
 
+def create_table_status():
+    try:
+        temp_conn = sqlite3.connect(db_file)
+        temp_cmd = temp_conn.cursor()
+        temp_cmd.execute('''CREATE TABLE STATUS(
+                    ID INTEGER PRIMARY KEY,
+                    TYPE          TEXT    NOT NULL,
+                    VALUE         INT     NOT NULL);''')
+        print('create_table: issue')
+        temp_conn.commit()
+        temp_conn.close()
+    except Exception as ex:
+        print('Exception(create_table_issue):' + str(ex))
+
+
+
 def parser_eas():
     try:
         add_language('en-US')
@@ -1258,7 +1274,8 @@ def unit_test():
 
 
 if __name__ == "__main__":
-    update_status('gpt_update', 1)
+    # update_status('gpt_update', 1)
+    create_table_status()
     # init()
     # unit_test()
     # parser_vas('test.db')
