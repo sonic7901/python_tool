@@ -3,16 +3,17 @@ import custom_report
 if __name__ == '__main__':
     # example start
     # set company name
-    custom_report.set_company('Forte')
-    custom_report.set_limit_list(['https://www.forteinsurance.com/auto-insurance'])
-    custom_report.set_screenshot_url('https://www.forteinsurance.com/auto-insurance/ai-login/')
+    custom_report.set_company('新光三越百貨股份有限公司')
+    # custom_report.set_limit_list(['https://www.forteinsurance.com/auto-insurance'])
+    # custom_report.set_screenshot_url('https://www.forteinsurance.com/auto-insurance/ai-login/')
     # normal example
-    main_json_1 = custom_report.read_json('2023-02-07-ZAP-Report-www.forteinsurance.com.json')
-    main_json_1["target"] = "auto-insurance"
+    # custom_report.set_screenshot_url('http://qci.skm.com.tw/userSighting/user/perspectiveAnalysis')
+    main_json_1 = custom_report.read_json('2023-07-05-ZAP-Report-dataphin.skm.com.tw.json')
+    main_json_1["target"] = "數據中台Dataphin"
     # none issue example
     # main_json_2 = {'target': 'Device_2', 'site': [{'@name': ''}], 'input': '192.168.1.1'}
     # generator report
-    custom_report.transfer_report_en([main_json_1])
+    custom_report.transfer_report([main_json_1])
     # custom_report.transfer_report_en([main_json_1, main_json_2])
     # example end
     '''

@@ -96,7 +96,7 @@ def remove_punctuation(text):
         return ''
 
 
-def add_summary(input_docx, input_id, input_name, input_risk, input_filename, input_en):
+def add_summary(input_docx, input_id, input_name, input_risk, input_len, input_filename, input_en):
     try:
         input_document = Document(input_docx)
         tables = input_document.tables
@@ -111,6 +111,7 @@ def add_summary(input_docx, input_id, input_name, input_risk, input_filename, in
             row_cells[2].paragraphs[0].add_run(input_risk)
         else:
             row_cells[2].text = input_risk
+        row_cells[3].text = str(input_len)
         input_document.save(input_filename)
     except Exception as ex:
         logging.error('Exception:' + str(ex))
@@ -390,12 +391,19 @@ def transfer_report():
                 if not line == "":
                     target_list.append(line.strip())
                     target_count += 1
+        if target_count == 0:
+            for temp_ip in list_report_ip:
+                if temp_ip not in target_list:
+                    logging.info("host not found in target: " + temp_ip)
+                    target_list.append(temp_ip)
+        '''
         for temp_ip in target_list:
             if temp_ip not in list_report_ip:
                 logging.info("host not found in result: " + temp_ip)
         for temp_ip in list_report_ip:
             if temp_ip not in target_list:
                 logging.info("host not found in target: " + temp_ip)
+        '''
         replacements = {
             'replace_company': input_company,
             'replace_date_1': input_date_1,
@@ -425,7 +433,13 @@ def transfer_report():
                       input_fn,
                       False)
         for temp_issue in issue_list:
-            add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn, False)
+            add_summary(input_fn,
+                        temp_issue['id'],
+                        temp_issue['name'],
+                        temp_issue['level'],
+                        len(temp_issue['range']),
+                        input_fn,
+                        False)
         device_count = 0
         target_list.sort()
         for temp_target in target_list:
@@ -664,7 +678,12 @@ def transfer_report_en(report_data_list):
                   input_fn,
                   True)
     for temp_issue in issue_list:
-        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn, True)
+        add_summary(input_fn,
+                    temp_issue['id'],
+                    temp_issue['name'],
+                    temp_issue['level'],
+                    len(temp_issue['range']),
+                    input_fn, True)
 
     target_count = 1
     for report_data in report_data_list:

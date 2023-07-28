@@ -87,7 +87,7 @@ def plt_score(input_score, input_filename):
 
 
 if __name__ == '__main__':
-    zap_score(0, 0, 0)
-    # zap_pie(3, 2, 9)
+    zap_score(1, 0, 0)
+    zap_pie_en(1, 0, 0)
 
 

