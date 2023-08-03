@@ -70,4 +70,4 @@ def read_nessus(input_plugin_id):
 
 # testcase
 if __name__ == '__main__':
-    read_nessus('170113')
+    print(read_nessus('170113'))
