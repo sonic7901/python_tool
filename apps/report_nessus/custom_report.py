@@ -449,7 +449,7 @@ def transfer_report():
         logging.error('Exception:' + str(ex))
 
 
-def transfer_report_en(report_data_list):
+def transfer_report_en():
     # read input
     if default_company == '':
         input_company = 'Example Company'
@@ -474,143 +474,150 @@ def transfer_report_en(report_data_list):
     count_high = 0
     count_medium = 0
     count_low = 0
-    website_count = 0
+    list_report_name = []
+    list_report_level = []
+    list_report_type = []
+    list_report_range = []
+    list_report_detail = []
+    list_report_advice = []
+    list_report_info = []
+    list_report_plugin = []
+    list_report_ip = []
 
-    for report_data in report_data_list:
+    # 2. read critical issue to csv
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            try:
+                temp_dict_list = custom_csv.read_file_to_dict(filename)
+                for temp_dict in temp_dict_list:
+                    if not temp_dict["Host"] in list_report_ip:
+                        list_report_ip.append(temp_dict["Host"])
+                    if temp_dict["Risk"] == 'Critical':
+                        temp_dict["Risk"] = 'High'
+                        if temp_dict["Plugin ID"] in list_report_plugin:
+                            temp_num = list_report_plugin.index(temp_dict["Plugin ID"])
+                            if temp_dict["Host"] not in list_report_range[temp_num]:
+                                list_report_range[temp_num].append(temp_dict["Host"])
+                        else:
+                            list_report_name.append(temp_dict["Name"])
+                            list_report_level.append(temp_dict["Risk"])
+                            list_report_type.append(temp_dict["Plugin ID"])
+                            list_report_range.append([temp_dict["Host"]])
+                            list_report_detail.append(temp_dict["Description"])
+                            list_report_advice.append(temp_dict["Solution"])
+                            list_report_info.append(temp_dict["See Also"])
+                            list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception(read csv):' + str(ex))
+    # 3. read high issue to csv
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
+                # High
+                for temp_dict in temp_dict_list:
+                    if not temp_dict["Host"] in list_report_ip:
+                        list_report_ip.append(temp_dict["Host"])
+                    if temp_dict["Risk"] == 'High':
+                        if temp_dict["Plugin ID"] in list_report_plugin:
+                            temp_num = list_report_plugin.index(temp_dict["Plugin ID"])
+                            if temp_dict["Host"] not in list_report_range[temp_num]:
+                                list_report_range[temp_num].append(temp_dict["Host"])
+                        else:
+                            list_report_name.append(temp_dict["Name"])
+                            list_report_level.append(temp_dict["Risk"])
+                            list_report_type.append(temp_dict["Plugin ID"])
+                            list_report_range.append([temp_dict["Host"]])
+                            list_report_detail.append(temp_dict["Description"])
+                            list_report_advice.append(temp_dict["Solution"])
+                            list_report_info.append(temp_dict["See Also"])
+                            list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+    # 4. read medium issue to csv
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
+                # Medium
+                for temp_dict in temp_dict_list:
+                    if not temp_dict["Host"] in list_report_ip:
+                        list_report_ip.append(temp_dict["Host"])
+                    if temp_dict["Risk"] == 'Medium':
+                        if temp_dict["Plugin ID"] in list_report_plugin:
+                            temp_num = list_report_plugin.index(temp_dict["Plugin ID"])
+                            if temp_dict["Host"] not in list_report_range[temp_num]:
+                                list_report_range[temp_num].append(temp_dict["Host"])
+                        else:
+                            list_report_name.append(temp_dict["Name"])
+                            list_report_level.append(temp_dict["Risk"])
+                            list_report_type.append(temp_dict["Plugin ID"])
+                            list_report_range.append([temp_dict["Host"]])
+                            list_report_detail.append(temp_dict["Description"])
+                            list_report_advice.append(temp_dict["Solution"])
+                            list_report_info.append(temp_dict["See Also"])
+                            list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+    # 4. read low issue to csv
+    for filename in os.listdir():
+        if filename.endswith('.csv'):
+            print("read csv: " + filename)
+            temp_dict_list = custom_csv.read_file_to_dict(filename)
+            try:
+                # Low
+                for temp_dict in temp_dict_list:
+                    if not temp_dict["Host"] in list_report_ip:
+                        list_report_ip.append(temp_dict["Host"])
+                    if temp_dict["Risk"] == 'Low':
+                        if temp_dict["Plugin ID"] in list_report_plugin:
+                            temp_num = list_report_plugin.index(temp_dict["Plugin ID"])
+                            if temp_dict["Host"] not in list_report_range[temp_num]:
+                                list_report_range[temp_num].append(temp_dict["Host"])
+                        else:
+                            list_report_name.append(temp_dict["Name"])
+                            list_report_level.append(temp_dict["Risk"])
+                            list_report_type.append(temp_dict["Plugin ID"])
+                            list_report_range.append([temp_dict["Host"]])
+                            list_report_detail.append(temp_dict["Description"])
+                            list_report_advice.append(temp_dict["Solution"])
+                            list_report_info.append(temp_dict["See Also"])
+                            list_report_plugin.append(temp_dict["Plugin ID"])
+            except Exception as ex:
+                print('Exception:' + str(ex))
+
+    pass
+    # 5. en
+    print("issue number: " + str(len(list_report_name)))
+    for i in range(len(list_report_name)):
         try:
-            if str(report_data['site'][0]['@name']) != '':
-                website_count += 1
-            # read issue list
-            for site in report_data['site']:
-                # temp_alerts = reversed(site['alerts'])
-                for alert in site['alerts']:
-                    # read issue level
-                    temp_level = alert['riskdesc'].split('(')
-                    level = temp_level[0]
-                    if alert['pluginid'] == '2':
-                        continue
-                    if alert['pluginid'] == '3':
-                        continue
-                    if '10020' in alert['pluginid']:
-                        continue
-                    if "Informational" in level:
-                        continue
-                    # read issue advice
-                    advice = alert['solution']
-                    advice = advice.replace("<p>", "")
-                    advice = advice.replace("</p>", "")
-                    advice = remove_punctuation(advice)
-                    # read issue detail
-                    detail = alert['desc']
-                    detail = detail.replace("<p>", "")
-                    detail = detail.replace("</p>", "")
-                    detail = remove_punctuation(detail)
-                    # read type (cwe)
-                    try:
-                        cwe_id = alert['cweid']
-                    except Exception as ex:
-                        cwe_id = ''
-                        print(str(ex))
+            print(str(i + 1) + ". " + list_report_name[i])
+            issue_dict = {'id': 'VAS' + str(i + 1).zfill(2),
+                          'name': list_report_name[i],
+                          'level': list_report_level[i],
+                          'type': list_report_type[i],
+                          'range': list_report_range[i],
+                          'detail': list_report_detail[i],
+                          'advice': list_report_advice[i],
+                          'info': list_report_info[i]}
+            issue_count += 1
+            issue_list.append(issue_dict)
 
-                    temp_instances = alert['instances']
-                    temp_url_list = []
-                    temp_evidence_list = []
-                    for temp_single in temp_instances:
-                        temp_url_list.append(temp_single['uri'])
-                        if not temp_single['evidence'] == '':
-                            temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
-                    temp_url_list = list(set(temp_url_list))
-
-                    # test backup
-                    report_issue_name = alert['name']
-                    report_issue_detail = detail
-                    report_issue_advice = advice
-                    report_issue_type = 'CWE-' + str(cwe_id)
-                    report_status = True
-                    report_issue_cost = 'Medium'
-                    # test en to zh
-                    try:
-                        df = pandas.read_excel("zap_report.xlsx")
-                        nmp = df.values
-                        for n in nmp:
-                            if str(n[0]) == alert['pluginid']:
-                                if not n[3]:
-                                    report_status = False
-                                    break
-                                if str(n[1]) != "nan":
-                                    if str(n[1]) == 'A1':
-                                        report_issue_type = "OWASP A01:2021-Broken Access Control"
-                                    if str(n[1]) == 'A2':
-                                        report_issue_type = "OWASP A02:2021-Cryptographic Failures "
-                                    if str(n[1]) == 'A3':
-                                        report_issue_type = "OWASP A03:2021-Injection"
-                                    if str(n[1]) == 'A4':
-                                        report_issue_type = "OWASP A04:2021-Insecure Design"
-                                    if str(n[1]) == 'A5':
-                                        report_issue_type = "OWASP A05:2021-Security Misconfiguration"
-                                    if str(n[1]) == 'A6':
-                                        report_issue_type = "OWASP A06:2021-Vulnerable and Outdated Components"
-                                    if str(n[1]) == 'A7':
-                                        report_issue_type = "OWASP A07:2021-Identification and Authentication Failures"
-                                    if str(n[1]) == 'A8':
-                                        report_issue_type = "OWASP A08:2021-Software and Data Integrity Failures"
-                                    if str(n[1]) == 'A9':
-                                        report_issue_type = "OWASP A09:2021-Security Logging and Monitoring Failures"
-                                    if str(n[1]) == 'A10':
-                                        report_issue_type = "OWASP A10:2021-Server-Side Request Forgery"
-
-                                if str(n[5]) != "nan":
-                                    report_issue_cost = str(n[4])
-                                if str(n[7]) != "nan":
-                                    report_issue_name = str(n[6])
-                                if str(n[9]) != "nan":
-                                    report_issue_detail = str(n[8])
-                                if str(n[11]) != "nan":
-                                    report_issue_advice = str(n[10])
-
-                    except Exception as ex:
-                        print(ex)
-                    if report_status:
-                        check_status = True
-                        for check_issue in issue_list:
-                            if check_issue['name'] == report_issue_name:
-                                check_issue['url'] = check_issue['url'] + temp_url_list
-                                check_issue['info'] = check_issue['info'] + temp_evidence_list
-                                if report_data['target'] not in check_issue['target']:
-                                    check_issue['target'] = check_issue['target'] + '\n' + report_data['target']
-                                check_status = False
-                                break
-                            else:
-                                pass
-                        if check_status:
-                            issue_dict = {'id': 'VAS' + str(issue_count).zfill(2),
-                                          'name': report_issue_name,
-                                          'level': level,
-                                          'cost': report_issue_cost,
-                                          'type': report_issue_type,
-                                          'target': report_data['target'],
-                                          'url': temp_url_list,
-                                          'detail': report_issue_detail,
-                                          'advice': report_issue_advice,
-                                          'info': temp_evidence_list}
-                            issue_list.append(issue_dict)
-                            print("id:" + issue_dict['id'])
-                            issue_count += 1
-
-            for temp_issue in issue_list:
-                if temp_issue['level'] == 'High ':
-                    count_high += 1
-                if temp_issue['level'] == 'Medium ':
-                    count_medium += 1
-                if temp_issue['level'] == 'Low ':
-                    count_low += 1
-
-            # screenshot
         except Exception as ex:
-            print(ex)
+            print('Exception:' + str(ex))
 
-    custom_image.write_result_en(issue_list)
-
+    pass
+    # 6. score
+    for temp_issue in issue_list:
+        if temp_issue['level'] == 'High':
+            count_high += 1
+        if temp_issue['level'] == 'Medium':
+            count_medium += 1
+        if temp_issue['level'] == 'Low':
+            count_low += 1
     # update image
     path = "template_vas_en.docx"
     doc = DocxTemplate(path)
@@ -620,7 +627,7 @@ def transfer_report_en(report_data_list):
     else:
         custom_chart.zap_pie_en(count_low, count_medium, count_high)
 
-    temp_test = """
+    temp_summary = """
     According to the scan results, the problems can be divided into two categories, and then more detailed 
     explanations and suggestions are made for each category
 
@@ -640,38 +647,52 @@ def transfer_report_en(report_data_list):
     Remove or do not install any features or frameworks that you do not need to use.
 """
 
+    website_count = len(list_report_ip)
     if website_count == 0:
-        temp_test = """
-        No website service was found in this scan. Please make sure the website is available."""
-
+        temp_summary = ' 本次掃描中未發現網路服務，請確認測試目標是否有正確運行。'
+    target_count = 0
+    target_list = []
+    with open("ip.txt", "r") as file:
+        for line in file:
+            if not line == "":
+                target_list.append(line.strip())
+                target_count += 1
+    if target_count == 0:
+        for temp_ip in list_report_ip:
+            if temp_ip not in target_list:
+                logging.info("host not found in target: " + temp_ip)
+                target_list.append(temp_ip)
+    '''
+    for temp_ip in target_list:
+        if temp_ip not in list_report_ip:
+            logging.info("host not found in result: " + temp_ip)
+    for temp_ip in list_report_ip:
+        if temp_ip not in target_list:
+            logging.info("host not found in target: " + temp_ip)
+    '''
     replacements = {
         'replace_company': input_company,
         'replace_date_1': input_date_1,
         'replace_date_2': input_date_2,
         'replace_date_3': input_date_3,
-        'replace_target_count': len(report_data_list),
+        'replace_target_count': str(target_count),
         'replace_website_count': str(website_count),
-        'replace_summary': temp_test,
+        'replace_summary': temp_summary,
+        'replace_url': "input_url",
         'image_score': InlineImage(doc, 'temp_score.jpg', width=Mm(90)),
         'image_dis': InlineImage(doc, 'temp_distribution.jpg', width=Mm(90)),
-        'image_9': InlineImage(doc, 'temp_grid.png', width=Mm(180)),
     }
-
-    doc.render(replacements)  # 渲染替换
-    doc.save(input_fn)  # 保存
-
-    # clear image
+    doc.render(replacements)
+    doc.save(input_fn)
     os.remove('temp_score.jpg')
     os.remove('temp_distribution.jpg')
-    os.remove('temp_grid.png')
-
     for temp_issue in reversed(issue_list):
         add_issue(input_fn,
                   temp_issue['id'],
                   temp_issue['name'],
                   temp_issue['level'],
                   temp_issue['type'],
-                  temp_issue['target'],
+                  temp_issue['range'],
                   temp_issue['detail'],
                   temp_issue['advice'],
                   temp_issue['info'],
@@ -683,16 +704,17 @@ def transfer_report_en(report_data_list):
                     temp_issue['name'],
                     temp_issue['level'],
                     len(temp_issue['range']),
-                    input_fn, True)
+                    input_fn,
+                    True)
+    device_count = 0
+    target_list.sort()
+    for temp_target in target_list:
+        try:
+            device_count += 1
+            add_target(input_fn, "Device_" + str(device_count), temp_target.strip())
+        except Exception as ex:
+            print('Exception:' + str(ex))
 
-    target_count = 1
-    for report_data in report_data_list:
-        if str(report_data['site'][0]['@name']) == '':
-            add_target(input_fn, report_data['target'], str(report_data['input']))
-            continue
-        else:
-            add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
-        target_count += 1
 
 
 if __name__ == '__main__':
