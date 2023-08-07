@@ -84,21 +84,25 @@ def remove_punctuation(text):
         return ''
 
 
-def add_summary(input_docx, input_id, input_name, input_risk, input_filename, input_en):
-    input_document = Document(input_docx)
-    tables = input_document.tables
-    table = tables[1]
-    row_cells = table.add_row().cells
-    row_cells[0].paragraphs[0].paragraph_format.first_line_indent = Cm(0.45)
-    row_cells[0].paragraphs[0].add_run(input_id)
-    row_cells[1].paragraphs[0].paragraph_format.first_line_indent = Cm(0)
-    row_cells[1].paragraphs[0].add_run(input_name)
-    if input_en:
-        row_cells[2].paragraphs[0].paragraph_format.first_line_indent = Cm(0.45)
-        row_cells[2].paragraphs[0].add_run(input_risk)
-    else:
-        row_cells[2].text = input_risk
-    input_document.save(input_filename)
+def add_summary(input_docx, input_id, input_name, input_risk, input_len, input_filename, input_en):
+    try:
+        input_document = Document(input_docx)
+        tables = input_document.tables
+        table = tables[1]
+        row_cells = table.add_row().cells
+        row_cells[0].paragraphs[0].paragraph_format.first_line_indent = Cm(0.45)
+        row_cells[0].paragraphs[0].add_run(input_id)
+        row_cells[1].paragraphs[0].paragraph_format.first_line_indent = Cm(0)
+        row_cells[1].paragraphs[0].add_run(input_name)
+        if input_en:
+            row_cells[2].paragraphs[0].paragraph_format.first_line_indent = Cm(0.45)
+            row_cells[2].paragraphs[0].add_run(input_risk)
+        else:
+            row_cells[2].text = input_risk
+        row_cells[3].text = str(input_len)
+        input_document.save(input_filename)
+    except Exception as ex:
+        logging.error('Exception:' + str(ex))
     return
 
 
@@ -227,6 +231,9 @@ def transfer_report(report_data_list):
 
     issue_count = 1
     issue_list = []
+    high_issue_list = []
+    medium_issue_list = []
+    low_issue_list = []
     count_high = 0
     count_medium = 0
     count_low = 0
@@ -361,16 +368,54 @@ def transfer_report(report_data_list):
                                           'cost': report_issue_cost,
                                           'type': report_issue_type,
                                           'target': report_data['target'],
+                                          'range': 1,
                                           'url': temp_url_list,
                                           'detail': report_issue_detail,
                                           'advice': report_issue_advice,
                                           'info': temp_evidence_list}
-                            issue_list.append(issue_dict)
-                            issue_count += 1
+                            if level == '高':
+                                dup_check_status = False
+                                for temp_issue in high_issue_list:
+                                    if report_issue_name == temp_issue['name']:
+                                        temp_issue['target'] = temp_issue['target'] + '\n' + report_data['target']
+                                        temp_issue['url'] = temp_issue['url'] + temp_url_list
+                                        temp_issue['range'] = temp_issue['range'] + 1
+                                        dup_check_status = True
+                                if not dup_check_status:
+                                    high_issue_list.append(issue_dict)
+                                    issue_count += 1
+                            if level == '中':
+                                dup_check_status = False
+                                for temp_issue in medium_issue_list:
+                                    if report_issue_name == temp_issue['name']:
+                                        temp_issue['target'] = temp_issue['target'] + '\n' + report_data['target']
+                                        temp_issue['url'] = temp_issue['url'] + temp_url_list
+                                        temp_issue['range'] = temp_issue['range'] + 1
+                                        dup_check_status = True
+                                if not dup_check_status:
+                                    medium_issue_list.append(issue_dict)
+                                    issue_count += 1
+                            if level == '低':
+                                dup_check_status = False
+                                for temp_issue in low_issue_list:
+                                    if report_issue_name == temp_issue['name']:
+                                        temp_issue['target'] = temp_issue['target'] + '\n' + report_data['target']
+                                        temp_issue['url'] = temp_issue['url'] + temp_url_list
+                                        temp_issue['range'] = temp_issue['range'] + 1
+                                        dup_check_status = True
+                                if not dup_check_status:
+                                    low_issue_list.append(issue_dict)
+                                    issue_count += 1
+                            # issue_list.append(issue_dict)
+
 
         except Exception as ex:
             print(ex)
+    count_high = len(high_issue_list)
+    count_medium = len(medium_issue_list)
+    count_low = len(low_issue_list)
 
+    """
     for temp_issue in issue_list:
         if temp_issue['level'] == '高':
             count_high += 1
@@ -378,8 +423,9 @@ def transfer_report(report_data_list):
             count_medium += 1
         if temp_issue['level'] == '低':
             count_low += 1
-
-    custom_image.write_result(issue_list)
+    """
+    all_issue_list = high_issue_list + medium_issue_list + low_issue_list
+    custom_image.write_result(all_issue_list)
     # update image
     path = "template_vas_zh.docx"
     doc = DocxTemplate(path)
@@ -397,6 +443,7 @@ def transfer_report(report_data_list):
       ◼ 建立與使用安全設計模式的函式庫或是已完成可使用的元件。
       ◼ 使用威脅建模在關鍵的認證、存取控制、商業邏輯與關鍵缺陷上。
       ◼ 撰寫單元測試與整合測試來驗證所有的關鍵流程對威脅建模都有抵抗。
+      
     2. 未進行最佳化安全設定：
       ◼ 快速且簡單的佈署，而且能在分隔且封鎖的環境下執行。
       ◼ 開發，品質管理，以及實際營運的環境，都須有一致相同的設定，並且使用不同的認證資訊。
@@ -427,6 +474,60 @@ def transfer_report(report_data_list):
     os.remove('temp_distribution.jpg')
     os.remove('temp_grid.png')
 
+    for temp_issue in reversed(low_issue_list):
+        add_issue(input_fn,
+                  temp_issue['id'],
+                  temp_issue['name'],
+                  temp_issue['level'],
+                  temp_issue['type'],
+                  temp_issue['target'],
+                  temp_issue['url'],
+                  temp_issue['detail'],
+                  temp_issue['advice'],
+                  temp_issue['info'],
+                  input_fn,
+                  False)
+
+    for temp_issue in reversed(medium_issue_list):
+        add_issue(input_fn,
+                  temp_issue['id'],
+                  temp_issue['name'],
+                  temp_issue['level'],
+                  temp_issue['type'],
+                  temp_issue['target'],
+                  temp_issue['url'],
+                  temp_issue['detail'],
+                  temp_issue['advice'],
+                  temp_issue['info'],
+                  input_fn,
+                  False)
+
+    for temp_issue in reversed(high_issue_list):
+        add_issue(input_fn,
+                  temp_issue['id'],
+                  temp_issue['name'],
+                  temp_issue['level'],
+                  temp_issue['type'],
+                  temp_issue['target'],
+                  temp_issue['url'],
+                  temp_issue['detail'],
+                  temp_issue['advice'],
+                  temp_issue['info'],
+                  input_fn,
+                  False)
+
+    for temp_issue in high_issue_list:
+        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], str(temp_issue['range']),
+                    input_fn, False)
+
+    for temp_issue in medium_issue_list:
+        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], str(temp_issue['range']),
+                    input_fn, False)
+
+    for temp_issue in low_issue_list:
+        add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], str(temp_issue['range']),
+                    input_fn, False)
+    """
     for temp_issue in reversed(issue_list):
         add_issue(input_fn,
                   temp_issue['id'],
@@ -442,7 +543,7 @@ def transfer_report(report_data_list):
                   False)
     for temp_issue in issue_list:
         add_summary(input_fn, temp_issue['id'], temp_issue['name'], temp_issue['level'], input_fn, False)
-
+    """
     target_count = 0
     for report_data in report_data_list:
         if str(report_data['site'][0]['@name']) == '':
@@ -630,7 +731,6 @@ def transfer_report_en(report_data_list):
                             print("id:" + issue_dict['id'])
                             issue_count += 1
 
-
             for temp_issue in issue_list:
                 if temp_issue['level'] == 'High ':
                     count_high += 1
@@ -665,6 +765,7 @@ def transfer_report_en(report_data_list):
     ◼ Establish and use a library of safe design patterns or complete a component that can be used.
     ◼ Use threat modeling on critical authentication, access control, business logic, and critical flaws.
     ◼ Write unit tests and integration tests to verify that all critical processes are resistant to threat modeling.
+
 
     2. Security Misconfiguration：
     ◼ A repeatable security hardening process that can be deployed quickly and easily and can be executed in
