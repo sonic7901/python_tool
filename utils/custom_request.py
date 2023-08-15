@@ -291,13 +291,36 @@ def brute_test():
     print(response.text)
 
 
+def brute_outlook():
+    import requests
+
+    # 登入的 URL
+    login_url = 'https://202.55.235.183/ECSNetMobile/?area=Mobile'
+
+    # 帳號密碼
+    data = {
+        'username': 'test@liteon.com',  # 這裡的 'username' 和 'password' 是假設的欄位名稱，可能需要更改
+        'password': '12345678'
+    }
+
+    # 創建一個 session 對象以保持登入狀態
+    with requests.Session() as s:
+        response = s.post(login_url, data=data)
+
+        # 檢查是否登入成功，這通常取決於回應的內容或狀態碼
+        if response.ok:
+            print("登入成功！")
+        else:
+            print("登入失敗！")
+
+
 # testcase
 if __name__ == '__main__':
     # read_cloud_platform()
     # read_log4j_software()
     # test_tomcat()
     # read_nessus('170113')
-    brute_test()
+    brute_outlook()
     """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:

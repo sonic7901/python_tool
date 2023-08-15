@@ -21,9 +21,10 @@ def zap_pie_en(input_low, input_medium, input_high):
         print(ex)
 
 
-def zap_score(input_low, input_medium, input_high):
+def zap_score(input_low, input_medium, input_high, input_count):
     try:
-        temp_score = 100 - int(input_low/6) - int(input_medium*2/6) - int(input_high*3/6)
+        temp_dis = int(input_count/2) + 1
+        temp_score = 100 - int(input_low/temp_dis) - int(input_medium*2/temp_dis) - int(input_high*3/temp_dis)
         if temp_score < 60:
             temp_score = 60
         plt_score(temp_score, 'temp_score.jpg')

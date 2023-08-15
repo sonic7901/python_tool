@@ -358,11 +358,7 @@ def transfer_report():
         # 7. write word report
         path = "template_vas_zh.docx"
         doc = DocxTemplate(path)
-        custom_chart.zap_score(count_low, count_medium, count_high)
-        if count_low == 0 and count_medium == 0 and count_high == 0:
-            shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
-        else:
-            custom_chart.zap_pie(count_low, count_medium, count_high)
+
         temp_zh_summary = """
     依照掃描結果可將問題分為 2 大類，再針對各類別進行更詳細的說明與建議。
 
@@ -404,6 +400,12 @@ def transfer_report():
             if temp_ip not in target_list:
                 logging.info("host not found in target: " + temp_ip)
         '''
+        custom_chart.zap_score(count_low, count_medium, count_high, len(target_list))
+        if count_low == 0 and count_medium == 0 and count_high == 0:
+            shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
+        else:
+            custom_chart.zap_pie(count_low, count_medium, count_high)
+
         replacements = {
             'replace_company': input_company,
             'replace_date_1': input_date_1,

