@@ -597,13 +597,23 @@ def transfer_report_en():
     for i in range(len(list_report_name)):
         try:
             print(str(i + 1) + ". " + list_report_name[i])
+            temp_desc = list_report_detail[i].replace('\n', ' ')
+            temp_desc = temp_desc.replace('     ', ' ')
+            temp_desc = temp_desc.replace('    ', ' ')
+            temp_desc = temp_desc.replace('   ', ' ')
+            temp_desc = temp_desc.replace('  ', ' ')
+            temp_advice = list_report_advice[i].replace('\n', ' ')
+            temp_advice = temp_advice.replace('     ', ' ')
+            temp_advice = temp_advice.replace('    ', ' ')
+            temp_advice = temp_advice.replace('   ', ' ')
+            temp_advice = temp_advice.replace('  ', ' ')
             issue_dict = {'id': 'VAS' + str(i + 1).zfill(2),
                           'name': list_report_name[i],
                           'level': list_report_level[i],
                           'type': list_report_type[i],
                           'range': list_report_range[i],
-                          'detail': list_report_detail[i],
-                          'advice': list_report_advice[i],
+                          'detail': temp_desc,
+                          'advice': temp_advice,
                           'info': list_report_info[i]}
             issue_count += 1
             issue_list.append(issue_dict)
@@ -620,14 +630,7 @@ def transfer_report_en():
             count_medium += 1
         if temp_issue['level'] == 'Low':
             count_low += 1
-    # update image
-    path = "template_vas_en.docx"
-    doc = DocxTemplate(path)
-    custom_chart.zap_score(count_low, count_medium, count_high)
-    if count_low == 0 and count_medium == 0 and count_high == 0:
-        shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
-    else:
-        custom_chart.zap_pie_en(count_low, count_medium, count_high)
+
 
     temp_summary = """
     According to the scan results, the problems can be divided into two categories, and then more detailed 
@@ -664,14 +667,15 @@ def transfer_report_en():
             if temp_ip not in target_list:
                 logging.info("host not found in target: " + temp_ip)
                 target_list.append(temp_ip)
-    '''
-    for temp_ip in target_list:
-        if temp_ip not in list_report_ip:
-            logging.info("host not found in result: " + temp_ip)
-    for temp_ip in list_report_ip:
-        if temp_ip not in target_list:
-            logging.info("host not found in target: " + temp_ip)
-    '''
+    # update image
+    path = "template_vas_en.docx"
+    doc = DocxTemplate(path)
+    custom_chart.zap_score(count_low, count_medium, count_high, len(target_list))
+    if count_low == 0 and count_medium == 0 and count_high == 0:
+        shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
+    else:
+        custom_chart.zap_pie_en(count_low, count_medium, count_high)
+
     replacements = {
         'replace_company': input_company,
         'replace_date_1': input_date_1,
