@@ -22,6 +22,7 @@ default_date_start = ''
 default_date_end = ''
 default_screenshot_url = ''
 default_limit_list = ''
+url_limit = 9
 
 
 def set_company(input_company):
@@ -34,6 +35,7 @@ def set_screenshot_url(input_url):
     default_screenshot_url = input_url
 
 
+# 設定檢測時排除的 URL 清單
 def set_limit_list(input_list):
     global default_limit_list
     default_limit_list = input_list
@@ -141,6 +143,7 @@ def add_issue(input_docx,
               input_info,
               input_fn,
               input_en):
+    global url_limit
     # create issue table
     input_document = Document(input_docx)
     if input_en:
@@ -164,7 +167,7 @@ def add_issue(input_docx,
             table_issue.rows[5].cells[1].paragraphs[url_count].paragraph_format.first_line_indent = Cm(0)
             table_issue.rows[5].cells[1].paragraphs[url_count].add_run(i)
         url_count += 1
-        if url_count > 9:
+        if url_count >= url_limit:
             table_issue.rows[5].cells[1].add_paragraph('')
             table_issue.rows[5].cells[1].paragraphs[url_count].paragraph_format.first_line_indent = Cm(0)
             table_issue.rows[5].cells[1].paragraphs[url_count].add_run('⋮')
@@ -237,7 +240,6 @@ def transfer_report(report_data_list):
     count_medium = 0
     count_low = 0
     website_count = 0
-    limit_count = 0
 
     for report_data in report_data_list:
         if str(report_data['site'][0]['@name']) != '':
@@ -286,16 +288,24 @@ def transfer_report(report_data_list):
                     temp_url_list = []
                     temp_evidence_list = []
                     for temp_single in temp_instances:
+                        if temp_single['uri'][-1] == '/':
+                            temp_single['uri'] = temp_single['uri'][:-1]
+                        if temp_single['uri'] in temp_url_list:
+                            continue
                         if len(default_limit_list) > 0:
-                            if default_limit_list[limit_count] in temp_single['uri']:
-                                temp_url_list.append(temp_single['uri'])
-                                if not temp_single['evidence'] == '':
-                                    temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                            for default_limit_url in default_limit_list:
+                                if default_limit_url in temp_single['uri']:
+                                    continue
+                                else:
+                                    temp_url_list.append(temp_single['uri'])
+                                    if not temp_single['evidence'] == '':
+                                        temp_evidence_list.append(
+                                            temp_single['uri'] + '(' + temp_single['evidence'] + ')')
                         else:
                             temp_url_list.append(temp_single['uri'])
                             if not temp_single['evidence'] == '':
                                 temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
-                    limit_count += 1
+
                     temp_url_list = list(set(temp_url_list))
                     if len(temp_url_list) == 0:
                         continue
@@ -406,8 +416,6 @@ def transfer_report(report_data_list):
                                     low_issue_list.append(issue_dict)
                                     issue_count += 1
                             # issue_list.append(issue_dict)
-
-
         except Exception as ex:
             print(ex)
 
@@ -441,7 +449,8 @@ def transfer_report(report_data_list):
     # update image
     path = "template_vas_zh.docx"
     doc = DocxTemplate(path)
-    custom_chart.zap_score(count_low, count_medium, count_high)
+    temp_target_count = 0
+    custom_chart.zap_score(count_low, count_medium, count_high, len(report_data_list))
     if count_low == 0 and count_medium == 0 and count_high == 0:
         shutil.copyfile('none_issue.jpg', 'temp_distribution.jpg')
     else:
@@ -464,6 +473,8 @@ def transfer_report(report_data_list):
 
     if website_count == 0:
         temp_test = ' 本次掃描中未發現網站服務，請確認測試目標狀態其網站服務是否有正確運行。'
+    if temp_count == 0:
+        temp_test = ' 本次掃描中未發現任何風險，請確認測試目標狀態其網站服務是否有正確運行。'
 
     replacements = {
         'replace_company': input_company,
@@ -566,7 +577,7 @@ def transfer_report(report_data_list):
 
         if str(report_data['site'][0]['@name']) != '':
             if default_screenshot_url == '':
-                read_screenshot("https://www.example.com", 'temp_screen.png')
+                read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
             else:
                 read_screenshot(default_screenshot_url, 'temp_screen.png')
 
@@ -661,11 +672,19 @@ def transfer_report_en(report_data_list):
                     temp_evidence_list = []
                     for temp_single in temp_instances:
                         if len(default_limit_list) > 0:
-                            if default_limit_list[limit_count] in temp_single['uri']:
-                                temp_url_list.append(temp_single['uri'])
-                                if not temp_single['evidence'] == '':
-                                    temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
+                            for default_limit_url in default_limit_list:
+                                if default_limit_url in temp_single['uri']:
+                                    continue
+                                else:
+                                    temp_url_list.append(temp_single['uri'])
+                                    if not temp_single['evidence'] == '':
+                                        temp_evidence_list.append(
+                                            temp_single['uri'] + '(' + temp_single['evidence'] + ')')
                         else:
+                            if temp_single['uri'][-1] == '/':
+                                temp_single['uri'] = temp_single['uri'][:-1]
+                            if temp_single['uri'] in temp_url_list:
+                                continue
                             temp_url_list.append(temp_single['uri'])
                             if not temp_single['evidence'] == '':
                                 temp_evidence_list.append(temp_single['uri'] + '(' + temp_single['evidence'] + ')')
@@ -786,7 +805,6 @@ def transfer_report_en(report_data_list):
             # screenshot
         except Exception as ex:
             print(ex)
-        limit_count += 1
 
     count_high = len(high_issue_list)
     count_medium = len(medium_issue_list)
@@ -926,10 +944,7 @@ def transfer_report_en(report_data_list):
                 add_target(input_fn, report_data['target'], str(report_data['site'][0]['@name']))
 
         if default_screenshot_url == '':
-            if len(default_limit_list) > 0:
-                read_screenshot(default_limit_list[target_count - 1], 'temp_screen.png')
-            else:
-                read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
+            read_screenshot(str(report_data['site'][0]['@name']), 'temp_screen.png')
         else:
             read_screenshot(default_screenshot_url, 'temp_screen.png')
         add_screenshot(input_fn, 'temp_screen.png', str(target_count) + '.' + report_data['target'])

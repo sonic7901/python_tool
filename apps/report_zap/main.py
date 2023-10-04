@@ -4,9 +4,8 @@ if __name__ == '__main__':
     # example start
     # set company name
     custom_report.set_company('測試公司名稱')
-
     # option
-    # custom_report.set_limit_list(['http://example.com.1','http://example.com.1'])
+    # custom_report.set_limit_list(['https://www.example.com/favicon.ico'])
     # custom_report.set_screenshot_url(['http://example.com.1','http://example.com.1'])
 
     # normal example
