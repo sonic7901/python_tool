@@ -5,38 +5,52 @@ import custom_image
 
 def zap_pie(input_low, input_medium, input_high):
     try:
-        labels = '低 : ' + str(input_low), '中 : ' + str(input_medium), '高 : ' + str(input_high)
-        sizes = [input_low, input_medium, input_high]
-        plt_pie("temp_distribution.jpg", labels, sizes)
-    except Exception as ex:
-        print(ex)
+        if input_low == 0:
+            if input_medium == 0:
+                labels = ['高 : ' + str(input_high)]
+                sizes = [input_high]
+                temp_colors = ['#F37925']
+            elif input_high == 0:
+                labels = ['中 : ' + str(input_medium)]
+                sizes = [input_medium]
+                temp_colors = ['#F5C000']
+            else:
+                labels = ['中 : ' + str(input_medium), '高 : ' + str(input_high)]
+                sizes = [input_medium, input_high]
+                temp_colors = ['#F5C000', '#F37925']
+        elif input_medium == 0:
+            if input_low == 0:
+                labels = ['高 : ' + str(input_high)]
+                sizes = [input_high]
+                temp_colors = ['#F37925']
+            elif input_high == 0:
+                labels = ['低 : ' + str(input_low)]
+                sizes = [input_low]
+                temp_colors = ['#72B347']
+            else:
+                labels = ['低 : ' + str(input_low), '高 : ' + str(input_high)]
+                sizes = [input_low, input_high]
+                temp_colors = ['#72B347', '#F37925']
+        elif input_high == 0:
+            if input_low == 0:
+                labels = ['中 : ' + str(input_medium)]
+                sizes = [input_medium]
+                temp_colors = ['#F5C000']
+            elif input_medium == 0:
+                labels = ['低 : ' + str(input_low)]
+                sizes = [input_low]
+                temp_colors = ['#72B347']
+            else:
+                labels = ['低 : ' + str(input_low), '中 : ' + str(input_medium)]
+                sizes = [input_low, input_medium]
+                temp_colors = ['#72B347', '#F5C000']
+        else:
+            labels = ['低 : ' + str(input_low), '中 : ' + str(input_medium), '高 : ' + str(input_high)]
+            sizes = [input_low, input_medium, input_high]
+            temp_colors = ['#72B347', '#F5C000', '#F37925']
 
-
-def zap_pie_en(input_low, input_medium, input_high):
-    try:
-        labels = 'Low : ' + str(input_low), 'Medium : ' + str(input_medium), 'High : ' + str(input_high)
-        sizes = [input_low, input_medium, input_high]
-        plt_pie("temp_distribution.jpg", labels, sizes)
-    except Exception as ex:
-        print(ex)
-
-
-def zap_score(input_low, input_medium, input_high, input_count):
-    try:
-        temp_dis = int(input_count/2) + 1
-        temp_score = 100 - int(input_low/temp_dis) - int(input_medium*2/temp_dis) - int(input_high*3/temp_dis)
-        if temp_score < 60:
-            temp_score = 60
-        plt_score(temp_score, 'temp_score.jpg')
-    except Exception as ex:
-        print(ex)
-
-
-def plt_pie(input_filename, input_labels, input_values):
-    try:
-        temp_colors = ['#72B347', '#F5C000', '#F37925']
-        patches, l_text, p_text = plt.pie(input_values,
-                                          labels=input_labels,
+        patches, l_text, p_text = plt.pie(sizes,
+                                          labels=list(labels),
                                           colors=temp_colors,
                                           autopct='',
                                           startangle=90)
@@ -48,14 +62,96 @@ def plt_pie(input_filename, input_labels, input_values):
 
         plt.pie([1, 0, 0], radius=0.7, colors='w')
         plt.axis('equal')
-        plt.savefig(input_filename, dpi=400, bbox_inches='tight', pad_inches=0)
+        plt.savefig("temp_distribution.jpg", dpi=400, bbox_inches='tight', pad_inches=0)
         plt.close()
+    except Exception as ex:
+        print(ex)
+
+
+def zap_pie_en(input_low, input_medium, input_high):
+    try:
+        if input_low == 0:
+            if input_medium == 0:
+                labels = ['High : ' + str(input_high)]
+                sizes = [input_high]
+                temp_colors = ['#F37925']
+            elif input_high == 0:
+                labels = ['Medium : ' + str(input_medium)]
+                sizes = [input_medium]
+                temp_colors = ['#F5C000']
+            else:
+                labels = ['Medium : ' + str(input_medium), 'High : ' + str(input_high)]
+                sizes = [input_medium, input_high]
+                temp_colors = ['#F5C000', '#F37925']
+        elif input_medium == 0:
+            if input_low == 0:
+                labels = ['High : ' + str(input_high)]
+                sizes = [input_high]
+                temp_colors = ['#F37925']
+            elif input_high == 0:
+                labels = ['Low : ' + str(input_low)]
+                sizes = [input_low]
+                temp_colors = ['#72B347']
+            else:
+                labels = ['Low : ' + str(input_low), 'High : ' + str(input_high)]
+                sizes = [input_low, input_high]
+                temp_colors = ['#72B347', '#F37925']
+        elif input_high == 0:
+            if input_low == 0:
+                labels = ['Medium : ' + str(input_medium)]
+                sizes = [input_medium]
+                temp_colors = ['#F5C000']
+            elif input_medium == 0:
+                labels = ['Low : ' + str(input_low)]
+                sizes = [input_low]
+                temp_colors = ['#72B347']
+            else:
+                labels = ['Low : ' + str(input_low), 'Medium : ' + str(input_medium)]
+                sizes = [input_low, input_medium]
+                temp_colors = ['#72B347', '#F5C000']
+        else:
+            labels = ['Low : ' + str(input_low), 'Medium : ' + str(input_medium), 'High : ' + str(input_high)]
+            sizes = [input_low, input_medium, input_high]
+            temp_colors = ['#72B347', '#F5C000', '#F37925']
+
+        patches, l_text, p_text = plt.pie(sizes,
+                                          labels=list(labels),
+                                          colors=temp_colors,
+                                          autopct='',
+                                          startangle=90)
+        # force change font for chinese
+        temp_font = fm.FontProperties(fname="MSJH.ttf")
+        temp_font.set_weight('bold')
+        for p in l_text:
+            p.set_fontproperties(temp_font)
+
+        plt.pie([1, 0, 0], radius=0.7, colors='w')
+        plt.axis('equal')
+        plt.savefig("temp_distribution.jpg", dpi=400, bbox_inches='tight', pad_inches=0)
+        plt.close()
+    except Exception as ex:
+        print(ex)
+
+
+def zap_score(input_low, input_medium, input_high, input_count):
+    try:
+        temp_dis = int(input_count)
+        if temp_dis == 0:
+            temp_score = 100
+        else:
+            temp_score = 100 - int(input_low/temp_dis) - int(input_medium*2/temp_dis) - int(input_high*3/temp_dis)
+            if temp_score < 60:
+                temp_score = 60
+        plt_score(temp_score, 'temp_score.jpg')
     except Exception as ex:
         print(ex)
 
 
 def plt_score(input_score, input_filename):
     try:
+        input_values = [0, 0, 0]
+        out_colors = ""
+        in_colors = ""
         if input_score >= 80:
             input_values = [1, 0, 0]
             out_colors = '#72B347'
@@ -88,7 +184,7 @@ def plt_score(input_score, input_filename):
 
 
 if __name__ == '__main__':
-    zap_score(0, 0, 0)
-    # zap_pie(3, 2, 9)
+    zap_score(3, 3, 0, 2)
+    zap_pie(3, 3, 0)
 
 

@@ -35,7 +35,7 @@ def set_date_start(input_date_start):
         global default_date_before
         datetime_object = datetime.strptime(input_date_start, "%Y/%m/%d")
         default_date_start = datetime_object.strftime("%Y/%m/%d")
-        default_date_before = (datetime_object + timedelta(1)).strftime("%Y/%m/%d")
+        default_date_before = (datetime_object - timedelta(1)).strftime("%Y/%m/%d")
     except Exception as ex:
         logging.error('Exception:' + str(ex))
 
@@ -203,8 +203,8 @@ def transfer_report():
             input_date_1 = read_date_yesterday()
             input_date_2 = read_date_today()
         else:
-            input_date_1 = default_date_start
-            input_date_2 = default_date_before
+            input_date_1 = default_date_before
+            input_date_2 = default_date_start
 
         if default_date_end == '':
             input_date_3 = read_date_today()
