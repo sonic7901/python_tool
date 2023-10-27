@@ -1,5 +1,4 @@
 import requests
-import sys
 from bs4 import BeautifulSoup
 
 
@@ -27,7 +26,6 @@ def read_get(temp_url):
 def read_nessus(input_plugin_id):
     pass
     # 0. init setting
-    result_name = ''
     result_list = []
     basic_url = "https://zh-tw.tenable.com/plugins/nessus/"
 

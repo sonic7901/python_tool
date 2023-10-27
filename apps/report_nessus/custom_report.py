@@ -336,17 +336,30 @@ def transfer_report():
         print("issue number: " + str(len(list_report_name)))
         for i in range(len(list_report_name)):
             temp_zh_result = custom_request.read_nessus(list_report_type[i])
-            print(str(i + 1) + ". " + temp_zh_result[0])
-            issue_dict = {'id': 'VAS' + str(i + 1).zfill(2),
-                          'name': temp_zh_result[0],
-                          'level': list_report_level[i],
-                          'type': temp_zh_result[3],
-                          'range': list_report_range[i],
-                          'detail': temp_zh_result[1],
-                          'advice': temp_zh_result[2],
-                          'info': list_report_info[i]}
-            issue_count += 1
-            issue_list.append(issue_dict)
+            if not temp_zh_result:
+                print(str(i + 1) + ". " + temp_zh_result[0] + " **zh-tw not found**")
+                issue_dict = {'id': 'VAS' + str(i + 1).zfill(2),
+                              'name': list_report_name[i],
+                              'level': list_report_level[i],
+                              'type': list_report_type[i],
+                              'range': list_report_range[i],
+                              'detail': list_report_detail[i],
+                              'advice': list_report_advice[i],
+                              'info': list_report_info[i]}
+                issue_count += 1
+                issue_list.append(issue_dict)
+            else:
+                print(str(i + 1) + ". " + temp_zh_result[0])
+                issue_dict = {'id': 'VAS' + str(i + 1).zfill(2),
+                              'name': temp_zh_result[0],
+                              'level': list_report_level[i],
+                              'type': temp_zh_result[3],
+                              'range': list_report_range[i],
+                              'detail': temp_zh_result[1],
+                              'advice': temp_zh_result[2],
+                              'info': list_report_info[i]}
+                issue_count += 1
+                issue_list.append(issue_dict)
         # 6. score
         for temp_issue in issue_list:
             if temp_issue['level'] == '高':
