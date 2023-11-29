@@ -122,7 +122,7 @@ def read_linkedin_bing(temp_company):
                                     result_list.append(temp_name)
                                     result_count += 1
                                     repeat_count = 0
-                                    print(str(result_count) + ':' + temp_name)
+                                    print(str(result_count) + '. ' + temp_name)
                     search_count += 10
             else:
                 print(str(temp_response['code']))
@@ -320,7 +320,8 @@ if __name__ == '__main__':
     # read_log4j_software()
     # test_tomcat()
     # read_nessus('170113')
-    brute_outlook()
+    # brute_outlook()
+    read_linkedin_bing("Cymetrics")
     """
     main_result = read_get("https://www.example.com")
     if main_result['code'] == 200:
