@@ -1,11 +1,28 @@
 import requests
 import json
 import openai
+import inspect
 
 
 def read_issue(input_key):
     try:
         temp_url = "https://internal-api.dev.cymetrics.io/security/issue?key=" + input_key
+        response = requests.get(temp_url)
+        if response.status_code == 200:
+            decoded_content = response.content.decode('utf-8')
+            content_dict = json.loads(decoded_content)
+            return content_dict
+        else:
+            print(f"Failed to fetch data: {response.status_code}")
+            return {}
+    except Exception as ex:
+        print(ex)
+        return {}
+
+
+def read_issue_list():
+    try:
+        temp_url = "https://internal-api.dev.cymetrics.io/security/issue"
         response = requests.get(temp_url)
         if response.status_code == 200:
             decoded_content = response.content.decode('utf-8')
@@ -81,13 +98,31 @@ def read_ask_gpt4(input_string):
     return answer_list
 
 
+def read_ask_gpt4(input_string):
+    import os
+    from openai import OpenAI
+    client = OpenAI()
+    OpenAI.api_key = os.getenv('OPENAI_API_KEY')
+    completion = client.chat.completions.create(
+        model='gpt-3.5-turbo',
+        messages=[
+            {'role': 'user', 'content': input_string}
+        ],
+        temperature=0
+    )
+    return completion.choices[0].message.content
+
+
 def check_issue(input_issue_name):
     try:
         temp_str = f"\"{input_issue_name}\"是否會導致網站不安全?請用是或否回答"
         temp_result = read_ask_gpt4(temp_str)[0]
         if temp_result[0] == "是":
             return True
+        elif temp_result[0] == "否":
+            return False
         else:
+            print("Error: check_issue")
             return False
     except Exception as ex:
         print('Exception:' + str(ex))
@@ -105,18 +140,23 @@ def read_cvss(input_issue_name):
     return temp_result
 
 
+def update_issue_risk():
+    try:
+        temp_list = read_issue_list()
+        for temp_issue in temp_list:
+            temp_key = temp_issue['key']
+            temp_title = temp_issue['title']
+            if check_issue(temp_title):
+                temp_issue_data = read_issue(temp_key)
+                temp_cvss = read_cvss(temp_title)
+                temp_issue_data['riskLevel'] = float(temp_cvss) * 10
+                write_issue(temp_issue_data)
+                print(f"Debug: {temp_title}({temp_issue_data['riskLevel']})")
+            else:
+                print(f"Debug: {temp_title}(0)")
+    except Exception as ex:
+        print(f"Exception({inspect.currentframe().f_code.co_name}):{ex}")
+
+
 if __name__ == '__main__':
-    '''
-    main_result = read_get_json("https://internal-api.dev.cymetrics.io/security/issue")
-    if main_result['code'] == 200:
-        print("unit test (custom_request) : pass")
-        sys.exit(0)
-    else:
-        print("unit test (custom_request) : fail")
-        sys.exit(1)
-    '''
-    # 使用函數
-    url = "https://internal-api.dev.cymetrics.io/security/issue?key=public_remote_ssh"
-    url_2 = "https://internal-api.dev.cymetrics.io/security/issue"
-    read_data = read_issue("public_remote_ssh")
-    write_issue(read_data)
+    update_issue_risk()

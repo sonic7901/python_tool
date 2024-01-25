@@ -125,6 +125,7 @@ def read_owasp(input_issue_name):
 
 
 if __name__ == '__main__':
+    test_gpt_4()
     test_issue_name = "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)"
     print(test_issue_name)
     if check_issue(test_issue_name):
