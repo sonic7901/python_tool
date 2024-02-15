@@ -26,14 +26,25 @@ list_org_white = [
     "Vodafone Group PLC",
     "SoftBank Corp.",
     "Level 3 Communications, Inc.",
-    "Time Warner Cable Inc."
+    "Time Warner Cable Inc.",
+    "Twitter Inc.",
+    "Oath Holdings Inc.",
+    "Akamai International B.V.",
+    "PayPal, Inc.",
+    "JPMorgan Chase & Co.",
+    "U.S. BANCORP",
+    "LINE Corporation",
+    "General Motors LLC",
+    "SQUIXA PTY LIMITED",
+    "Telegram Messenger Inc",
+    "Ford Motor Company"
+
 ]
 
 list_org_black = []
 
 
 def is_domain_format(input_str):
-    # 正則表達式匹配域名格式
     pattern = r'^(?=.{1,253}$)(([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$'
     if re.match(pattern, input_str):
         return True
@@ -42,13 +53,11 @@ def is_domain_format(input_str):
 
 def get_ip(input_str):
     if is_domain_format(input_str):
-        # 輸入符合域名格式，嘗試解析域名
         try:
             return socket.gethostbyname(input_str)
         except socket.gaierror:
             return "Error: Unable to resolve domain to IP."
     else:
-        # 檢查輸入是否為有效的IP地址
         try:
             ipaddress.ip_address(input_str)
             return input_str
@@ -104,7 +113,8 @@ def read_org(input_ip):
     temp_org = ""
     # 1. read ip info
     try:
-        temp_url = f"https://ipinfo.io/{input_ip}?token=6251879f905493"
+        # temp_url = f"https://ipinfo.io/{input_ip}?token=6251879f905493"
+        temp_url = f"https://ipinfo.io/{input_ip}?token=1af7be88ea4884"
         temp_result = read_get(temp_url)
         temp_dict = json.loads(temp_result['text'])
         if 'org' in temp_dict.keys():
@@ -112,6 +122,26 @@ def read_org(input_ip):
     except Exception as ex:
         print("Exception: " + str(ex))
     return temp_org
+
+
+def read_asn(input_data):
+    temp_ip = get_ip(input_data)
+    if check_reserved(temp_ip):
+        return 0
+    temp_org = read_org(temp_ip)
+    temp_list = temp_org.split(" ")
+    temp_as_number = ""
+    temp_as_name = ""
+    temp_status = True
+    for temp_data in temp_list:
+        if temp_status:
+            temp_as_number = temp_data
+            temp_status = False
+        else:
+            temp_as_name = temp_as_name + " " + temp_data
+    temp_as_number = temp_as_number[2:]
+    temp_as_name = temp_as_name[1:]
+    return {"number": temp_as_number, "name": temp_as_name}
 
 
 def check_reserved(ip):
@@ -159,35 +189,24 @@ def calculate_stats(numbers):
     return numbers, rank_33, rank_66
 
 
-def scan(input_data):
+def scan_score(input_data):
     # 0. init
     temp_status = True
     # 1. read data
-    temp_ip = get_ip(input_data)
-    if check_reserved(temp_ip):
-        return 0
-    temp_org = read_org(temp_ip)
-    temp_list = temp_org.split(" ")
-    temp_as_number = ""
-    temp_as_name = ""
-    temp_status = True
-    for temp_data in temp_list:
-        if temp_status:
-            temp_as_number = temp_data
-            temp_status = False
-        else:
-            temp_as_name = temp_as_name + temp_data
-    temp_as_number = temp_as_number[2:]
-    # print("ip: " + temp_ip)
-    # print("ASN_Number:" + temp_as_number)
-    # print("ASN_Name:" + temp_as_name)
-    temp_dict = {"asn": temp_as_number, "period": 5}
+    temp_asn = read_asn(input_data)
+    temp_asn_number = temp_asn['number']
+    temp_asn_name = temp_asn['name']
+    print("Input: " + input_data)
+    print("ASN_Number: " + temp_asn_number)
+    print("ASN_Name: " + temp_asn_name)
+    if temp_asn_name in list_org_white:
+        print("ASN_Score: 1000")
+        return 1000
+    temp_dict = {"asn": temp_asn_number, "period": 5}
     temp_response = read_post("https://bgpranking-ng.circl.lu/json/asn_history", temp_dict)
     temp_dict_2 = json.loads(temp_response['text'])
     asn_history = temp_dict_2["response"]["asn_history"]
-
     latest_score = None
-
     check_today = True
 
     for entry in reversed(asn_history):
@@ -203,7 +222,7 @@ def scan(input_data):
         # print("All scores are 0.")
         latest_score = 0
 
-    # print("ASN_Rank:" + str(latest_score))
+    print("ASN_Score: " + str(latest_score))
     # print("----------------------------------------------")
     return latest_score
 
@@ -226,6 +245,7 @@ def scan_2(input_data):
     soup = BeautifulSoup(temp_response['text'], 'html.parser')
     as_rank_row = soup.find('th', string='AS rank').find_parent('tr')
     as_rank = as_rank_row.find_all('td')[0].text
+    print("ASN_Rank: " + str(as_rank))
     return int(as_rank)
 
 
@@ -234,7 +254,7 @@ def analyze():
     for i in range(0, 100000):
         while True:
             temp_ip = generate_random_ip()
-            temp_score = scan(temp_ip)
+            temp_score = scan_score(temp_ip)
             if temp_score != 0:
                 temp_list_score.append(temp_score)
                 print(str(i) + ". " + str(temp_ip) + " : " + str(temp_score))
@@ -246,30 +266,124 @@ def analyze():
     print("排名在第 66% 的分數:" + str(rank_66))
 
 
-def get_status_security(input_ip):
-    print("ip: " + str(input_ip))
-    temp_score = scan(input_ip)
-    print("asn_score: " + str(temp_score))
+def scan(input_ip):
+    temp_score = scan_score(input_ip)
     temp_rank = scan_2(input_ip)
-    print("asn_rank: " + str(temp_rank))
-    if temp_score < 126 or temp_rank > 7000:
-        print("asn_scan: Fail")
+    if 0 < temp_score < 126:
         return False
     else:
-        print("asn_scan: Pass")
         return True
+
+
+def test():
+    domains = [
+        "google.com",
+        "facebook.com",
+        "youtube.com",
+        "amazon.com",
+        "twitter.com",
+        "instagram.com",
+        "linkedin.com",
+        "wikipedia.org",
+        "reddit.com",
+        "netflix.com",
+        "yahoo.com",
+        "ebay.com",
+        "bing.com",
+        "microsoft.com",
+        "apple.com",
+        "pinterest.com",
+        "paypal.com",
+        "craigslist.org",
+        "imdb.com",
+        "cnn.com",
+        "nytimes.com",
+        "twitch.tv",
+        "instagram.com",
+        "dropbox.com",
+        "spotify.com",
+        "adobe.com",
+        "github.com",
+        "walmart.com",
+        "target.com",
+        "homedepot.com",
+        "quora.com",
+        "yelp.com",
+        "tripadvisor.com",
+        "zillow.com",
+        "etsy.com",
+        "chase.com",
+        "bankofamerica.com",
+        "wellsfargo.com",
+        "usbank.com",
+        "americanexpress.com",
+        "booking.com",
+        "expedia.com",
+        "airbnb.com",
+        "kayak.com",
+        "pandora.com",
+        "soundcloud.com",
+        "vimeo.com",
+        "dailymotion.com",
+        "hulu.com",
+        "medium.com",
+        "linkedin.com",
+        "tumblr.com",
+        "flickr.com",
+        "snapchat.com",
+        "whatsapp.com",
+        "wechat.com",
+        "line.me",
+        "telegram.org",
+        "slack.com",
+        "mail.ru",
+        "yahoo.co.jp",
+        "live.com",
+        "office.com",
+        "msn.com",
+        "wordpress.org",
+        "blogger.com",
+        "medium.com",
+        "weebly.com",
+        "wix.com",
+        "jimdo.com",
+        "squarespace.com",
+        "godaddy.com",
+        "bluehost.com",
+        "hostgator.com",
+        "namecheap.com",
+        "siteground.com",
+        "aol.com",
+        "weather.com",
+        "mapquest.com",
+        "britannica.com",
+        "nationalgeographic.com",
+        "smithsonianmag.com",
+        "nature.com",
+        "science.org",
+        "cell.com",
+        "sciencedirect.com",
+        "nasa.gov",
+        "space.com",
+        "tesla.com",
+        "ford.com",
+        "chevrolet.com",
+        "toyota.com",
+        "honda.com"
+    ]
+    for temp_domain in domains:
+        scan(temp_domain)
 
 
 # testcase
 if __name__ == '__main__':
-    unit_test_ip = "8.8.8.8"
-    # scan(unit_test_ip)
-    analyze()
-    # scan_2(unit_test_ip)
-    # get_status_security(unit_test_ip)
-    '''
-    if get_status_security(unit_test_ip):
-        print("Pass")
+    if scan('45.141.148.224'):
+        print("Scan Result: Pass")
     else:
-        print("Fail")
-    '''
+        print("Scan Result: Fail")
+    # unit_test_ip = "facebook.com"
+    # scan_score(unit_test_ip)
+    # analyze()
+    # scan_2(unit_test_ip)
+    # test()
+
